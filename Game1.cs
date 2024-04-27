@@ -27,7 +27,6 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
         _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
         _graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
         _graphics.ApplyChanges();
@@ -39,7 +38,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         MainMenu.MainMenuBackground = Content.Load<Texture2D>("MainMenu");
         Tank.TankImage = Content.Load<Texture2D>("tank1");
-        // TODO: use this.Content to load your game content here
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -60,7 +59,6 @@ public class Game1 : Game
         
        
 
-        // TODO: Add your update logic here
         base.Update(gameTime);
     }
 
@@ -79,7 +77,6 @@ public class Game1 : Game
         }
         
         _spriteBatch.End();
-        // TODO: Add your drawing code here
 
         base.Draw(gameTime);
     }
