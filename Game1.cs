@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using BattleCity;
+using Game1;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace BattleCity;
 
@@ -20,9 +23,11 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private StateOfGame _state = StateOfGame.MainMenu;
+    private const int CellSize = 64;
 
+    private MainMenu mainMenu;
     private HashSet<Tank> tanksObjects;
-
+    private List<ScenicObject> scenicsObjects;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -32,8 +37,8 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
-        _graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
+        _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
         _graphics.ApplyChanges();
         base.Initialize();
     }
@@ -41,10 +46,22 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        MainMenu.MainMenuBackground = Content.Load<Texture2D>("MainMenu");
+        mainMenu = new MainMenu(Content.Load<Texture2D>("MainMenu"), CellSize);
         tanksObjects = new HashSet<Tank>();
         var tankImage = Content.Load<Texture2D>("tank1");
-        var playersTank = new Tank(0.1f, new Vector2(400, 300), tankImage);
+        var playersTank = new Tank(0.1f, new Vector2(352, 866), tankImage, CellSize);
+
+
+        var images = new Dictionary<TypeOfObject, Texture2D>()
+        {
+            { TypeOfObject.None, Content.Load<Texture2D>("none") },
+            { TypeOfObject.Bricks, Content.Load<Texture2D>("bricks") },
+            { TypeOfObject.Concrete, Content.Load<Texture2D>("concrete") },
+            { TypeOfObject.Leaves, Content.Load<Texture2D>("leaves") },
+            { TypeOfObject.Water, Content.Load<Texture2D>("water") },
+            { TypeOfObject.Staff, Content.Load<Texture2D>("staff") }
+        };
+        scenicsObjects = ReaderOfMap.Reader(images, CellSize);
         tanksObjects.Add(playersTank);
     }
 
@@ -53,14 +70,15 @@ public class Game1 : Game
         switch (_state)
         {
             case StateOfGame.MainMenu:
-                MainMenu.Update(gameTime);
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                     _state = StateOfGame.Game;
+                if(Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    Exit();
                 break;
             case StateOfGame.Game:
                 foreach (var tanks in tanksObjects)
                     tanks.Update(gameTime);
-                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                if (Keyboard.GetState().IsKeyDown(Keys.P))
                     _state = StateOfGame.MainMenu;
                 break;
         }
@@ -70,14 +88,18 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Black);
+        
         _spriteBatch.Begin();
         switch (_state)
         {
             case StateOfGame.MainMenu:
-                MainMenu.Draw(_spriteBatch);
+                GraphicsDevice.Clear(Color.Black);
+                mainMenu.Draw(_spriteBatch);
                 break;
             case StateOfGame.Game:
+                GraphicsDevice.Clear(Color.Gray);
+                foreach (var scenic in scenicsObjects)
+                    scenic.Draw(_spriteBatch);
                 foreach (var tank in tanksObjects)
                     tank.Draw(_spriteBatch);
                 break;

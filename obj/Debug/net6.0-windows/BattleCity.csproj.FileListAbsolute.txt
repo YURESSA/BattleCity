@@ -37,3 +37,9 @@ C:\Users\goshr\OneDrive\Документы\Универ\Программиров
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\obj\Debug\net6.0-windows\ref\BattleCity.dll
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\MainMenu.xnb
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\tank1.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\bricks.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\concrete.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\leaves.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\staff.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\water.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\none.xnb

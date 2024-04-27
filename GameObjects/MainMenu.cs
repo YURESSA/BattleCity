@@ -5,11 +5,17 @@ namespace BattleCity;
 
 public class MainMenu : GameObject
 {
-    public static Texture2D MainMenuBackground { get; set; }
+    private static Texture2D MainMenuBackground { get; set; }
+    private static int CellSize;
 
-    public static void Draw(SpriteBatch spriteBatch)
+    public MainMenu(Texture2D sprite, int cellSize)
     {
-        spriteBatch.Draw(MainMenuBackground, Vector2.Zero, Color.White);
+        MainMenuBackground = sprite;
+        CellSize = cellSize;
+    }
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(MainMenuBackground, new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 1433) / 2, CellSize), Color.White);
     }
 
     public static void Update(GameTime gameTime)

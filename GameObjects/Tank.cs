@@ -8,18 +8,20 @@ namespace BattleCity;
 
 public class Tank : GameObject
 {
-    public static float Angle = (float)MathHelper.TwoPi;
-    private static float Speed { get; set; }
-    private static Vector2 Position { get; set; }
-    public static Texture2D TankImage { get; set; }
+    public float Angle = (float)MathHelper.TwoPi;
+    private float Speed { get; set; }
+    private Vector2 Position { get; set; }
+    private Texture2D TankImage { get; set; }
+    private int Size { get; set; }
     private Vector2 origin;
 
-    public Tank(float speed, Vector2 position, Texture2D sprite)
+    public Tank(float speed, Vector2 position, Texture2D sprite, int cellSize)
     {
         Speed = speed;
         Position = position;
         TankImage = sprite;
-        origin = new Vector2(32 / 2f, 32 / 2f);
+        origin = new Vector2(cellSize / 2f, cellSize / 2f);
+        Size = cellSize;
     }
 
     public void Update(GameTime gameTime)
@@ -55,7 +57,7 @@ public class Tank : GameObject
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        var sourceRect = new Rectangle(0, 0, 32, 32);
+        var sourceRect = new Rectangle(0, 0, Size, Size);
         spriteBatch.Draw(TankImage, Position, sourceRect, Color.White, Angle, origin, 1f, SpriteEffects.None, 0f);
     }
 }

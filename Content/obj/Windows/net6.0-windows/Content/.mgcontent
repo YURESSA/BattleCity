@@ -4,10 +4,22 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_armor.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_brick.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_bushes.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_emblem.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_none.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_water.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/mainMenu.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank1.png</File>
   </SourceFiles>
   <DestFiles>
+    <File>concrete</File>
+    <File>bricks</File>
+    <File>leaves</File>
+    <File>staff</File>
+    <File>none</File>
+    <File>water</File>
     <File>MainMenu</File>
     <File>tank1</File>
   </DestFiles>
