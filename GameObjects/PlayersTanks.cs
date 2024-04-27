@@ -5,5 +5,4 @@ namespace BattleCity;
 
 public class PlayersTanks
 {
-    
 }

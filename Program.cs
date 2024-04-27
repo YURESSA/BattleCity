@@ -1,3 +1,2 @@
-﻿
-using var game = new BattleCity.Game1();
+﻿using var game = new BattleCity.Game1();
 game.Run();

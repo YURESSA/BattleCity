@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BattleCity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,18 +7,22 @@ using Microsoft.Xna.Framework.Input;
 
 namespace BattleCity;
 
-enum StateOfGame
+internal enum StateOfGame
 {
     MainMenu,
     Game,
     Final,
     Pause
 }
+
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private StateOfGame state = StateOfGame.MainMenu;
+    private StateOfGame _state = StateOfGame.MainMenu;
+
+    private HashSet<Tank> tanksObjects;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -37,27 +42,28 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         MainMenu.MainMenuBackground = Content.Load<Texture2D>("MainMenu");
-        Tank.TankImage = Content.Load<Texture2D>("tank1");
-
+        tanksObjects = new HashSet<Tank>();
+        var tankImage = Content.Load<Texture2D>("tank1");
+        var playersTank = new Tank(0.1f, new Vector2(400, 300), tankImage);
+        tanksObjects.Add(playersTank);
     }
 
     protected override void Update(GameTime gameTime)
     {
-        switch (state)
+        switch (_state)
         {
             case StateOfGame.MainMenu:
                 MainMenu.Update(gameTime);
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-                    state = StateOfGame.Game;
+                    _state = StateOfGame.Game;
                 break;
-           case StateOfGame.Game:
-               Tank.Update(gameTime);
-               if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                   state = StateOfGame.MainMenu;
-               break;
+            case StateOfGame.Game:
+                foreach (var tanks in tanksObjects)
+                    tanks.Update(gameTime);
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    _state = StateOfGame.MainMenu;
+                break;
         }
-        
-       
 
         base.Update(gameTime);
     }
@@ -66,16 +72,17 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.Black);
         _spriteBatch.Begin();
-        switch (state)
+        switch (_state)
         {
             case StateOfGame.MainMenu:
                 MainMenu.Draw(_spriteBatch);
                 break;
             case StateOfGame.Game:
-                Tank.Draw(_spriteBatch);
+                foreach (var tank in tanksObjects)
+                    tank.Draw(_spriteBatch);
                 break;
         }
-        
+
         _spriteBatch.End();
 
         base.Draw(gameTime);

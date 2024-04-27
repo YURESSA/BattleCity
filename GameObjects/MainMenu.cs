@@ -11,5 +11,8 @@ public class MainMenu : GameObject
     {
         spriteBatch.Draw(MainMenuBackground, Vector2.Zero, Color.White);
     }
-    public static void Update(GameTime gameTime) { }      
+
+    public static void Update(GameTime gameTime)
+    {
+    }
 }
