@@ -25,7 +25,8 @@ public class Game1 : Game
     private MainMenu mainMenu;
     private HashSet<Tank> tanksObjects;
     public List<ScenicObject> scenicsObjects;
-
+    public HashSet<Shot> bulletObjects;
+    
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -48,8 +49,7 @@ public class Game1 : Game
         tanksObjects = new HashSet<Tank>();
         var tankImage = Content.Load<Texture2D>("tank1");
         var playersTank = new Tank(0.1f, new Vector2(96, 96), tankImage, CellSize, HasCollision);
-
-
+        Shot.SpriteOfBullet= Content.Load<Texture2D>("bullet");
         var images = new Dictionary<TypeOfObject, Texture2D>()
         {
             { TypeOfObject.None, Content.Load<Texture2D>("none") },
@@ -61,6 +61,7 @@ public class Game1 : Game
         };
         scenicsObjects = ReaderOfMap.Reader(images, CellSize);
         tanksObjects.Add(playersTank);
+        bulletObjects = playersTank.bulletObjects;
     }
 
     protected override void Update(GameTime gameTime)
@@ -76,6 +77,8 @@ public class Game1 : Game
             case StateOfGame.Game:
                 foreach (var tanks in tanksObjects)
                     tanks.Update(gameTime);
+                foreach (var bullet in bulletObjects)
+                    bullet.Update(gameTime);
                 if (Keyboard.GetState().IsKeyDown(Keys.P))
                     _state = StateOfGame.MainMenu;
                 break;
@@ -99,6 +102,8 @@ public class Game1 : Game
                     scenic.Draw(_spriteBatch);
                 foreach (var tank in tanksObjects)
                     tank.Draw(_spriteBatch);
+                foreach (var bulletObject in bulletObjects)
+                        bulletObject.Draw(_spriteBatch);
                 break;
         }
 

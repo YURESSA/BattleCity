@@ -43,3 +43,4 @@ C:\Users\goshr\OneDrive\Документы\Универ\Программиров
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\staff.xnb
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\water.xnb
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\none.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\bullet.xnb
