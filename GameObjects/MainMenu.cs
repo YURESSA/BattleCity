@@ -13,9 +13,11 @@ public class MainMenu : GameObject
         MainMenuBackground = sprite;
         CellSize = cellSize;
     }
+
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(MainMenuBackground, new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 1433) / 2, CellSize), Color.White);
+        spriteBatch.Draw(MainMenuBackground,
+            new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 1433) / 2, CellSize), Color.White);
     }
 
     public static void Update(GameTime gameTime)

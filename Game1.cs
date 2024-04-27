@@ -1,8 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Windows.Forms;
-using BattleCity;
-using Game1;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -27,7 +24,8 @@ public class Game1 : Game
 
     private MainMenu mainMenu;
     private HashSet<Tank> tanksObjects;
-    private List<ScenicObject> scenicsObjects;
+    public List<ScenicObject> scenicsObjects;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -49,7 +47,7 @@ public class Game1 : Game
         mainMenu = new MainMenu(Content.Load<Texture2D>("MainMenu"), CellSize);
         tanksObjects = new HashSet<Tank>();
         var tankImage = Content.Load<Texture2D>("tank1");
-        var playersTank = new Tank(0.1f, new Vector2(352, 866), tankImage, CellSize);
+        var playersTank = new Tank(0.1f, new Vector2(96, 96), tankImage, CellSize, HasCollision);
 
 
         var images = new Dictionary<TypeOfObject, Texture2D>()
@@ -72,7 +70,7 @@ public class Game1 : Game
             case StateOfGame.MainMenu:
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                     _state = StateOfGame.Game;
-                if(Keyboard.GetState().IsKeyDown(Keys.Escape))
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
                 break;
             case StateOfGame.Game:
@@ -88,7 +86,6 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        
         _spriteBatch.Begin();
         switch (_state)
         {
@@ -108,5 +105,13 @@ public class Game1 : Game
         _spriteBatch.End();
 
         base.Draw(gameTime);
+    }
+
+    public bool HasCollision(Tank obj)
+    {
+        foreach (var scene in scenicsObjects)
+            if (scene.Intersect(obj) && scene.Type != TypeOfObject.None)
+                return true;
+        return false;
     }
 }

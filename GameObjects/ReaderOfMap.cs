@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BattleCity;
 
-static class ReaderOfMap
+internal static class ReaderOfMap
 {
     private static readonly Dictionary<char, TypeOfObject> Codes = new()
     {
@@ -16,15 +16,19 @@ static class ReaderOfMap
         { '4', TypeOfObject.Water },
         { '9', TypeOfObject.Staff }
     };
-    static int CellSize = 64;
+
+    private static int CellSize = 64;
+
     public static List<ScenicObject> Reader(Dictionary<TypeOfObject, Texture2D> image, int cellSize)
     {
-        const int borderSize = 64;
+        var borderSize = cellSize;
         CellSize = cellSize;
-        using var sr = new StreamReader("C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\input.txt");
+        using var sr =
+            new StreamReader(
+                "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\input.txt");
         const int size = 13;
         var map = new List<ScenicObject>();
-     
+
         for (var i = 0; i < size; i++)
         {
             var mapLine = sr.ReadLine();
@@ -35,8 +39,9 @@ static class ReaderOfMap
                 var type = Codes[mapLine[j]];
                 var scene = new ScenicObject(new Vector2(x, y), type, image[type], CellSize);
                 map.Add(scene);
-            }  
+            }
         }
+
         return map;
     }
 }
