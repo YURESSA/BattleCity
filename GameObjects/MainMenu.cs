@@ -17,7 +17,7 @@ public class MainMenu : GameObject
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(MainMenuBackground,
-            new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 1433) / 2, CellSize), Color.White);
+            new Vector2(0, 0), Color.White);
     }
 
     public static void Update(GameTime gameTime)

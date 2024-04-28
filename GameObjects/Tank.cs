@@ -10,26 +10,16 @@ using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
 
 namespace BattleCity;
 
-public class Tank
+public class Tank:MovedObject
 {
     private TimeSpan elapsedTime;
     public float Angle = MathHelper.TwoPi;
-    private float Speed { get; set; }
-    public Vector2 Position { get; set; }
-    private Texture2D TankImage { get; set; }
-    public int Size { get; set; }
-    private Vector2 origin;
-    private Func<Tank, bool> HasCollision;
-    public int counterOfShot = 0;
+    private Func<MovedObject, bool> HasCollision;
+    private int counterOfShot = 0;
     public HashSet<Shot> bulletObjects;
     
-    public Tank(float speed, Vector2 position, Texture2D sprite, int cellSize, Func<Tank, bool> hasCollision)
+    public Tank(float speed, Vector2 position, Texture2D sprite, int cellSize, Func<MovedObject, bool> hasCollision) : base(position, cellSize, speed, sprite)
     {
-        Speed = speed;
-        Position = position;
-        TankImage = sprite;
-        origin = new Vector2(cellSize / 2f, cellSize / 2f);
-        Size = cellSize - 4;
         HasCollision = hasCollision;
         bulletObjects = new HashSet<Shot>();
     }
@@ -38,7 +28,6 @@ public class Tank
     {
         elapsedTime += gameTime.ElapsedGameTime;
 
-        //если нужное время на выстрел прошло то можно еще раз стрелять
         if (elapsedTime >= TimeSpan.FromMilliseconds(1000))
         {
             elapsedTime -= TimeSpan.FromMilliseconds(1000);
@@ -77,7 +66,7 @@ public class Tank
         }
         if (keyboardState.IsKeyDown(Keys.Space) && counterOfShot == 0)
         {
-            var shot = new Shot(Position, 0.5f, Size, Angle);
+            var shot = new Shot(Position + Origin, 0.5f, 14, Angle, HasCollision);
             bulletObjects.Add(shot);
             counterOfShot++;
         }
@@ -85,7 +74,7 @@ public class Tank
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        var sourceRect = new Rectangle(0, 0, Size, Size);
-        spriteBatch.Draw(TankImage, Position, sourceRect, Color.White, Angle, origin, 1f, SpriteEffects.None, 0f);
+        var sourceRect = new Rectangle(0, 0, Width, Height);
+        spriteBatch.Draw(Sprite, Position + Origin, sourceRect, Color.White, Angle, Origin, 1f, SpriteEffects.None, 0f);
     }
 }

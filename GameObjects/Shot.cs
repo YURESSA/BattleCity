@@ -5,58 +5,55 @@ using Microsoft.Xna.Framework.Input;
 
 namespace BattleCity;
 
-public class Shot
+public class Shot : MovedObject
 {
     public static Texture2D SpriteOfBullet { get; set; }
     private Vector2 origin;
-    private Vector2 Position;
-    private int CellSize;
-    private float Speed;
     public float Angle;
-    
-    public Shot(Vector2 position, float speed, int cellSize, float angle)
+    public bool ShotHasCollisions { get; set; }
+    public Func<MovedObject, bool> HasCollision;
+
+    public Shot(Vector2 position, float speed, int size, float angle, Func<MovedObject, bool> hasCollision) : base(
+        position, size, speed, SpriteOfBullet)
     {
-        Position = position + new Vector2(0, 1);
-        CellSize = cellSize;
+        Position = position;
         Angle = angle;
-        Speed = speed;
-        origin = new Vector2(32 / 2f, 40 / 2f);
+        origin = new Vector2(Sprite.Width / 2f, Sprite.Height / 2f);
+        ShotHasCollisions = false;
+        HasCollision = hasCollision;
     }
+
     public void Draw(SpriteBatch spriteBatch)
     {
-        var sourceRect = new Rectangle(0, 0, CellSize, CellSize);
-        spriteBatch.Draw(SpriteOfBullet, Position, sourceRect, Color.White,  Angle, origin, 1f, SpriteEffects.None, 0f);
+        var sourceRect = new Rectangle(0, 0, Width, Height);
+        spriteBatch.Draw(Sprite, Position, sourceRect, Color.White, Angle, Origin, 1f, SpriteEffects.None, 0f);
     }
-    
+
     public void Update(GameTime gameTime)
     {
-        Vector2 direction = new Vector2();      
+        var direction = new Vector2();
 
-        //если танк направлен ВЛЕВО
-        if (Angle == (float)MathHelper.PiOver2)
-            direction += new Vector2(Speed, 0);             
-        
+        switch (Angle)
+        {
+            case MathHelper.PiOver2:
+                direction += new Vector2(Speed, 0);
+                break;
+            case MathHelper.Pi:
+                direction += new Vector2(0, Speed);
+                break;
+            case -MathHelper.PiOver2:
+                direction += new Vector2(-Speed, 0);
+                break;
+            case MathHelper.TwoPi:
+                direction += new Vector2(0, -Speed);
+                break;
+        }
 
 
-        //если танк направлен ВВЕРХ
-        if (Angle == (float)MathHelper.Pi)
-            direction += new Vector2(0, Speed);
-        
-            
-
-        //если танк направлен ВПРАВО
-        if (Angle == -(float)MathHelper.PiOver2)
-            direction += new Vector2(-Speed, 0);
-        
-
-
-        //если танк направлен ВНИЗ
-        if (Angle == (float)MathHelper.TwoPi)
-            direction += new Vector2(0, -Speed);
-        
-            
-            
         if (direction.Length() > 0f)
+        {
             Position += direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-    }    
+            if (HasCollision(this)) ShotHasCollisions = true;
+        }
+    }
 }

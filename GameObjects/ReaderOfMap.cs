@@ -19,25 +19,25 @@ internal static class ReaderOfMap
 
     private static int CellSize = 64;
 
-    public static List<ScenicObject> Reader(Dictionary<TypeOfObject, Texture2D> image, int cellSize)
+    public static HashSet<ScenicObject> Reader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize)
     {
-        var borderSize = cellSize;
+        var borderSize = 64;
         CellSize = cellSize;
         using var sr =
             new StreamReader(
                 "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\input.txt");
         const int size = 13;
-        var map = new List<ScenicObject>();
+        var map = new HashSet<ScenicObject>();
 
         for (var i = 0; i < size; i++)
         {
             var mapLine = sr.ReadLine();
             for (var j = 0; j < size; j++)
             {
-                var x = j * CellSize + borderSize;
-                var y = i * CellSize + borderSize;
                 var type = Codes[mapLine[j]];
-                var scene = new ScenicObject(new Vector2(x, y), type, image[type], CellSize);
+                var x = j * sprite[type].Width + borderSize;
+                var y = i * sprite[type].Height + borderSize;
+                var scene = new ScenicObject(new Vector2(x, y), type, sprite[type], CellSize);
                 map.Add(scene);
             }
         }
