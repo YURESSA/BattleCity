@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace BattleCity;
 
@@ -16,18 +15,18 @@ internal enum StateOfGame
 
 public class Game1 : Game
 {
-    private GraphicsDeviceManager _graphics;
+    private const int CellSize = 64;
+    private HashSet<Shot> _bulletForDeleted;
+    private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private StateOfGame _state = StateOfGame.MainMenu;
-    private const int CellSize = 64;
+    public HashSet<Shot> BulletObjects;
 
     private MainMenu mainMenu;
-    private HashSet<Tank> TanksObjects;
+    public HashSet<ScenicObject> ScenicsForDeleted = new();
 
     public HashSet<ScenicObject> ScenicsObjects;
-    public HashSet<ScenicObject> ScenicsForDeleted = new();
-    public HashSet<Shot> BulletObjects;
-    private HashSet<Shot> _bulletForDeleted;
+    private HashSet<PlayersTank> TanksObjects;
 
     public Game1()
     {
@@ -48,18 +47,19 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         mainMenu = new MainMenu(Content.Load<Texture2D>("MainMenu"), CellSize);
-        TanksObjects = new HashSet<Tank>();
+        TanksObjects = new HashSet<PlayersTank>();
         var tankImage = Content.Load<Texture2D>("tank1");
-        var playersTank = new Tank(0.1f, new Vector2(326, 832), tankImage, CellSize, HasCollision);
+        var playersTank = new PlayersTank(0.1f, new Vector2(326, 832), tankImage, CellSize, HasCollision);
         Shot.SpriteOfBullet = Content.Load<Texture2D>("bullet");
-        var images = new Dictionary<TypeOfObject, Texture2D>()
+        var images = new Dictionary<TypeOfObject, Texture2D>
         {
             { TypeOfObject.None, Content.Load<Texture2D>("none") },
             { TypeOfObject.Bricks, Content.Load<Texture2D>("bricks") },
             { TypeOfObject.Concrete, Content.Load<Texture2D>("concrete") },
             { TypeOfObject.Leaves, Content.Load<Texture2D>("leaves") },
             { TypeOfObject.Water, Content.Load<Texture2D>("water") },
-            { TypeOfObject.Staff, Content.Load<Texture2D>("staff") }
+            { TypeOfObject.Staff, Content.Load<Texture2D>("staff") },
+            { TypeOfObject.Wall, Content.Load<Texture2D>("wall") }
         };
         ScenicsObjects = ReaderOfMap.Reader(images, CellSize);
         TanksObjects.Add(playersTank);
@@ -136,7 +136,7 @@ public class Game1 : Game
             if (scene.Intersect(obj) && scene.Type != TypeOfObject.None)
             {
                 if (scene.Type == TypeOfObject.Bricks && obj is Shot) ScenicsForDeleted.Add(scene);
-                    return true;
+                return true;
             }
 
         return false;

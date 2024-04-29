@@ -14,6 +14,7 @@ internal static class ReaderOfMap
         { '2', TypeOfObject.Concrete },
         { '3', TypeOfObject.Leaves },
         { '4', TypeOfObject.Water },
+        { '5', TypeOfObject.Wall },
         { '9', TypeOfObject.Staff }
     };
 
@@ -21,12 +22,11 @@ internal static class ReaderOfMap
 
     public static HashSet<ScenicObject> Reader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize)
     {
-        var borderSize = 64;
         CellSize = cellSize;
         using var sr =
             new StreamReader(
                 "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\input.txt");
-        const int size = 13;
+        const int size = 15;
         var map = new HashSet<ScenicObject>();
 
         for (var i = 0; i < size; i++)
@@ -35,8 +35,8 @@ internal static class ReaderOfMap
             for (var j = 0; j < size; j++)
             {
                 var type = Codes[mapLine[j]];
-                var x = j * sprite[type].Width + borderSize;
-                var y = i * sprite[type].Height + borderSize;
+                var x = j * sprite[type].Width;
+                var y = i * sprite[type].Height;
                 var scene = new ScenicObject(new Vector2(x, y), type, sprite[type], CellSize);
                 map.Add(scene);
             }

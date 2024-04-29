@@ -5,7 +5,6 @@ namespace BattleCity;
 
 public class MainMenu : GameObject
 {
-    private static Texture2D MainMenuBackground { get; set; }
     private static int CellSize;
 
     public MainMenu(Texture2D sprite, int cellSize)
@@ -13,6 +12,8 @@ public class MainMenu : GameObject
         MainMenuBackground = sprite;
         CellSize = cellSize;
     }
+
+    private static Texture2D MainMenuBackground { get; set; }
 
     public void Draw(SpriteBatch spriteBatch)
     {

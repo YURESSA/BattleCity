@@ -13,6 +13,7 @@
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/mainMenu.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/shot.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank1.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/wall.png</File>
   </SourceFiles>
   <DestFiles>
     <File>concrete</File>
@@ -24,5 +25,6 @@
     <File>MainMenu</File>
     <File>bullet</File>
     <File>tank1</File>
+    <File>wall</File>
   </DestFiles>
 </SourceFileCollection>
