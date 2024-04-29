@@ -25,8 +25,9 @@ public class Game1 : Game
     private MainMenu mainMenu;
     public HashSet<ScenicObject> ScenicsForDeleted = new();
 
-    public HashSet<ScenicObject> ScenicsObjects;
-    private HashSet<PlayersTank> TanksObjects;
+    public ScenicObject[,] ScenicsObjects;
+    private HashSet<PlayersTank> PlayersTanks;
+    private HashSet<EnemyTank> EnemyTanks;
 
     public Game1()
     {
@@ -47,9 +48,16 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         mainMenu = new MainMenu(Content.Load<Texture2D>("MainMenu"), CellSize);
-        TanksObjects = new HashSet<PlayersTank>();
+        PlayersTanks = new HashSet<PlayersTank>();
+        EnemyTanks = new HashSet<EnemyTank>();
         var tankImage = Content.Load<Texture2D>("tank1");
         var playersTank = new PlayersTank(0.1f, new Vector2(326, 832), tankImage, CellSize, HasCollision);
+        PlayersTanks.Add(playersTank);
+
+        var enemyTank = new EnemyTank(0.1f, new Vector2(64, 64), tankImage, CellSize, HasCollision);
+        EnemyTanks.Add(enemyTank);
+
+
         Shot.SpriteOfBullet = Content.Load<Texture2D>("bullet");
         var images = new Dictionary<TypeOfObject, Texture2D>
         {
@@ -62,7 +70,8 @@ public class Game1 : Game
             { TypeOfObject.Wall, Content.Load<Texture2D>("wall") }
         };
         ScenicsObjects = ReaderOfMap.Reader(images, CellSize);
-        TanksObjects.Add(playersTank);
+
+
         BulletObjects = playersTank.bulletObjects;
     }
 
@@ -77,8 +86,14 @@ public class Game1 : Game
                     Exit();
                 break;
             case StateOfGame.Game:
-                foreach (var tanks in TanksObjects)
+                var userCoordinates = new Vector2();
+                foreach (var tanks in PlayersTanks)
+                {
                     tanks.Update(gameTime);
+                    userCoordinates = tanks.GetCoordinate();
+                }
+
+                foreach (var tanks in EnemyTanks) tanks.Update(gameTime, ScenicsObjects, userCoordinates);
 
                 _bulletForDeleted = new HashSet<Shot>();
                 foreach (var bullet in BulletObjects)
@@ -89,11 +104,9 @@ public class Game1 : Game
                 }
 
                 foreach (var scenic in ScenicsForDeleted)
-                {
-                    ScenicsObjects.Remove(scenic);
-                    ScenicsObjects.Add(new ScenicObject(scenic.Position, TypeOfObject.None,
-                        Content.Load<Texture2D>("none"), CellSize));
-                }
+                    ScenicsObjects[(int)(scenic.Position.Y / scenic.Height), (int)(scenic.Position.X / scenic.Width)] =
+                        new ScenicObject(scenic.Position, TypeOfObject.None,
+                            Content.Load<Texture2D>("none"), CellSize);
 
                 BulletObjects.RemoveWhere(element => element.ShotHasCollisions);
 
@@ -118,7 +131,9 @@ public class Game1 : Game
                 GraphicsDevice.Clear(Color.Gray);
                 foreach (var scenic in ScenicsObjects)
                     scenic.Draw(_spriteBatch);
-                foreach (var tank in TanksObjects)
+                foreach (var tank in PlayersTanks)
+                    tank.Draw(_spriteBatch);
+                foreach (var tank in EnemyTanks)
                     tank.Draw(_spriteBatch);
                 foreach (var bulletObject in BulletObjects)
                     bulletObject.Draw(_spriteBatch);
