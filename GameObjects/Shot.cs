@@ -8,14 +8,16 @@ public class Shot : MovedObject
 {
     public float Angle;
     public Func<MovedObject, bool> HasCollision;
+    public Tank Parent; 
 
-    public Shot(Vector2 position, float speed, int size, float angle, Func<MovedObject, bool> hasCollision) : base(
-        position, size, speed, SpriteOfBullet)
+    public Shot(Vector2 position, float speed, int size, float angle, Func<MovedObject, bool> hasCollision, Tank parent) : base(
+        position, size, speed, SpriteOfBullet, parent)
     {
         Position = position - Origin;
         Angle = angle;
         ShotHasCollisions = false;
         HasCollision = hasCollision;
+        Parent = parent;
     }
 
     public static Texture2D SpriteOfBullet { get; set; }

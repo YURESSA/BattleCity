@@ -4,8 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BattleCity;
-
-internal enum State
+enum State
 {
     Empty,
     Wall,
@@ -23,37 +22,43 @@ public class Point
         return $"{X}_{Y}";
     }
 }
-
-public class EnemyTank : Tank
+public class EnemyTank:Tank
 {
-    private int c;
-
-    public EnemyTank(float speed, Vector2 position, Texture2D sprite, int cellSize,
-        Func<MovedObject, bool> hasCollision) : base(speed, position, sprite, cellSize, hasCollision)
+    public EnemyTank(float speed, Vector2 position, Texture2D sprite, int cellSize, Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects) : base(speed, position, sprite, cellSize, hasCollision, bulletObjects)
     {
+
     }
 
-    public void Update(GameTime gameTime, ScenicObject[,] map, Vector2 coordinate)
+    public void Update(GameTime gameTime ,ScenicObject[,] map, Vector2 coordinate)
     {
+        elapsedTime -= gameTime.ElapsedGameTime;
         var path = FindPath(map, coordinate);
         if (path.Count < 2) return;
         var firstPoint = path[path.Count - 1];
-        var secondPoint = path[path.Count - 2];
+        var secondPoint = path[path.Count-2];
         var difference = new Point() { X = firstPoint.X - secondPoint.X, Y = firstPoint.Y - secondPoint.Y };
-        Console.WriteLine($"{difference.X} {difference.Y}");
+        
         if (difference.X == 0 && difference.Y == -1)
             MoveBack();
-        if (difference.X == 0 && difference.Y == 1)
+        if(difference.X == 0 && difference.Y == 1)
             MoveFront();
-        if (difference.X == -1 && difference.Y == 0)
+        if(difference.X == -1 && difference.Y == 0)
             MoveRight();
-        if (difference.X == 1 && difference.Y == 0)
+        if(difference.X == 1 && difference.Y == 0)
             MoveLeft();
+        if (coordinate.X == firstPoint.X || coordinate.Y == firstPoint.Y)
+            HandleShooting(gameTime);
         if (Direction.Length() > 0f)
         {
             Position += Direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (HasCollision(this)) Position -= Direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
         }
+
+    }
+    private void HandleShooting(GameTime gameTime)
+    {
+        if (elapsedTime <= TimeSpan.Zero)
+            Shoot();
     }
 
     public List<Point> FindPath(ScenicObject[,] labyrinth, Vector2 resultCoordinate)
@@ -68,8 +73,8 @@ public class EnemyTank : Tank
                 map[x, y] = State.Empty;
             else
                 map[x, y] = State.Wall;
-        var startCoordinate = GetCoordinate();
-        var startPoint = new Point() { X = (int)startCoordinate.X, Y = (int)startCoordinate.Y };
+        var startCoordinate = this.GetCoordinate();
+        var startPoint = new Point(){X = (int)startCoordinate.X, Y = (int)startCoordinate.Y};
         pointDictionary.Add($"{startPoint.X}_{startPoint.Y}", startPoint);
         var queue = new Queue<Point>();
         queue.Enqueue(startPoint);
@@ -99,25 +104,26 @@ public class EnemyTank : Tank
                 }
             }
         }
-
-        var p = pointDictionary[$"{resultCoordinate.X}_{resultCoordinate.Y}"];
-        while (p != null)
+        if (pointDictionary.ContainsKey($"{resultCoordinate.X}_{resultCoordinate.Y}"))
         {
-            path.Add(p);
-            p = p.PreviousPoint;
+            var p = pointDictionary[$"{resultCoordinate.X}_{resultCoordinate.Y}"];
+            while (p != null)
+            {
+                path.Add(p);
+                p = p.PreviousPoint;
+            }
+            return path;
         }
 
         return path;
     }
-
+    
     public override Vector2 GetCoordinate()
     {
-        return Angle switch
-        {
-            MathHelper.Pi => new Vector2((int)Position.X / Size, (int)Position.Y / Size),
-            MathHelper.TwoPi => new Vector2((int)(Position.X + 52) / Size, (int)(Position.Y + 52) / Size),
-            -MathHelper.PiOver2 => new Vector2((int)(Position.X + 52) / Size, (int)(Position.Y + 52) / Size),
-            _ => new Vector2((int)Position.X / Size, (int)Position.Y / Size)
-        };
+        if (Angle == MathHelper.Pi)
+            return new Vector2((int)Position.X / Size, (int)(Position.Y) / Size);
+        if (Angle == MathHelper.TwoPi || Angle == -MathHelper.PiOver2)
+            return new Vector2((int)(Position.X + 52) / Size, (int)(Position.Y + 52) / Size);
+        return new Vector2((int)Position.X / Size, (int)(Position.Y) / Size);
     }
 }

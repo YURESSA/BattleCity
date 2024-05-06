@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,18 +17,20 @@ internal enum StateOfGame
 public class Game1 : Game
 {
     private const int CellSize = 64;
-    private HashSet<Shot> _bulletForDeleted;
+    private HashSet<MovedObject> _bulletForDeleted;
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private StateOfGame _state = StateOfGame.MainMenu;
-    public HashSet<Shot> BulletObjects;
+    public HashSet<Shot> BulletObjects = new();
 
     private MainMenu mainMenu;
     public HashSet<ScenicObject> ScenicsForDeleted = new();
-
     public ScenicObject[,] ScenicsObjects;
+    
     private HashSet<PlayersTank> PlayersTanks;
     private HashSet<EnemyTank> EnemyTanks;
+    public HashSet<EnemyTank> EnemyTanksForDeleted = new();
+    public HashSet<PlayersTank> PlayersTanksForDeleted = new();
 
     public Game1()
     {
@@ -51,13 +54,13 @@ public class Game1 : Game
         PlayersTanks = new HashSet<PlayersTank>();
         EnemyTanks = new HashSet<EnemyTank>();
         var tankImage = Content.Load<Texture2D>("tank1");
-        var playersTank = new PlayersTank(0.1f, new Vector2(326, 832), tankImage, CellSize, HasCollision);
+        var playersTank = new PlayersTank(0.1f, new Vector2(326, 832), tankImage, CellSize, HasCollision, BulletObjects);
         PlayersTanks.Add(playersTank);
-
-        var enemyTank = new EnemyTank(0.1f, new Vector2(64, 64), tankImage, CellSize, HasCollision);
+        
+        var enemyTank = new EnemyTank(0.1f, new Vector2(64, 64), tankImage, CellSize, HasCollision, BulletObjects);
         EnemyTanks.Add(enemyTank);
-
-
+        
+        
         Shot.SpriteOfBullet = Content.Load<Texture2D>("bullet");
         var images = new Dictionary<TypeOfObject, Texture2D>
         {
@@ -69,10 +72,7 @@ public class Game1 : Game
             { TypeOfObject.Staff, Content.Load<Texture2D>("staff") },
             { TypeOfObject.Wall, Content.Load<Texture2D>("wall") }
         };
-        ScenicsObjects = ReaderOfMap.Reader(images, CellSize);
-
-
-        BulletObjects = playersTank.bulletObjects;
+        ScenicsObjects = ReaderOfMap.Reader(images, CellSize, "input.txt");
     }
 
     protected override void Update(GameTime gameTime)
@@ -87,15 +87,19 @@ public class Game1 : Game
                 break;
             case StateOfGame.Game:
                 var userCoordinates = new Vector2();
+                
                 foreach (var tanks in PlayersTanks)
                 {
-                    tanks.Update(gameTime);
+                    tanks.Update(gameTime); 
                     userCoordinates = tanks.GetCoordinate();
                 }
-
-                foreach (var tanks in EnemyTanks) tanks.Update(gameTime, ScenicsObjects, userCoordinates);
-
-                _bulletForDeleted = new HashSet<Shot>();
+                
+                foreach (var tanks in EnemyTanks)
+                {
+                    tanks.Update(gameTime, ScenicsObjects, userCoordinates);
+                }
+                   
+                _bulletForDeleted = new HashSet<MovedObject>();
                 foreach (var bullet in BulletObjects)
                 {
                     bullet.Update(gameTime);
@@ -104,10 +108,25 @@ public class Game1 : Game
                 }
 
                 foreach (var scenic in ScenicsForDeleted)
+                {
+
                     ScenicsObjects[(int)(scenic.Position.Y / scenic.Height), (int)(scenic.Position.X / scenic.Width)] =
                         new ScenicObject(scenic.Position, TypeOfObject.None,
-                            Content.Load<Texture2D>("none"), CellSize);
+                        Content.Load<Texture2D>("none"), CellSize);
+                }
+                
+                
+                foreach (var tank in EnemyTanksForDeleted)
+                {
 
+                    EnemyTanks.Remove(tank);
+                }
+                foreach (var tank in PlayersTanksForDeleted)
+                {
+
+                    PlayersTanks.Remove(tank);
+                }
+                
                 BulletObjects.RemoveWhere(element => element.ShotHasCollisions);
 
                 if (Keyboard.GetState().IsKeyDown(Keys.P))
@@ -154,6 +173,32 @@ public class Game1 : Game
                 return true;
             }
 
+        foreach (var tank in PlayersTanks)
+        {
+            if (obj.Intersect(tank) && obj != tank && obj.Parent != tank)
+            {
+                PlayersTanksForDeleted.Add(tank);
+                return true;
+            }
+        }
+        
+        foreach (var tank in EnemyTanks)
+        {
+            if (obj.Intersect(tank) && obj != tank && obj.Parent != tank)
+            {
+                EnemyTanksForDeleted.Add(tank);
+                return true;
+            }
+        }
+        foreach (var bullet in BulletObjects)
+        {
+            if (obj.Intersect(bullet) && obj is Shot && obj != bullet)
+            {
+                BulletObjects.Remove(bullet);
+                return true;
+            }
+        }
+        
         return false;
     }
 }

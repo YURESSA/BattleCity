@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,11 +11,11 @@ public class PlayersTank : Tank
     private float Angle = MathHelper.TwoPi;
 
     public PlayersTank(float speed, Vector2 position, Texture2D sprite, int cellSize,
-        Func<MovedObject, bool> hasCollision) :
-        base(speed, position, sprite, cellSize, hasCollision)
+        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects) :
+        base(speed, position, sprite, cellSize, hasCollision, bulletObjects)
     {
     }
-
+    
 
     public void Update(GameTime gameTime)
     {
