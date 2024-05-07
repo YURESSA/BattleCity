@@ -16,15 +16,11 @@ public enum TypeOfObject
 
 public class ScenicObject : RectObjects
 {
-    public ScenicObject(Vector2 position, TypeOfObject type, Texture2D sprite, int size) : base(position, size, sprite)
+    public ScenicObject(Vector2 position, TypeOfObject type, Texture2D sprite, int size) :
+        base(position, sprite.Width, sprite.Height)
     {
         Type = type;
     }
 
     public TypeOfObject Type { get; set; }
-
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        spriteBatch.Draw(Sprite, Position, Color.White);
-    }
 }

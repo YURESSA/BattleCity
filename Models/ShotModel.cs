@@ -4,14 +4,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BattleCity;
 
-public class Shot : MovedObject
+public class ShotModel : MovedObject
 {
     public float Angle;
     public Func<MovedObject, bool> HasCollision;
-    public Tank Parent; 
+    public Tank Parent;
 
-    public Shot(Vector2 position, float speed, int size, float angle, Func<MovedObject, bool> hasCollision, Tank parent) : base(
-        position, size, speed, SpriteOfBullet, parent)
+    public ShotModel(Vector2 position, float speed, int size, float angle,
+        Func<MovedObject, bool> hasCollision, Tank parent, Texture2D SpriteOfBullet) : base(
+        position, speed, parent, SpriteOfBullet.Width, SpriteOfBullet.Height)
     {
         Position = position - Origin;
         Angle = angle;
@@ -23,12 +24,6 @@ public class Shot : MovedObject
     public static Texture2D SpriteOfBullet { get; set; }
     public bool ShotHasCollisions { get; set; }
 
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        var sourceRect = new Rectangle(0, 0, Width, Height);
-        spriteBatch.Draw(Sprite, Position + Origin, sourceRect, Color.White,
-            Angle, Origin, 1f, SpriteEffects.None, 0f);
-    }
 
     public void Update(GameTime gameTime)
     {

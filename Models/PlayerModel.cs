@@ -6,16 +6,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace BattleCity;
 
-public class PlayersTank : Tank
+public class PlayerModel : Tank
 {
-    private float Angle = MathHelper.TwoPi;
-
-    public PlayersTank(float speed, Vector2 position, Texture2D sprite, int cellSize,
+    public PlayerModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
         Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects) :
         base(speed, position, sprite, cellSize, hasCollision, bulletObjects)
     {
     }
-    
+
 
     public void Update(GameTime gameTime)
     {

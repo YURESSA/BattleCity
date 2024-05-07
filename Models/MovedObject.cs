@@ -1,11 +1,11 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace BattleCity;
 
 public class MovedObject : RectObjects
 {
-    public MovedObject(Vector2 position, int size, float speed, Texture2D sprite, Tank parent) : base(position, size, sprite)
+    public MovedObject(Vector2 position, float speed, Tank parent, int spriteWidth, int spriteHeight) : base(position,
+        spriteWidth, spriteHeight)
     {
         Speed = speed;
         Parent = parent;

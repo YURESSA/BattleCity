@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -20,18 +18,18 @@ internal static class ReaderOfMap
         { '5', TypeOfObject.Wall },
         { '9', TypeOfObject.Staff }
     };
-    
 
-    public static ScenicObject[,] Reader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, string fileName)
+
+    public static Scene[,] Reader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, string fileName)
     {
         var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
         var path = string.Concat(appDirectory.AsSpan(0, appDirectory.IndexOf("\\bin")), $"\\{fileName}");
 
         var file = new StreamReader(path).ReadToEnd();
-        var lines = file.Split("\r\n");   
+        var lines = file.Split("\r\n");
         var height = lines.Length;
         var width = lines[0].Length;
-        var map = new ScenicObject[height, width];
+        var map = new Scene[height, width];
         for (var i = 0; i < height; i++)
         {
             var mapLine = lines[i];
@@ -40,7 +38,7 @@ internal static class ReaderOfMap
                 var type = Codes[mapLine[j]];
                 var x = j * sprite[type].Width;
                 var y = i * sprite[type].Height;
-                var scene = new ScenicObject(new Vector2(x, y), type, sprite[type], cellSize);
+                var scene = new Scene(new Vector2(x, y), type, sprite[type], cellSize);
                 map[i, j] = scene;
             }
         }

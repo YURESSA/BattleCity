@@ -1,25 +1,20 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace BattleCity;
 
-public class RectObjects : GameObject
+public class RectObjects
 {
     public Vector2 Origin;
-    public Texture2D Sprite;
 
-    public RectObjects(Vector2 position, int size, Texture2D sprite)
+    public RectObjects(Vector2 position, int spriteWidth, int spriteHeight)
     {
         Position = position;
-        Size = size;
-        Sprite = sprite;
-        Width = sprite.Width;
-        Height = sprite.Height;
-        Origin = new Vector2(Sprite.Width / 2f, Sprite.Height / 2f);
+        Width = spriteWidth;
+        Height = spriteHeight;
+        Origin = new Vector2(Width / 2f, Height / 2f);
     }
 
     public Vector2 Position { get; set; }
-    public int Size { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
 
