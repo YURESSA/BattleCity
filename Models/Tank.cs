@@ -9,16 +9,20 @@ public class Tank : MovedObject
 {
     public float Angle = MathHelper.TwoPi;
 
-    public HashSet<Shot> bulletObjects;
+    private readonly HashSet<Shot> _bulletObjects;
     protected Vector2 Direction;
-    protected TimeSpan elapsedTime = TimeSpan.Zero;
-    protected Func<MovedObject, bool> HasCollision;
+    protected TimeSpan ElapsedTime = TimeSpan.Zero;
+    protected readonly Func<MovedObject, bool> HasCollision;
+    private int _hp;
+    private readonly Vector2 _startPosition;
 
     protected Tank(float speed, Vector2 position, Texture2D sprite, int cellSize, Func<MovedObject, bool> hasCollision,
-        HashSet<Shot> bulletObjects) :
-        base(position + new Vector2(2, 2), speed, null, sprite.Width, sprite.Height)
+        HashSet<Shot> bulletObjects, bool isAlive, int hp) :
+        base(position + new Vector2(2, 2), speed, null, sprite.Width, sprite.Height, isAlive)
     {
-        this.bulletObjects = bulletObjects;
+        _hp = hp;
+        _startPosition = position;
+        _bulletObjects = bulletObjects;
         HasCollision = hasCollision;
     }
 
@@ -34,13 +38,13 @@ public class Tank : MovedObject
         Direction = new Vector2(Speed, 0);
     }
 
-    protected void MoveFront()
+    protected void MoveUp()
     {
         Angle = MathHelper.TwoPi;
         Direction = new Vector2(0, -Speed);
     }
 
-    protected void MoveBack()
+    protected void MoveDown()
     {
         Angle = MathHelper.Pi;
         Direction = new Vector2(0, Speed);
@@ -48,9 +52,22 @@ public class Tank : MovedObject
 
     protected void Shoot()
     {
-        var shot = new Shot(Position + Origin, 0.5f, 14, Angle, HasCollision, this);
-        bulletObjects.Add(shot);
-        elapsedTime = TimeSpan.FromMilliseconds(1000);
+        var shot = new Shot(Position + Origin, 0.5f, 14, Angle, HasCollision, this, true);
+        _bulletObjects.Add(shot);
+        ElapsedTime = TimeSpan.FromMilliseconds(1000);
+    }
+
+    public void Kill()
+    {
+        if (_hp > 1)
+        {
+            _hp -= 1;
+            Position = _startPosition;
+        }
+        else
+        {
+            IsAlive = false;
+        }
     }
 
     public virtual Vector2 GetCoordinate()

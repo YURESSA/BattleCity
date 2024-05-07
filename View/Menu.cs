@@ -6,7 +6,7 @@ namespace BattleCity;
 public class Menu
 {
     private readonly Texture2D _texture;
-    public readonly ScenicObject SceneModel;
+    public readonly SceneObjectsModel SceneModel;
     
     public Menu(Texture2D sprite)
     {

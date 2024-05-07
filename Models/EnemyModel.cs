@@ -27,14 +27,14 @@ public class Point
 public class EnemyModel : Tank
 {
     public EnemyModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
-        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects) : base(speed, position, sprite, cellSize,
-        hasCollision, bulletObjects)
+        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp) : base(speed, position, sprite, cellSize,
+        hasCollision, bulletObjects, isAlive, hp)
     {
     }
 
     public void Update(GameTime gameTime, Scene[,] map, Vector2 coordinate)
     {
-        elapsedTime -= gameTime.ElapsedGameTime;
+        ElapsedTime -= gameTime.ElapsedGameTime;
         var path = FindPath(map, coordinate);
         if (path.Count < 2) return;
         MoveAlongPath(path, coordinate);
@@ -50,10 +50,10 @@ public class EnemyModel : Tank
         switch (difference.X)
         {
             case 0 when difference.Y == -1:
-                MoveBack();
+                MoveDown();
                 break;
             case 0 when difference.Y == 1:
-                MoveFront();
+                MoveUp();
                 break;
             case -1 when difference.Y == 0:
                 MoveRight();
@@ -68,7 +68,7 @@ public class EnemyModel : Tank
 
     private void HandleShooting()
     {
-        if (elapsedTime <= TimeSpan.Zero)
+        if (ElapsedTime <= TimeSpan.Zero)
             Shoot();
     }
 

@@ -5,13 +5,15 @@ namespace BattleCity;
 public class RectObjects
 {
     public Vector2 Origin;
+    public bool IsAlive;
 
-    public RectObjects(Vector2 position, int spriteWidth, int spriteHeight)
+    public RectObjects(Vector2 position, int spriteWidth, int spriteHeight, bool isAlive)
     {
         Position = position;
         Width = spriteWidth;
         Height = spriteHeight;
         Origin = new Vector2(Width / 2f, Height / 2f);
+        IsAlive = isAlive;
     }
 
     public Vector2 Position { get; set; }

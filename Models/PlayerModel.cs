@@ -9,20 +9,28 @@ namespace BattleCity;
 public class PlayerModel : Tank
 {
     public PlayerModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
-        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects) :
-        base(speed, position, sprite, cellSize, hasCollision, bulletObjects)
+        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp) :
+        base(speed, position, sprite, cellSize, hasCollision, bulletObjects, isAlive, hp)
     {
     }
 
+    private ControlButton ControlButton = new()
+    {
+        Up = Keys.W,
+        Down = Keys.S,
+        Left = Keys.A,
+        Right = Keys.D,
+        Shoot = Keys.Space
+    };
 
     public void Update(GameTime gameTime)
     {
-        elapsedTime -= gameTime.ElapsedGameTime;
+        ElapsedTime -= gameTime.ElapsedGameTime;
 
         Direction = new Vector2();
 
         HandleInput();
-        HandleShooting(gameTime);
+        HandleShooting();
 
         if (Direction.Length() > 0f)
         {
@@ -36,19 +44,19 @@ public class PlayerModel : Tank
         var keyboardState = Keyboard.GetState();
         Direction = Vector2.Zero;
 
-        if (keyboardState.IsKeyDown(Keys.A))
+        if (keyboardState.IsKeyDown(ControlButton.Left))
             MoveLeft();
-        if (keyboardState.IsKeyDown(Keys.D))
+        if (keyboardState.IsKeyDown(ControlButton.Right))
             MoveRight();
-        if (keyboardState.IsKeyDown(Keys.W))
-            MoveFront();
-        if (keyboardState.IsKeyDown(Keys.S))
-            MoveBack();
+        if (keyboardState.IsKeyDown(ControlButton.Up))
+            MoveUp();
+        if (keyboardState.IsKeyDown(ControlButton.Down))
+            MoveDown();
     }
 
-    private void HandleShooting(GameTime gameTime)
+    private void HandleShooting()
     {
-        if (elapsedTime <= TimeSpan.Zero &&
+        if (ElapsedTime <= TimeSpan.Zero &&
             Keyboard.GetState().IsKeyDown(Keys.Space))
             Shoot();
     }

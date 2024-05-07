@@ -8,9 +8,10 @@ public class Shot
 {
     public readonly ShotModel ShotModel;
 
-    public Shot(Vector2 position, float speed, int size, float angle, Func<MovedObject, bool> hasCollision, Tank parent)
+    public Shot(Vector2 position, float speed, int size, float angle, 
+        Func<MovedObject, bool> hasCollision, Tank parent, bool isAlive)
     {
-        ShotModel = new ShotModel(position, speed, size, angle, hasCollision, parent, _texture);
+        ShotModel = new ShotModel(position, speed, size, angle, hasCollision, parent, _texture, isAlive);
         ShotModel.SpriteOfBullet = _texture;
     }
 

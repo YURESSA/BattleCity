@@ -6,13 +6,15 @@ namespace BattleCity;
 
 public class Scene
 {
-    private readonly Texture2D _texture;
-    public readonly ScenicObject SceneModel;
+    private Texture2D _texture;
+    public readonly SceneObjectsModel SceneModel;
+    private readonly Texture2D _noneTexture;
 
-    public Scene(Vector2 position, TypeOfObject type, Texture2D sprite, int size)
+    public Scene(Vector2 position, TypeOfObject type, Texture2D sprite, Texture2D noneTexture, int size, bool isAlive)
     {
-        SceneModel = new ScenicObject(position, type, sprite, size);
+        SceneModel = new SceneObjectsModel(position, type, sprite.Width, sprite.Height, size, isAlive);
         _texture = sprite;
+        this._noneTexture = noneTexture;
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -20,12 +22,12 @@ public class Scene
         spriteBatch.Draw(_texture, SceneModel.Position, Color.White);
     }
 
-    public static void Update(GameTime gameTime, Scene[,] map, HashSet<Scene> scenicForDeleted, Texture2D noneTexture)
+    public void Update(GameTime gameTime)
     {
-        foreach (var scenic in scenicForDeleted)
-            map[(int)(scenic.SceneModel.Position.Y / scenic.SceneModel.Height),
-                    (int)(scenic.SceneModel.Position.X / scenic.SceneModel.Width)] =
-                new Scene(scenic.SceneModel.Position, TypeOfObject.None,
-                    noneTexture, 64);
+        if (SceneModel.IsAlive == false)
+        {
+            _texture = _noneTexture;
+        }
+        SceneModel.Update(gameTime);
     }
 }

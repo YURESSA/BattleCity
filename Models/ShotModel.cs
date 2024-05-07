@@ -11,8 +11,8 @@ public class ShotModel : MovedObject
     public Tank Parent;
 
     public ShotModel(Vector2 position, float speed, int size, float angle,
-        Func<MovedObject, bool> hasCollision, Tank parent, Texture2D SpriteOfBullet) : base(
-        position, speed, parent, SpriteOfBullet.Width, SpriteOfBullet.Height)
+        Func<MovedObject, bool> hasCollision, Tank parent, Texture2D SpriteOfBullet, bool isAlive) : base(
+        position, speed, parent, SpriteOfBullet.Width, SpriteOfBullet.Height, isAlive)
     {
         Position = position - Origin;
         Angle = angle;

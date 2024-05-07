@@ -38,7 +38,7 @@ internal static class ReaderOfMap
                 var type = Codes[mapLine[j]];
                 var x = j * sprite[type].Width;
                 var y = i * sprite[type].Height;
-                var scene = new Scene(new Vector2(x, y), type, sprite[type], cellSize);
+                var scene = new Scene(new Vector2(x, y), type, sprite[type], sprite[TypeOfObject.None], cellSize, true);
                 map[i, j] = scene;
             }
         }
