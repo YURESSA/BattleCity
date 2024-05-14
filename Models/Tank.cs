@@ -12,7 +12,7 @@ public class Tank : MovedObject
     protected readonly Func<MovedObject, bool> HasCollision;
     private int _hp;
     public float Angle = MathHelper.TwoPi;
-    protected Vector2 Direction;
+    public Vector2 Direction;
     protected TimeSpan ElapsedTime = TimeSpan.Zero;
 
     protected Tank(float speed, Vector2 position, Texture2D sprite, int cellSize, Func<MovedObject, bool> hasCollision,
@@ -25,25 +25,25 @@ public class Tank : MovedObject
         HasCollision = hasCollision;
     }
 
-    protected void MoveLeft()
+    public void MoveLeft()
     {
         Angle = -MathHelper.PiOver2;
         Direction = new Vector2(-Speed, 0);
     }
 
-    protected void MoveRight()
+    public void MoveRight()
     {
         Angle = +MathHelper.PiOver2;
         Direction = new Vector2(Speed, 0);
     }
 
-    protected void MoveUp()
+    public void MoveUp()
     {
         Angle = MathHelper.TwoPi;
         Direction = new Vector2(0, -Speed);
     }
 
-    protected void MoveDown()
+    public void MoveDown()
     {
         Angle = MathHelper.Pi;
         Direction = new Vector2(0, Speed);
@@ -79,7 +79,6 @@ public class Tank : MovedObject
         
         if (Math.Abs(centerX % 32) < 6 && Math.Abs(centerY % 32) < 6 && Position.X % cellSize < 8 && Position.Y % cellSize < 8)
         {
-            Console.WriteLine(((int)centerX / cellSize, (int)centerY / cellSize));
             return new Vector2((int)centerX / cellSize, (int)centerY / cellSize);
         }
         return Vector2.Zero;

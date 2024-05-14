@@ -1,72 +1,44 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
-namespace BattleCity;
-
-public class PlayerModel : Tank
+namespace BattleCity
 {
-    private readonly ControlButton ControlButton = new()
+    public class PlayerModel : Tank
     {
-        Up = Keys.W,
-        Down = Keys.S,
-        Left = Keys.A,
-        Right = Keys.D,
-        Shoot = Keys.Space
-    };
-
-    public PlayerModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
-        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp) :
-        base(speed, position, sprite, cellSize, hasCollision, bulletObjects, isAlive, hp)
-    {
-    }
-
-    public void Update(GameTime gameTime)
-    {
-        ElapsedTime -= gameTime.ElapsedGameTime;
-
-        Direction = new Vector2();
-
-        HandleInput();
-        HandleShooting();
-
-        if (Direction.Length() > 0f)
+        public PlayerModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
+            Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp) :
+            base(speed, position, sprite, cellSize, hasCollision, bulletObjects, isAlive, hp)
         {
-            Position += Direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (HasCollision(this)) Position -= Direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
         }
-    }
 
-    private void HandleInput()
-    {
-        var keyboardState = Keyboard.GetState();
-        Direction = Vector2.Zero;
+        public void Update(GameTime gameTime)
+        {
+            ElapsedTime -= gameTime.ElapsedGameTime;
+            
+            if (Direction.Length() > 0f)
+            {
+                Position += Direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (HasCollision(this)) Position -= Direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            }
+        }
 
-        if (keyboardState.IsKeyDown(ControlButton.Left))
-            MoveLeft();
-        if (keyboardState.IsKeyDown(ControlButton.Right))
-            MoveRight();
-        if (keyboardState.IsKeyDown(ControlButton.Up))
-            MoveUp();
-        if (keyboardState.IsKeyDown(ControlButton.Down))
-            MoveDown();
-    }
+        public override Vector2 GetCoordinate()
+        {
+            var cellSize = 64;
+            var x = (int)(Position.X / cellSize);
+            var y = (int)(Position.Y / cellSize);
 
-    private void HandleShooting()
-    {
-        if (ElapsedTime <= TimeSpan.Zero &&
-            Keyboard.GetState().IsKeyDown(Keys.Space))
-            Shoot();
-    }
+            return new Vector2(x, y);
+        }
 
-    public override Vector2 GetCoordinate()
-    {
-        var cellSize = 64;
-        var x = (int)(Position.X / cellSize);
-        var y = (int)(Position.Y / cellSize);
-
-        return new Vector2(x, y);
+        public void HandleShooting()
+        {
+            if (ElapsedTime <= TimeSpan.Zero &&
+                Keyboard.GetState().IsKeyDown(Keys.Space))
+                Shoot();
+        }
     }
 }

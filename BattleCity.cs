@@ -27,7 +27,7 @@ public class BattleCity : Game
     private HashSet<Enemy> _enemyTanks;
     private Defeat _gameDefeat;
     private Menu _mainMenu;
-    private HashSet<Player> _playersTanks;
+    private HashSet<PlayerModel> _playersTanks;
     private Scene[,] _sceneObjects;
     private SpriteBatch _spriteBatch;
     private StateOfGame _state = StateOfGame.MainMenu;
@@ -38,7 +38,8 @@ public class BattleCity : Game
 
     private Texture2D _playerImage;
     private Dictionary<TypeOfObject, Texture2D> _sceneDictionary;
-
+    private PlayerView PlayerView;
+    private PlayerController PlayerController;
     public BattleCity()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -59,7 +60,7 @@ public class BattleCity : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _mainMenu = new Menu(Content.Load<Texture2D>("MainMenu"));
         _gameDefeat = new Defeat(Content.Load<Texture2D>("gameOver"));
-        _playersTanks = new HashSet<Player>();
+        _playersTanks = new HashSet<PlayerModel>();
         _enemyTanks = new HashSet<Enemy>();
         Shot._texture = Content.Load<Texture2D>("bullet");
         _playerImage = Content.Load<Texture2D>("player");
@@ -81,8 +82,18 @@ public class BattleCity : Game
     private void LoadLevel(string fileName, int playersCount, int enemyCount)
     {
         _enemyInLevel = enemyCount;
-        var playersTank = new Player(0.1f, new Vector2(320, 832), _playerImage, CellSize,
+        var playersTank = new PlayerModel(0.1f, new Vector2(320, 832), _playerImage, CellSize,
             HasCollision, _bulletObjects, true, 2);
+        ControlButton controlButton = new ControlButton
+        {
+            Up = Keys.W,
+            Down = Keys.S,
+            Left = Keys.A,
+            Right = Keys.D,
+            Shoot = Keys.Space
+        };
+        PlayerController = new PlayerController(playersTank, controlButton);
+        PlayerView = new PlayerView(_playerImage);
         _playersTanks.Add(playersTank);
         _sceneObjects = ReaderOfMap.Reader(_sceneDictionary, CellSize, fileName);
     }
@@ -125,6 +136,7 @@ public class BattleCity : Game
                 _state = StateOfGame.Game;
                 break;
             case StateOfGame.Game:
+
                 UpdateObjects(gameTime);
                 RemoveNotAliveObjects();
 
@@ -136,6 +148,7 @@ public class BattleCity : Game
                 {
                     _enemyTanks.Clear();
                     _playersTanks.Clear();
+                    _bulletObjects.Clear();
                     _state = StateOfGame.MainMenu;
                 }
 
@@ -149,7 +162,7 @@ public class BattleCity : Game
     {
         _bulletObjects.RemoveWhere(element => element.ShotModel.ShotHasCollisions);
         _bulletObjects.RemoveWhere(element => element.ShotModel.IsAlive == false);
-        _playersTanks.RemoveWhere(element => element.PlayerModel.IsAlive == false);
+        _playersTanks.RemoveWhere(element => element.IsAlive == false);
         _enemyTanks.RemoveWhere(element => element._enemyModel.IsAlive == false);
         if (_playersTanks.Count == 0)
             _state = StateOfGame.DefeatLevel;
@@ -158,10 +171,10 @@ public class BattleCity : Game
     private void UpdateObjects(GameTime gameTime)
     {
         var userCoordinate = Vector2.One;
+        PlayerController.Update(gameTime);
         foreach (var tanks in _playersTanks)
         {
-            tanks.Update(gameTime);
-            userCoordinate = tanks.PlayerModel.GetCoordinate();
+            userCoordinate = tanks.GetCoordinate();
         }
 
         ReLoadTanks(3, gameTime);
@@ -194,7 +207,7 @@ public class BattleCity : Game
                 foreach (var scenic in _sceneObjects)
                     scenic.Draw(_spriteBatch);
                 foreach (var tank in _playersTanks)
-                    tank.Draw(_spriteBatch);
+                    PlayerView.Draw(_spriteBatch, tank);
                 foreach (var tank in _enemyTanks)
                     tank.Draw(_spriteBatch);
                 foreach (var bulletObject in _bulletObjects)
@@ -237,9 +250,9 @@ public class BattleCity : Game
 
         foreach (var playersTank in _playersTanks)
         {
-            if (!obj.Intersect(playersTank.PlayerModel) ||
-                obj == playersTank.PlayerModel || obj.Parent == playersTank.PlayerModel) continue;
-            playersTank.PlayerModel.Kill();
+            if (!obj.Intersect(playersTank) ||
+                obj == playersTank || obj.Parent == playersTank) continue;
+            playersTank.Kill();
             return true;
         }
 
