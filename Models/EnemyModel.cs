@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,111 +12,127 @@ public enum State
     Wall,
     Visited
 }
-
-public class Point
-{
-    public int X { get; init; }
-    public int Y { get; init; }
-    public Point PreviousPoint { get; init; }
-
-    public string GetKey()
-    {
-        return $"{X}_{Y}";
-    }
-}
-
 public class EnemyModel : Tank
 {
     public EnemyModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
-        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp) : base(speed, position, sprite, cellSize,
-        hasCollision, bulletObjects, isAlive, hp)
+        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp)
+        : base(speed, position, sprite, cellSize, hasCollision, bulletObjects, isAlive, hp)
     {
     }
 
     public void Update(GameTime gameTime, Scene[,] map, Vector2 coordinate)
     {
         ElapsedTime -= gameTime.ElapsedGameTime;
-        var path = FindPath(map, coordinate);
-        if (path.Count < 2) return;
-        MoveAlongPath(path, coordinate);
+        var path = FindPath(map, GetCoordinate(), coordinate);
+        MoveAlongPath(path);
+        TryShoot(coordinate, GetCoordinate());
         UpdatePosition(gameTime);
     }
 
-    private void MoveAlongPath(List<Point> path, Vector2 coordinate)
+    private void TryShoot(Vector2 enemy, Vector2 player)
     {
-        var firstPoint = path[^1];
-        var secondPoint = path[^2];
-        var difference = new Point { X = firstPoint.X - secondPoint.X, Y = firstPoint.Y - secondPoint.Y };
+        if (Math.Abs(enemy.X - player.X) < 0.0001 || Math.Abs(enemy.Y - player.Y) < 0.0001)
+            HandleShooting();
+    }
 
-        switch (difference.X)
+    private void UpdatePosition(GameTime gameTime)
+    {
+        if (Direction == Vector2.Zero) return;
+        var pathLength = Direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+        if (!HasCollision(this))
+            Position += pathLength;
+    }
+
+    private void MoveAlongPath(List<Point> path)
+    {
+        if (path.Count < 2) return;
+        var difference = new Point(path[0].X - path[1].X, path[0].Y - path[1].Y);
+        switch (difference)
         {
-            case 0 when difference.Y == -1:
-                MoveDown();
-                break;
-            case 0 when difference.Y == 1:
-                MoveUp();
-                break;
-            case -1 when difference.Y == 0:
-                MoveRight();
-                break;
-            case 1 when difference.Y == 0:
+            case { X: 1, Y: 0 }:
                 MoveLeft();
                 break;
+            case { X: -1, Y: 0 }:
+                MoveRight();
+                break;
+            case { X: 0, Y: 1 }:
+                MoveUp();
+                break;
+            case { X: 0, Y: -1 }:
+                MoveDown();
+                break;
         }
-        if (coordinate.X == firstPoint.X || coordinate.Y == firstPoint.Y)
-            HandleShooting();
+    }
+
+    private List<Point> FindPath(Scene[,] labyrinth, Vector2 startPosition, Vector2 targetPosition)
+    {
+        var start = new Point((int)startPosition.X, (int)startPosition.Y);
+        var target = new Point((int)targetPosition.X, (int)targetPosition.Y);
+
+        var map = CreateMap(labyrinth);
+
+        if (!IsPointValid(start, map) || !IsPointValid(target, map))
+            return new List<Point>();
+
+        var openSet = new Queue<Point>();
+        var closedSet = new HashSet<Point>();
+        var cameFrom = new Dictionary<Point, Point>();
+        openSet.Enqueue(start);
+
+        while (openSet.Any())
+        {
+            var current = openSet.Dequeue();
+
+            if (current == target)
+            {
+                var path = new List<Point> { current };
+                while (cameFrom.ContainsKey(current))
+                {
+                    current = cameFrom[current];
+                    path.Insert(0, current);
+                }
+                return path;
+            }
+
+            closedSet.Add(current);
+
+            foreach (var neighbor in GetNeighbors(current, map))
+            {
+                if (closedSet.Contains(neighbor)) continue;
+
+                if (!cameFrom.ContainsKey(neighbor))
+                {
+                    openSet.Enqueue(neighbor);
+                    cameFrom[neighbor] = current;
+                }
+            }
+        }
+
+        return new List<Point>();
+    }
+
+    private IEnumerable<Point> GetNeighbors(Point point, State[,] map)
+    {
+        var directions = new[] { new Point(0, -1), new Point(0, 1), new Point(-1, 0), new Point(1, 0) };
+        foreach (var dir in directions)
+        {
+            var next = new Point(point.X + dir.X, point.Y + dir.Y);
+            if (IsPointValid(next, map))
+                yield return next;
+        }
+    }
+
+    private bool IsPointValid(Point point, State[,] labyrinth)
+    {
+        return point.X >= 0 && point.X < labyrinth.GetLength(0) &&
+               point.Y >= 0 && point.Y < labyrinth.GetLength(1) &&
+               labyrinth[point.X, point.Y] == State.Empty;
     }
 
     private void HandleShooting()
     {
         if (ElapsedTime <= TimeSpan.Zero)
             Shoot();
-    }
-
-    private void UpdatePosition(GameTime gameTime)
-    {
-        if (!(Direction.Length() > 0f)) return;
-        Position += Direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-        if (HasCollision(this)) Position -= Direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-    }
-
-    private List<Point> FindPath(Scene[,] labyrinth, Vector2 resultCoordinate)
-    {
-        var path = new List<Point>();
-        var map = CreateMap(labyrinth);
-        var pointDictionary = new Dictionary<string, Point>();
-
-        var startCoordinate = GetCoordinate();
-        var startPoint = new Point { X = (int)startCoordinate.X, Y = (int)startCoordinate.Y };
-        pointDictionary.Add($"{startPoint.X}_{startPoint.Y}", startPoint);
-        var queue = new Queue<Point>();
-        queue.Enqueue(startPoint);
-
-        while (queue.Count != 0)
-        {
-            var point = queue.Dequeue();
-            if (!IsPointValid(map, point)) continue;
-
-            map[point.X, point.Y] = State.Visited;
-
-            foreach (var neighbor in GetNeighbors(map, point))
-            {
-                var key = neighbor.GetKey();
-                if (pointDictionary.ContainsKey(key)) continue;
-                pointDictionary.Add(key, neighbor);
-                queue.Enqueue(neighbor);
-            }
-        }
-
-        if (!pointDictionary.ContainsKey($"{resultCoordinate.X}_{resultCoordinate.Y}")) return path;
-        var p = pointDictionary[$"{resultCoordinate.X}_{resultCoordinate.Y}"];
-        while (p != null)
-        {
-            path.Add(p);
-            p = p.PreviousPoint;
-        }
-
-        return path;
     }
 
     private static State[,] CreateMap(Scene[,] labyrinth)
@@ -127,27 +144,5 @@ public class EnemyModel : Tank
             map[x, y] = labyrinth[y, x].SceneModel.Type == TypeOfObject.None ? State.Empty : State.Wall;
 
         return map;
-    }
-
-    private static bool IsPointValid(State[,] map, Point point)
-    {
-        return point.X >= 0 && point.X < map.GetLength(0) && point.Y >= 0 && point.Y < map.GetLength(1) &&
-               map[point.X, point.Y] == State.Empty;
-    }
-
-    private static IEnumerable<Point> GetNeighbors(State[,] map, Point point)
-    {
-        var directions = new[]
-        {
-            new Point { X = 0, Y = -1 }, new Point { X = 0, Y = 1 }, new Point { X = -1, Y = 0 },
-            new Point { X = 1, Y = 0 }
-        };
-        foreach (var dir in directions)
-        {
-            var nextX = point.X + dir.X;
-            var nextY = point.Y + dir.Y;
-            if (IsPointValid(map, new Point { X = nextX, Y = nextY }))
-                yield return new Point { X = nextX, Y = nextY, PreviousPoint = point };
-        }
     }
 }

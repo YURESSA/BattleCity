@@ -7,14 +7,13 @@ namespace BattleCity;
 
 public class Tank : MovedObject
 {
-    public float Angle = MathHelper.TwoPi;
-
     private readonly HashSet<Shot> _bulletObjects;
-    protected Vector2 Direction;
-    protected TimeSpan ElapsedTime = TimeSpan.Zero;
+    private readonly Vector2 _startPosition;
     protected readonly Func<MovedObject, bool> HasCollision;
     private int _hp;
-    private readonly Vector2 _startPosition;
+    public float Angle = MathHelper.TwoPi;
+    protected Vector2 Direction;
+    protected TimeSpan ElapsedTime = TimeSpan.Zero;
 
     protected Tank(float speed, Vector2 position, Texture2D sprite, int cellSize, Func<MovedObject, bool> hasCollision,
         HashSet<Shot> bulletObjects, bool isAlive, int hp) :
@@ -72,11 +71,17 @@ public class Tank : MovedObject
 
     public virtual Vector2 GetCoordinate()
     {
-        var Size = 64;
-        if (Angle == MathHelper.Pi)
-            return new Vector2((int)Position.X / Size, (int)Position.Y / Size);
-        if (Angle == MathHelper.TwoPi || Angle == -MathHelper.PiOver2)
-            return new Vector2((int)(Position.X + 52) / Size, (int)(Position.Y + 52) / Size);
-        return new Vector2((int)Position.X / Size, (int)Position.Y / Size);
+        var cellSize = 64;
+        var halfCellSize = Width / 2;
+
+        var centerX = Position.X + halfCellSize;
+        var centerY = Position.Y + halfCellSize;
+        
+        if (Math.Abs(centerX % 32) < 6 && Math.Abs(centerY % 32) < 6 && Position.X % cellSize < 8 && Position.Y % cellSize < 8)
+        {
+            Console.WriteLine(((int)centerX / cellSize, (int)centerY / cellSize));
+            return new Vector2((int)centerX / cellSize, (int)centerY / cellSize);
+        }
+        return Vector2.Zero;
     }
 }

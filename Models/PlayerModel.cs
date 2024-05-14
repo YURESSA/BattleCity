@@ -8,13 +8,7 @@ namespace BattleCity;
 
 public class PlayerModel : Tank
 {
-    public PlayerModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
-        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp) :
-        base(speed, position, sprite, cellSize, hasCollision, bulletObjects, isAlive, hp)
-    {
-    }
-
-    private ControlButton ControlButton = new()
+    private readonly ControlButton ControlButton = new()
     {
         Up = Keys.W,
         Down = Keys.S,
@@ -22,6 +16,12 @@ public class PlayerModel : Tank
         Right = Keys.D,
         Shoot = Keys.Space
     };
+
+    public PlayerModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
+        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp) :
+        base(speed, position, sprite, cellSize, hasCollision, bulletObjects, isAlive, hp)
+    {
+    }
 
     public void Update(GameTime gameTime)
     {
@@ -59,5 +59,14 @@ public class PlayerModel : Tank
         if (ElapsedTime <= TimeSpan.Zero &&
             Keyboard.GetState().IsKeyDown(Keys.Space))
             Shoot();
+    }
+
+    public override Vector2 GetCoordinate()
+    {
+        var cellSize = 64;
+        var x = (int)(Position.X / cellSize);
+        var y = (int)(Position.Y / cellSize);
+
+        return new Vector2(x, y);
     }
 }

@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace BattleCity;
 
@@ -16,7 +15,8 @@ public enum TypeOfObject
 
 public class SceneObjectsModel : RectObjects
 {
-    public SceneObjectsModel(Vector2 position, TypeOfObject type, int spriteWidth, int spriteHeight, int size, bool isAlive) :
+    public SceneObjectsModel(Vector2 position, TypeOfObject type, int spriteWidth, int spriteHeight, int size,
+        bool isAlive) :
         base(position, spriteWidth, spriteHeight, isAlive)
     {
         Type = type;

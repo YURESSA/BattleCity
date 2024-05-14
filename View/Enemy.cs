@@ -20,7 +20,10 @@ public class Enemy
     public void Draw(SpriteBatch spriteBatch)
     {
         var sourceRect = new Rectangle(0, 0, _enemyModel.Width, _enemyModel.Height);
-        spriteBatch.Draw(_texture, _enemyModel.Position + _enemyModel.Origin, sourceRect, Color.White,
+
+        var drawPosition = _enemyModel.Position + _enemyModel.Origin;
+
+        spriteBatch.Draw(_texture, drawPosition, sourceRect, Color.White,
             _enemyModel.Angle, _enemyModel.Origin, 1f, SpriteEffects.None, 0f);
     }
 

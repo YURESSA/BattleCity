@@ -4,8 +4,8 @@ namespace BattleCity;
 
 public class RectObjects
 {
-    public Vector2 Origin;
     public bool IsAlive;
+    public Vector2 Origin;
 
     public RectObjects(Vector2 position, int spriteWidth, int spriteHeight, bool isAlive)
     {
@@ -22,7 +22,9 @@ public class RectObjects
 
     public bool Intersect(MovedObject that)
     {
-        var a = new Rectangle((int)Position.X, (int)Position.Y, Height, Width);
+        var offset = 0;
+        var a = new Rectangle((int)Position.X - offset, (int)Position.Y - offset, Height + 2 * offset,
+            Width + 2 * offset);
         var b = new Rectangle((int)that.Position.X, (int)that.Position.Y, that.Width, that.Height);
         return a.Intersects(b);
     }
