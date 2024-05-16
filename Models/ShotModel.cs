@@ -52,4 +52,9 @@ public class ShotModel : MovedObject
             if (HasCollision(this)) ShotHasCollisions = true;
         }
     }
+
+    public override void Kill()
+    {
+        IsAlive = false;
+    }
 }

@@ -22,9 +22,7 @@ public class RectObjects
 
     public bool Intersect(MovedObject that)
     {
-        var offset = 0;
-        var a = new Rectangle((int)Position.X - offset, (int)Position.Y - offset, Height + 2 * offset,
-            Width + 2 * offset);
+        var a = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
         var b = new Rectangle((int)that.Position.X, (int)that.Position.Y, that.Width, that.Height);
         return a.Intersects(b);
     }

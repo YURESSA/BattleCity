@@ -12,6 +12,7 @@ public enum State
     Wall,
     Visited
 }
+
 public class EnemyModel : Tank
 {
     public EnemyModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
@@ -24,7 +25,7 @@ public class EnemyModel : Tank
     {
         ElapsedTime -= gameTime.ElapsedGameTime;
         var path = FindPath(map, GetCoordinate(), coordinate);
-        MoveAlongPath(path);
+        ConvertToPath(path);
         TryShoot(coordinate, GetCoordinate());
         UpdatePosition(gameTime);
     }
@@ -43,7 +44,7 @@ public class EnemyModel : Tank
             Position += pathLength;
     }
 
-    private void MoveAlongPath(List<Point> path)
+    private void ConvertToPath(List<Point> path)
     {
         if (path.Count < 2) return;
         var difference = new Point(path[0].X - path[1].X, path[0].Y - path[1].Y);
@@ -91,6 +92,7 @@ public class EnemyModel : Tank
                     current = cameFrom[current];
                     path.Insert(0, current);
                 }
+
                 return path;
             }
 
@@ -141,7 +143,11 @@ public class EnemyModel : Tank
 
         for (var x = 0; x < map.GetLength(0); x++)
         for (var y = 0; y < map.GetLength(1); y++)
-            map[x, y] = labyrinth[y, x].SceneModel.Type == TypeOfObject.None ? State.Empty : State.Wall;
+            if (labyrinth[y, x].SceneModel.Type == TypeOfObject.None ||
+                labyrinth[y, x].SceneModel.Type == TypeOfObject.Leaves)
+                map[x, y] = State.Empty;
+            else
+                map[x, y] = State.Wall;
 
         return map;
     }

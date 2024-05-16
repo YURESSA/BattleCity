@@ -56,7 +56,7 @@ public class Tank : MovedObject
         ElapsedTime = TimeSpan.FromMilliseconds(1000);
     }
 
-    public void Kill()
+    public override void Kill()
     {
         if (_hp > 1)
         {
@@ -76,11 +76,9 @@ public class Tank : MovedObject
 
         var centerX = Position.X + halfCellSize;
         var centerY = Position.Y + halfCellSize;
-        
-        if (Math.Abs(centerX % 32) < 6 && Math.Abs(centerY % 32) < 6 && Position.X % cellSize < 8 && Position.Y % cellSize < 8)
-        {
-            return new Vector2((int)centerX / cellSize, (int)centerY / cellSize);
-        }
+
+        if (Math.Abs(centerX % 32) < 6 && Math.Abs(centerY % 32) < 6 && Position.X % cellSize < 8 &&
+            Position.Y % cellSize < 8) return new Vector2((int)centerX / cellSize, (int)centerY / cellSize);
         return Vector2.Zero;
     }
 }

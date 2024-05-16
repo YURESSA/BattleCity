@@ -14,4 +14,8 @@ public class MovedObject : RectObjects
 
     public float Speed { get; set; }
     public Tank Parent { get; set; }
+
+    public virtual void Kill()
+    {
+    }
 }
