@@ -21,17 +21,30 @@ internal static class ReaderOfMap
     };
 
     private static List<Vector2> _coordinateForEnemy;
-    private static  List<Vector2> _coordinateForPlayers;
+    private static List<Vector2> _coordinateForPlayers;
     private static Vector2 coordinateOfStaff;
-    public static List<Vector2> GetEnemyCoordinate() => _coordinateForEnemy;
-    public static Vector2 GetCoordinateOfStaff() => coordinateOfStaff;
-    public static List<Vector2> GetPlayerCoordinate() => _coordinateForPlayers;
+
+    public static List<Vector2> GetEnemyCoordinate()
+    {
+        return _coordinateForEnemy;
+    }
+
+    public static Vector2 GetCoordinateOfStaff()
+    {
+        return coordinateOfStaff;
+    }
+
+    public static List<Vector2> GetPlayerCoordinate()
+    {
+        return _coordinateForPlayers;
+    }
+
     public static Scene[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, string fileName)
     {
-        _coordinateForEnemy = new();
-        _coordinateForPlayers = new();
+        _coordinateForEnemy = new List<Vector2>();
+        _coordinateForPlayers = new List<Vector2>();
         var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        var path = string.Concat(appDirectory.AsSpan(0, 
+        var path = string.Concat(appDirectory.AsSpan(0,
                 appDirectory.IndexOf("\\bin", StringComparison.Ordinal)), $"\\{fileName}");
         var file = new StreamReader(path).ReadToEnd();
         var lines = file.Split("\r\n");
@@ -47,14 +60,14 @@ internal static class ReaderOfMap
         return map;
     }
 
-    private static void ProcessMapLine(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, int width, string mapLine, int i, Scene[,] map)
+    private static void ProcessMapLine(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, int width,
+        string mapLine, int i, Scene[,] map)
     {
         for (var j = 0; j < width; j++)
-        {
             if (mapLine[j] != 'E' && mapLine[j] != 'P')
             {
                 var type = Codes[mapLine[j]];
-               
+
                 var x = j * sprite[type].Width;
                 var y = i * sprite[type].Height;
                 if (type == TypeOfObject.Staff)
@@ -81,6 +94,5 @@ internal static class ReaderOfMap
                         break;
                 }
             }
-        }
     }
 }

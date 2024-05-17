@@ -10,12 +10,12 @@ public class Tank : MovedObject
     private readonly HashSet<Shot> _bulletObjects;
     private readonly Vector2 _startPosition;
     protected readonly Func<MovedObject, bool> HasCollision;
-    private int _hp;
+    public int _hp;
     public float Angle = MathHelper.TwoPi;
     public Vector2 Direction;
-    protected  TimeSpan ElapsedTime = TimeSpan.Zero;
+    protected TimeSpan ElapsedTime = TimeSpan.Zero;
 
-    protected Tank(float speed, Vector2 position, Texture2D sprite, int cellSize, Func<MovedObject, bool> hasCollision,
+    protected Tank(float speed, Vector2 position, Texture2D sprite,  Func<MovedObject, bool> hasCollision,
         HashSet<Shot> bulletObjects, bool isAlive, int hp) :
         base(position + new Vector2(2, 2), speed, null, sprite.Width, sprite.Height, isAlive)
     {

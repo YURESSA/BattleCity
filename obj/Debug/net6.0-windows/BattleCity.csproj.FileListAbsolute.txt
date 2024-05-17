@@ -48,3 +48,9 @@ C:\Users\goshr\OneDrive\Документы\Универ\Программиров
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\gameOver.xnb
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\player.xnb
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\cursor.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\tank.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\flag.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\File.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\mytext1.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\hp1Tank.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\hp2Tank.xnb

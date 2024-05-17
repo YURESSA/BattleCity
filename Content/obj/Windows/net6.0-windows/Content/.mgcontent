@@ -11,9 +11,14 @@
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_none.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_water.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/cursor.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/File.spritefont</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/game_over.jpg</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/hp_1_tank.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/hp_2_tank.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/level_flag.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/mainMenu.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/shot.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank1.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/Ttank1.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/wall.png</File>
@@ -26,9 +31,14 @@
     <File>none</File>
     <File>water</File>
     <File>cursor</File>
+    <File>mytext1</File>
     <File>gameOver</File>
+    <File>hp1Tank</File>
+    <File>hp2Tank</File>
+    <File>flag</File>
     <File>MainMenu</File>
     <File>bullet</File>
+    <File>tank</File>
     <File>tank1</File>
     <File>player</File>
     <File>wall</File>

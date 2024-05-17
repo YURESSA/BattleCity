@@ -8,9 +8,10 @@ namespace BattleCity;
 
 public class PlayerModel : Tank
 {
-    public PlayerModel(float speed, Vector2 position, Texture2D sprite, int cellSize,
+    int cellSize = 64;
+    public PlayerModel(float speed, Vector2 position, Texture2D sprite,
         Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp) :
-        base(speed, position, sprite, cellSize, hasCollision, bulletObjects, isAlive, hp)
+        base(speed, position, sprite,hasCollision, bulletObjects, isAlive, hp)
     {
     }
 
@@ -27,7 +28,6 @@ public class PlayerModel : Tank
 
     public override Vector2 GetCoordinate()
     {
-        var cellSize = 64;
         var center = Position + Origin;
         var x = (int)(center.X / cellSize);
         var y = (int)(center.Y / cellSize);

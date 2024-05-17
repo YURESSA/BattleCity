@@ -53,7 +53,7 @@ public class UpdateGame
 
     private void LoadLevelState()
     {
-        _battleCity.LoadLevel(_battleCity.FileNameDictionary[_battleCity.NumberOfLevel], 3);
+        _battleCity.LoadLevel(_battleCity.FileNameDictionary[_battleCity.NumberOfLevel], 5);
         _battleCity.State = StateOfGame.Game;
     }
 
@@ -117,10 +117,7 @@ public class UpdateGame
     private void UpdateObjects(GameTime gameTime)
     {
         var userCoordinate = Vector2.One;
-        foreach (var playerController in _battleCity.PlayerControllers)
-        {
-            playerController.Update(gameTime);
-        }
+        foreach (var playerController in _battleCity.PlayerControllers) playerController.Update(gameTime);
 
         var listCoordinate = new List<Vector2>();
         foreach (var tanks in _battleCity.PlayersTanks) listCoordinate.Add(tanks.GetCoordinate());

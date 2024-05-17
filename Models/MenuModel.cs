@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace BattleCity;
+
 public class MenuModel
 {
     private readonly Vector2 _startPosition;
@@ -14,9 +15,9 @@ public class MenuModel
 
     public Dictionary<int, GameMode> GameModeStates = new()
     {
-        {0, GameMode.OnePlayer},
-        {1, GameMode.TwoPlayer},
-        {2, GameMode.Constructor}
+        { 0, GameMode.OnePlayer },
+        { 1, GameMode.TwoPlayer },
+        { 2, GameMode.Constructor }
     };
 
 

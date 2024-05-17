@@ -24,25 +24,21 @@ public class CollisionDetected
     private bool TanksCollision(MovedObject obj)
     {
         if (obj is not Tank tank) return false;
-        bool hasCollision = false;
+        var hasCollision = false;
 
         foreach (var enemyTank in _battleCity.EnemyTanks)
-        {
             if (tank != enemyTank.EnemyModel && tank.Intersect(enemyTank.EnemyModel))
             {
                 ResolveTankCollision(tank, enemyTank.EnemyModel);
                 hasCollision = true;
             }
-        }
 
         foreach (var playersTank in _battleCity.PlayersTanks)
-        {
             if (tank != playersTank && tank.Intersect(playersTank))
             {
                 ResolveTankCollision(tank, playersTank);
                 hasCollision = true;
             }
-        }
 
         return hasCollision;
     }
@@ -51,7 +47,7 @@ public class CollisionDetected
     {
         var deltaX = tank1.Position.X - tank2.Position.X;
         var deltaY = tank1.Position.Y - tank2.Position.Y;
-        var overlapX = tank1.Width / 2 + tank2.Width/ 2 - Math.Abs(deltaX);
+        var overlapX = tank1.Width / 2 + tank2.Width / 2 - Math.Abs(deltaX);
         var overlapY = tank1.Height / 2 + tank2.Height / 2 - Math.Abs(deltaY);
         if (overlapX < overlapY)
         {
@@ -72,14 +68,12 @@ public class CollisionDetected
     private bool CheckSceneObjectCollisions(MovedObject obj)
     {
         foreach (var scene in _battleCity.SceneObjects)
-        {
             if (scene.SceneModel.Intersect(obj) && scene.SceneModel.Type != TypeOfObject.None
                                                 && scene.SceneModel.Type != TypeOfObject.Leaves)
             {
                 HandleSceneCollision(scene.SceneModel, obj);
                 return true;
             }
-        }
 
         return false;
     }

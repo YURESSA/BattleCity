@@ -10,12 +10,14 @@ public enum StateOfGame
     Constructor,
     Pause
 }
+
 public enum GameMode
 {
     OnePlayer,
     TwoPlayer,
     Constructor
 }
+
 public enum State
 {
     Empty,

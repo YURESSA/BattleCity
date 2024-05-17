@@ -9,8 +9,8 @@ public class MenuController
     private readonly ControlButton _controlButton;
     private readonly MenuModel _menuModel;
     private KeyboardState _previousKeyboardState;
-    
-    
+
+
     public MenuController(MenuModel menuModel)
     {
         _menuModel = menuModel;
