@@ -28,16 +28,16 @@ public class PlayerModel : Tank
     public override Vector2 GetCoordinate()
     {
         var cellSize = 64;
-        var x = (int)(Position.X / cellSize);
-        var y = (int)(Position.Y / cellSize);
+        var center = Position + Origin;
+        var x = (int)(center.X / cellSize);
+        var y = (int)(center.Y / cellSize);
 
         return new Vector2(x, y);
     }
 
     public void HandleShooting()
     {
-        if (ElapsedTime <= TimeSpan.Zero &&
-            Keyboard.GetState().IsKeyDown(Keys.Space))
+        if (ElapsedTime <= TimeSpan.Zero)
             Shoot();
     }
 }

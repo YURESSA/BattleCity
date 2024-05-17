@@ -17,7 +17,8 @@ public class BattleCity : Game
     public HashSet<Enemy> EnemyTanks;
     public Dictionary<int, string> FileNameDictionary;
     public Defeat GameDefeat;
-    public Menu MainMenu;
+    public MenuModel MainMenu;
+    public Menu Menu;
     private Texture2D _playerImage;
     public HashSet<PlayerModel> PlayersTanks;
     private Dictionary<TypeOfObject, Texture2D> _sceneDictionary;
@@ -25,13 +26,15 @@ public class BattleCity : Game
     public SpriteBatch SpriteBatch;
     public StateOfGame State = StateOfGame.MainMenu;
     public int NumberOfLevel;
-    public PlayerController PlayerController;
-    public PlayerView PlayerView;
+    public List<PlayerController> PlayerControllers ;
+    public List<PlayerView> PlayerViews;
     private readonly CollisionDetected _collisionDetected;
     private readonly UpdateGame _updateGame;
     private readonly DrawGame _drawGame;
     private List<Vector2> _coordinateForEnemy;
     private List<Vector2> _coordinateForPlayer;
+    public MenuController MainMenuController;
+    public Vector2 _coordinateOfStaff;
 
     public BattleCity()
     {
@@ -54,14 +57,15 @@ public class BattleCity : Game
     protected override void LoadContent()
     {
         SpriteBatch = new SpriteBatch(GraphicsDevice);
-        MainMenu = new Menu(Content.Load<Texture2D>("MainMenu"));
+        MainMenu = new MenuModel(new Vector2(270, 495), this);
+        MainMenuController = new MenuController(MainMenu);
         GameDefeat = new Defeat(Content.Load<Texture2D>("gameOver"));
         PlayersTanks = new HashSet<PlayerModel>();
         EnemyTanks = new HashSet<Enemy>();
         Shot._texture = Content.Load<Texture2D>("bullet");
         _playerImage = Content.Load<Texture2D>("player");
         _enemyImage = Content.Load<Texture2D>("tank1");
-
+        Menu = new Menu(Content.Load<Texture2D>("MainMenu"), Content.Load<Texture2D>("cursor"));
 
         _sceneDictionary = new Dictionary<TypeOfObject, Texture2D>
         {
@@ -82,26 +86,44 @@ public class BattleCity : Game
         };
     }
 
-    public void LoadLevel(string fileName, int playersCount, int enemyCount)
+
+
+    public void LoadLevel(string fileName, int enemyCount)
     {
+        PlayerViews = new();
+        PlayerControllers = new();
         EnemyInLevel = enemyCount;
         SceneObjects = ReaderOfMap.MapReader(_sceneDictionary, CellSize, fileName);
         _coordinateForPlayer = ReaderOfMap.GetPlayerCoordinate();
-        var playersTank = new PlayerModel(0.1f, _coordinateForPlayer[0], _playerImage, CellSize,
-            _collisionDetected.HasCollision, BulletObjects, true, 2);
+        _coordinateOfStaff = ReaderOfMap.GetCoordinateOfStaff();
+        if (MainMenu.GameModeState == GameMode.OnePlayer || MainMenu.GameModeState == GameMode.TwoPlayer)
+            SetupPlayer(Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space, _coordinateForPlayer[0]);
+        
+        if (MainMenu.GameModeState == GameMode.TwoPlayer)
+            SetupPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.L, _coordinateForPlayer[1]);
+        if (MainMenu.GameModeState == GameMode.Constructor)
+                State = StateOfGame.Constructor;
+    }
+
+    private void SetupPlayer(Keys up, Keys down, Keys left, Keys right, Keys shoot, Vector2 playerPosition)
+    {
         var controlButton = new ControlButton
         {
-            Up = Keys.W,
-            Down = Keys.S,
-            Left = Keys.A,
-            Right = Keys.D,
-            Shoot = Keys.Space
+            Up = up,
+            Down = down,
+            Left = left,
+            Right = right,
+            Shoot = shoot
         };
-        PlayerController = new PlayerController(playersTank, controlButton);
-        PlayerView = new PlayerView(_playerImage);
-        PlayersTanks.Add(playersTank);
-       
+
+        var playerTank = new PlayerModel(0.1f, playerPosition, _playerImage, CellSize,
+            _collisionDetected.HasCollision, BulletObjects, true, 2);
+
+        PlayerControllers.Add(new PlayerController(playerTank, controlButton));
+        PlayerViews.Add(new PlayerView(_playerImage));
+        PlayersTanks.Add(playerTank);
     }
+
 
     public void ReLoadTanks(int enemyInWave, GameTime gameTime)
     {
@@ -132,7 +154,7 @@ public class BattleCity : Game
     protected override void Draw(GameTime gameTime)
     {
         SpriteBatch.Begin();
-        _drawGame.Drawing();
+        _drawGame.Drawing(MainMenu);
         SpriteBatch.End();
 
         base.Draw(gameTime);

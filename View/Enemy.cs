@@ -28,8 +28,9 @@ public class Enemy
     }
 
 
-    public void Update(GameTime gameTime, Scene[,] map, Vector2 userCoordinates)
+    public void Update(GameTime gameTime, Scene[,] map, List<Vector2> userCoordinates,
+        Vector2 CoordinateOfStaff)
     {
-        EnemyModel.Update(gameTime, map, userCoordinates);
+        EnemyModel.Update(gameTime, map, userCoordinates, CoordinateOfStaff);
     }
 }

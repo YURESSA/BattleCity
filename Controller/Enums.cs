@@ -4,13 +4,21 @@ public enum StateOfGame
 {
     MainMenu,
     Game,
-    Level1,
-    Level2,
-    Level3,
     WinLevel,
     DefeatLevel,
-    Constructor,
     LoadLevel,
-    Final,
+    Constructor,
     Pause
+}
+public enum GameMode
+{
+    OnePlayer,
+    TwoPlayer,
+    Constructor
+}
+public enum State
+{
+    Empty,
+    Wall,
+    Visited
 }

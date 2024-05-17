@@ -22,15 +22,17 @@ internal static class ReaderOfMap
 
     private static List<Vector2> _coordinateForEnemy;
     private static  List<Vector2> _coordinateForPlayers;
-
+    private static Vector2 coordinateOfStaff;
     public static List<Vector2> GetEnemyCoordinate() => _coordinateForEnemy;
+    public static Vector2 GetCoordinateOfStaff() => coordinateOfStaff;
     public static List<Vector2> GetPlayerCoordinate() => _coordinateForPlayers;
     public static Scene[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, string fileName)
     {
         _coordinateForEnemy = new();
         _coordinateForPlayers = new();
         var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        var path = string.Concat(appDirectory.AsSpan(0, appDirectory.IndexOf("\\bin", StringComparison.Ordinal)), $"\\{fileName}");
+        var path = string.Concat(appDirectory.AsSpan(0, 
+                appDirectory.IndexOf("\\bin", StringComparison.Ordinal)), $"\\{fileName}");
         var file = new StreamReader(path).ReadToEnd();
         var lines = file.Split("\r\n");
         var height = lines.Length;
@@ -52,8 +54,11 @@ internal static class ReaderOfMap
             if (mapLine[j] != 'E' && mapLine[j] != 'P')
             {
                 var type = Codes[mapLine[j]];
+               
                 var x = j * sprite[type].Width;
                 var y = i * sprite[type].Height;
+                if (type == TypeOfObject.Staff)
+                    coordinateOfStaff = new Vector2(x, y);
                 var scene = new Scene(new Vector2(x, y), type, sprite[type],
                     sprite[TypeOfObject.None], cellSize, true);
                 map[i, j] = scene;

@@ -13,7 +13,7 @@ public class Tank : MovedObject
     private int _hp;
     public float Angle = MathHelper.TwoPi;
     public Vector2 Direction;
-    protected TimeSpan ElapsedTime = TimeSpan.Zero;
+    protected  TimeSpan ElapsedTime = TimeSpan.Zero;
 
     protected Tank(float speed, Vector2 position, Texture2D sprite, int cellSize, Func<MovedObject, bool> hasCollision,
         HashSet<Shot> bulletObjects, bool isAlive, int hp) :

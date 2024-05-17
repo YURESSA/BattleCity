@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -18,7 +19,7 @@ public class UpdateGame
         switch (_battleCity.State)
         {
             case StateOfGame.MainMenu:
-                UpdateMainMenu(keyboardState);
+                UpdateMainMenu(gameTime, keyboardState);
                 break;
             case StateOfGame.Pause:
                 UpdatePauseState(keyboardState);
@@ -38,13 +39,9 @@ public class UpdateGame
         }
     }
 
-    private void UpdateMainMenu(KeyboardState keyboardState)
+    private void UpdateMainMenu(GameTime gameTime, KeyboardState keyboardState)
     {
-        if (keyboardState.IsKeyDown(Keys.Enter))
-        {
-            _battleCity.NumberOfLevel = 1;
-            _battleCity.State = StateOfGame.LoadLevel;
-        }
+        _battleCity.MainMenuController.Update(gameTime);
 
         if (keyboardState.IsKeyDown(Keys.Escape)) _battleCity.Exit();
     }
@@ -56,7 +53,7 @@ public class UpdateGame
 
     private void LoadLevelState()
     {
-        _battleCity.LoadLevel(_battleCity.FileNameDictionary[_battleCity.NumberOfLevel], 1, 3);
+        _battleCity.LoadLevel(_battleCity.FileNameDictionary[_battleCity.NumberOfLevel], 3);
         _battleCity.State = StateOfGame.Game;
     }
 
@@ -120,12 +117,17 @@ public class UpdateGame
     private void UpdateObjects(GameTime gameTime)
     {
         var userCoordinate = Vector2.One;
-        _battleCity.PlayerController.Update(gameTime);
-        foreach (var tanks in _battleCity.PlayersTanks) userCoordinate = tanks.GetCoordinate();
+        foreach (var playerController in _battleCity.PlayerControllers)
+        {
+            playerController.Update(gameTime);
+        }
+
+        var listCoordinate = new List<Vector2>();
+        foreach (var tanks in _battleCity.PlayersTanks) listCoordinate.Add(tanks.GetCoordinate());
 
         _battleCity.ReLoadTanks(3, gameTime);
         foreach (var enemyTank in _battleCity.EnemyTanks)
-            enemyTank.Update(gameTime, _battleCity.SceneObjects, userCoordinate);
+            enemyTank.Update(gameTime, _battleCity.SceneObjects, listCoordinate, _battleCity._coordinateOfStaff);
 
         foreach (var bullet in _battleCity.BulletObjects)
             bullet.Update(gameTime);

@@ -11,12 +11,12 @@ public class DrawGame
         _battleCity = battleCity;
     }
 
-    public void Drawing()
+    public void Drawing(MenuModel menuModel)
     {
         switch (_battleCity.State)
         {
             case StateOfGame.MainMenu:
-                DrawMainMenu();
+                DrawMainMenu(menuModel);
                 break;
 
             case StateOfGame.Pause:
@@ -32,25 +32,27 @@ public class DrawGame
         }
     }
 
-    private void DrawMainMenu()
+    private void DrawMainMenu(MenuModel menuModel)
     {
         _battleCity.GraphicsDevice.Clear(Color.Black);
-        _battleCity.MainMenu.Draw(_battleCity.SpriteBatch);
+        _battleCity.Menu.Draw(_battleCity.SpriteBatch, menuModel);
     }
 
     private void Drawn()
     {
         _battleCity.GraphicsDevice.Clear(Color.Black);
 
-        foreach (var tank in _battleCity.PlayersTanks) _battleCity.PlayerView.Draw(_battleCity.SpriteBatch, tank);
-
+        foreach (var tank in _battleCity.PlayersTanks)
+        {
+            PlayerView.Draw(_battleCity.SpriteBatch, tank);
+        }
+           
+        DrawSceneObjects(TypeOfObject.Water);
         foreach (var tank in _battleCity.EnemyTanks)
             tank.Draw(_battleCity.SpriteBatch);
-
+       
         foreach (var bulletObject in _battleCity.BulletObjects)
             bulletObject.Draw(_battleCity.SpriteBatch);
-
-        DrawSceneObjects(TypeOfObject.Water);
         DrawSceneObjectsExcept(TypeOfObject.Water);
     }
 
