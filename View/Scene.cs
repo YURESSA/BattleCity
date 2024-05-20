@@ -26,4 +26,10 @@ public class Scene
         if (SceneModel.IsAlive == false) _texture = _noneTexture;
         SceneModel.Update(gameTime);
     }
+
+    public object Clone()
+    {
+        return new Scene(SceneModel.Position, SceneModel.Type, _texture, _noneTexture,
+            SceneModel.Height, SceneModel.IsAlive);
+    }
 }

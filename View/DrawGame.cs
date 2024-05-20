@@ -39,7 +39,16 @@ public class DrawGame
             case StateOfGame.DefeatLevel:
                 DrawDefeatLevel();
                 break;
+            case StateOfGame.Constructor:
+                DrawConstructor(_battleCity.SpriteBatch);
+                break;
         }
+    }
+
+    private void DrawConstructor(SpriteBatch spriteBatch)
+    {
+        var constructor = new ConstructorView(_battleCity);
+        constructor.Draw(spriteBatch);
     }
 
     private void DrawMainMenu(MenuModel menuModel)

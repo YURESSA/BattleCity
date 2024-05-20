@@ -2,17 +2,6 @@ using Microsoft.Xna.Framework;
 
 namespace BattleCity;
 
-public enum TypeOfObject
-{
-    None,
-    Bricks,
-    Concrete,
-    Leaves,
-    Water,
-    Staff,
-    Wall
-}
-
 public class SceneObjectsModel : RectObjects
 {
     public SceneObjectsModel(Vector2 position, TypeOfObject type, int spriteWidth, int spriteHeight, int size,

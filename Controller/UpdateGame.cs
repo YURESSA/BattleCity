@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -6,11 +7,13 @@ namespace BattleCity;
 
 public class UpdateGame
 {
-    private readonly BattleCity _battleCity;
+    public readonly BattleCity _battleCity;
+    private readonly ConstructorController _constructorController;
 
     public UpdateGame(BattleCity battleCity)
     {
         _battleCity = battleCity;
+        _constructorController = new ConstructorController(this, battleCity);
     }
 
     public void Updating(GameTime gameTime)
@@ -36,8 +39,12 @@ public class UpdateGame
             case StateOfGame.WinLevel:
                 UpdateWinLevelState();
                 break;
+            case StateOfGame.Constructor:
+                _constructorController.UpdateConstructor(keyboardState);
+                break;
         }
     }
+
 
     private void UpdateMainMenu(GameTime gameTime, KeyboardState keyboardState)
     {
@@ -54,7 +61,6 @@ public class UpdateGame
     private void LoadLevelState()
     {
         _battleCity.LoadLevel(_battleCity.FileNameDictionary[_battleCity.NumberOfLevel], 5);
-        _battleCity.State = StateOfGame.Game;
     }
 
     private void UpdateGameState(GameTime gameTime, KeyboardState keyboardState)
@@ -67,6 +73,7 @@ public class UpdateGame
         {
             Restart();
             _battleCity.State = StateOfGame.MainMenu;
+            _battleCity.construtor.LoadStartMap();
         }
     }
 
@@ -76,6 +83,7 @@ public class UpdateGame
         {
             Restart();
             _battleCity.State = StateOfGame.MainMenu;
+            _battleCity.construtor.LoadStartMap();
         }
     }
 
@@ -108,7 +116,7 @@ public class UpdateGame
         _battleCity.BulletObjects.RemoveWhere(element => element.ShotModel.IsAlive == false);
         _battleCity.PlayersTanks.RemoveWhere(element => element.IsAlive == false);
         _battleCity.EnemyTanks.RemoveWhere(element => element.EnemyModel.IsAlive == false);
-        if (_battleCity.PlayersTanks.Count == 0)
+        if (_battleCity.PlayersTanks.Count == 0 && _battleCity.State != StateOfGame.Constructor)
             _battleCity.State = StateOfGame.DefeatLevel;
         if (_battleCity.EnemyTanks.Count == 0 && _battleCity.EnemyInLevel == 0)
             _battleCity.State = StateOfGame.WinLevel;
@@ -116,7 +124,6 @@ public class UpdateGame
 
     private void UpdateObjects(GameTime gameTime)
     {
-        var userCoordinate = Vector2.One;
         foreach (var playerController in _battleCity.PlayerControllers) playerController.Update(gameTime);
 
         var listCoordinate = new List<Vector2>();
@@ -124,7 +131,7 @@ public class UpdateGame
 
         _battleCity.ReLoadTanks(3, gameTime);
         foreach (var enemyTank in _battleCity.EnemyTanks)
-            enemyTank.Update(gameTime, _battleCity.SceneObjects, listCoordinate, _battleCity._coordinateOfStaff);
+            enemyTank.Update(gameTime, _battleCity.SceneObjects, listCoordinate, _battleCity.CoordinateOfStaff);
 
         foreach (var bullet in _battleCity.BulletObjects)
             bullet.Update(gameTime);

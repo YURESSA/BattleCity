@@ -8,10 +8,11 @@ namespace BattleCity;
 
 public class PlayerModel : Tank
 {
-    int cellSize = 64;
+    private int cellSize = 64;
+
     public PlayerModel(float speed, Vector2 position, Texture2D sprite,
         Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp) :
-        base(speed, position, sprite,hasCollision, bulletObjects, isAlive, hp)
+        base(speed, position, sprite, hasCollision, bulletObjects, isAlive, hp)
     {
     }
 

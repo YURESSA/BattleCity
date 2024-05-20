@@ -13,7 +13,7 @@ public class Enemy
     public Enemy(float speed, Vector2 position, Texture2D tankImage, int cellSize, Func<MovedObject, bool> hasCollision,
         HashSet<Shot> bulletObjects, bool isAlive, int hp)
     {
-        EnemyModel = new EnemyModel(speed, position, tankImage,hasCollision, bulletObjects, isAlive, hp);
+        EnemyModel = new EnemyModel(speed, position, tankImage, hasCollision, bulletObjects, isAlive, hp);
         _texture = tankImage;
     }
 

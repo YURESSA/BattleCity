@@ -21,6 +21,18 @@ public enum GameMode
 public enum State
 {
     Empty,
+    Wall
+}
+
+public enum TypeOfObject
+{
+    None,
+    Bricks,
+    Concrete,
+    Leaves,
+    Water,
+    Staff,
     Wall,
-    Visited
+    Player,
+    Enemy
 }
