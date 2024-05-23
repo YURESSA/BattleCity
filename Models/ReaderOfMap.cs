@@ -39,7 +39,7 @@ internal static class ReaderOfMap
         return _coordinateForPlayers;
     }
 
-    public static SceneView[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, string fileName)
+    public static SceneController[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, string fileName)
     {
         _coordinateForEnemy = new List<Vector2>();
         _coordinateForPlayers = new List<Vector2>();
@@ -50,7 +50,7 @@ internal static class ReaderOfMap
         var lines = file.Split("\r\n");
         var height = lines.Length;
         var width = lines[0].Length;
-        var map = new SceneView[height, width];
+        var map = new SceneController[height, width];
         for (var i = 0; i < height; i++)
         {
             var mapLine = lines[i];
@@ -59,9 +59,18 @@ internal static class ReaderOfMap
 
         return map;
     }
+    
+    public static SceneController GetScene(Vector2 position, TypeOfObject type, Texture2D texture,
+        Texture2D noneTexture, bool isAlive, Dictionary<TypeOfObject, Texture2D> textures)
+    {
+        var sceneModel = new SceneModel(position, type, texture.Width, texture.Height, isAlive);
+        var sceneView = new SceneView(textures, noneTexture);
+        var sceneController = new SceneController(sceneModel) { SceneView = sceneView };
+        return sceneController;
+    }
 
     private static void ProcessMapLine(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, int width,
-        string mapLine, int i, SceneView[,] map)
+        string mapLine, int i, SceneController[,] map)
     {
         for (var j = 0; j < width; j++)
             if (mapLine[j] != 'E' && mapLine[j] != 'P')
@@ -72,16 +81,16 @@ internal static class ReaderOfMap
                 var y = i * sprite[type].Height;
                 if (type == TypeOfObject.Staff)
                     coordinateOfStaff = new Vector2(x, y);
-                var scene = new SceneView(new Vector2(x, y), type, sprite[type],
-                    sprite[TypeOfObject.None], cellSize, true);
+                var scene = GetScene(new Vector2(x, y), type, sprite[type],
+                    sprite[TypeOfObject.None], true, sprite);
                 map[i, j] = scene;
             }
             else
             {
                 var x = j * sprite[TypeOfObject.None].Width;
                 var y = i * sprite[TypeOfObject.None].Height;
-                var scene = new SceneView(new Vector2(x, y), TypeOfObject.None, sprite[TypeOfObject.None],
-                    sprite[TypeOfObject.None], cellSize, true);
+                var scene = GetScene(new Vector2(x, y), TypeOfObject.None, sprite[TypeOfObject.None],
+                    sprite[TypeOfObject.None], true, sprite);
                 map[i, j] = scene;
                 var offset = 4;
                 switch (mapLine[j])

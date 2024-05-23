@@ -144,14 +144,14 @@ public class DrawGame
     {
         foreach (var scenic in _battleCity.SceneObjects)
             if (scenic.SceneModel.Type == type)
-                scenic.Draw(_battleCity.SpriteBatch);
+                scenic.SceneView.Draw(_battleCity.SpriteBatch, scenic.SceneModel);
     }
 
     private void DrawSceneObjectsExcept(TypeOfObject type)
     {
         foreach (var scenic in _battleCity.SceneObjects)
             if (scenic.SceneModel.Type != type)
-                scenic.Draw(_battleCity.SpriteBatch);
+                scenic.SceneView.Draw(_battleCity.SpriteBatch, scenic.SceneModel);
     }
 
     private void DrawDefeatLevel()

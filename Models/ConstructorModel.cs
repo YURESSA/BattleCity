@@ -7,8 +7,8 @@ namespace BattleCity;
 
 public class ConstructorModel
 {
-    public SceneView[,] ConstructorScene { get; private set; } = new SceneView[15, 15];
-    public SceneView[,] Copy { get; set; }
+    public SceneController[,] ConstructorScene { get; private set; } = new SceneController[15, 15];
+    public SceneController[,] Copy { get; set; }
     private TypeOfObject ChosenBlock { get; set; } = TypeOfObject.None;
     private readonly BattleCity _battleCity;
     public List<Vector2> CoordinateForEnemy { get; } = new();
@@ -26,7 +26,13 @@ public class ConstructorModel
         else
             ConstructorScene = Copy;
     }
-
+    public SceneController GetScene(Vector2 position, TypeOfObject type, Texture2D texture, Texture2D noneTexture, bool isAlive)
+    {
+        var sceneModel = new SceneModel(position, type, texture.Width, texture.Height, isAlive);
+        var sceneView = new SceneView(_battleCity.SceneDictionary, noneTexture);
+        var sceneController = new SceneController(sceneModel) { SceneView = sceneView };
+        return sceneController;
+    }
     private void InitializeConstructorScene()
     {
         for (var i = 0; i < 15; i++)
@@ -35,19 +41,19 @@ public class ConstructorModel
             var x = i * 64;
             var y = j * 64;
             var scene = i == 0 || i == 14 || j == 0 || j == 14
-                ? new SceneView(new Vector2(x, y), TypeOfObject.Wall,
+                ? GetScene(new Vector2(x, y), TypeOfObject.Wall,
                     _battleCity.SceneDictionary[TypeOfObject.Wall],
-                    _battleCity.SceneDictionary[TypeOfObject.None], 64, true)
-                : new SceneView(new Vector2(x, y), TypeOfObject.None,
+                    _battleCity.SceneDictionary[TypeOfObject.None], true):
+                GetScene(new Vector2(x, y), TypeOfObject.None,
                     _battleCity.SceneDictionary[TypeOfObject.None],
-                    _battleCity.SceneDictionary[TypeOfObject.None], 64, true);
+                    _battleCity.SceneDictionary[TypeOfObject.None], true);
 
             ConstructorScene[i, j] = scene;
         }
 
-        var staffScene = new SceneView(new Vector2(448, 832), TypeOfObject.Staff,
+        var staffScene = GetScene(new Vector2(448, 832), TypeOfObject.Staff,
             _battleCity.SceneDictionary[TypeOfObject.Staff],
-            _battleCity.SceneDictionary[TypeOfObject.None], 64, true);
+            _battleCity.SceneDictionary[TypeOfObject.None], true);
         ConstructorScene[7, 13] = staffScene;
     }
 
@@ -100,9 +106,9 @@ public class ConstructorModel
     {
         var x = position.X * 64;
         var y = position.Y * 64;
-        var scene = new SceneView(new Vector2(x, y), ChosenBlock,
+        var scene = GetScene(new Vector2(x, y), ChosenBlock,
             _battleCity.SceneDictionary[ChosenBlock],
-            _battleCity.SceneDictionary[TypeOfObject.None], 64, true);
+            _battleCity.SceneDictionary[TypeOfObject.None], true);
         ConstructorScene[(int)position.X, (int)position.Y] = scene;
     }
 
@@ -110,9 +116,10 @@ public class ConstructorModel
     {
         var x = position.X * 64;
         var y = position.Y * 64;
-        var scene = new SceneView(new Vector2(x, y), TypeOfObject.None,
+        var scene = GetScene(new Vector2(x, y), TypeOfObject.None,
             _battleCity.SceneDictionary[TypeOfObject.None],
-            _battleCity.SceneDictionary[TypeOfObject.None], 64, true);
+            _battleCity.SceneDictionary[TypeOfObject.None], true);
+        
         ConstructorScene[(int)position.X, (int)position.Y] = scene;
 
         const int offset = 4;
@@ -130,15 +137,15 @@ public class ConstructorModel
         Copy = DeepCopyArray(ConstructorScene);
     }
 
-    public SceneView[,] DeepCopyArray(SceneView[,] original)
+    public SceneController[,] DeepCopyArray(SceneController[,] original)
     {
         var rows = original.GetLength(0);
         var cols = original.GetLength(1);
-        var copy = new SceneView[rows, cols];
+        var copy = new SceneController[rows, cols];
 
         for (var i = 0; i < rows; i++)
         for (var j = 0; j < cols; j++)
-            copy[i, j] = (SceneView)original[i, j].Clone();
+            copy[i, j] = original[i, j].Clone(_battleCity.SceneDictionary, _battleCity.SceneDictionary[TypeOfObject.None]);
 
         return copy;
     }

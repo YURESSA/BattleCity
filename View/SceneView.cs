@@ -1,35 +1,24 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BattleCity;
-
-public class SceneView
+namespace BattleCity
 {
-    private readonly Texture2D _noneTexture;
-    public readonly SceneModel SceneModel;
-    private Texture2D _texture;
-
-    public SceneView(Vector2 position, TypeOfObject type, Texture2D sprite, Texture2D noneTexture, int size, bool isAlive)
+    public class SceneView
     {
-        SceneModel = new SceneModel(position, type, sprite.Width, sprite.Height, size, isAlive);
-        _texture = sprite;
-        _noneTexture = noneTexture;
-    }
+        private readonly Texture2D _noneTexture;
+        private readonly Dictionary<TypeOfObject, Texture2D> _textures;
 
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        spriteBatch.Draw(_texture, SceneModel.Position, Color.White);
-    }
+        public SceneView(Dictionary<TypeOfObject, Texture2D> textures, Texture2D noneTexture)
+        {
+            _textures = textures;
+            _noneTexture = noneTexture;
+        }
 
-    public void Update(GameTime gameTime)
-    {
-        if (SceneModel.IsAlive == false) _texture = _noneTexture;
-        SceneModel.Update(gameTime);
-    }
-
-    public object Clone()
-    {
-        return new SceneView(SceneModel.Position, SceneModel.Type, _texture, _noneTexture,
-            SceneModel.Height, SceneModel.IsAlive);
+        public void Draw(SpriteBatch spriteBatch, SceneModel sceneModel)
+        {
+            var texture = sceneModel.IsAlive ? _textures[sceneModel.Type] : _noneTexture;
+            spriteBatch.Draw(texture, sceneModel.Position, Color.White);
+        }
     }
 }

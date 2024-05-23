@@ -5,12 +5,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BattleCity;
 
-public class Enemy
+public class EnemyView
 {
     public readonly EnemyModel EnemyModel;
     private readonly Texture2D _texture;
 
-    public Enemy(float speed, Vector2 position, Texture2D tankImage, int cellSize, Func<MovedObject, bool> hasCollision,
+    public EnemyView(float speed, Vector2 position, Texture2D tankImage, int cellSize, Func<MovedObject, bool> hasCollision,
         HashSet<Shot> bulletObjects, bool isAlive, int hp)
     {
         EnemyModel = new EnemyModel(speed, position, tankImage, hasCollision, bulletObjects, isAlive, hp);
@@ -28,7 +28,7 @@ public class Enemy
     }
 
 
-    public void Update(GameTime gameTime, SceneView[,] map, List<Vector2> userCoordinates,
+    public void Update(GameTime gameTime, SceneController[,] map, List<Vector2> userCoordinates,
         Vector2 CoordinateOfStaff)
     {
         EnemyModel.Update(gameTime, map, userCoordinates, CoordinateOfStaff);

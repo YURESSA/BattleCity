@@ -14,7 +14,7 @@ public class BattleCity : Game
     private TimeSpan _elapsedTime;
     public Texture2D EnemyImage;
     public int EnemyInLevel;
-    public HashSet<Enemy> EnemyTanks;
+    public HashSet<EnemyView> EnemyTanks;
     public HashSet<BangModel> BangModels = new();
     public Dictionary<int, string> FileNameDictionary;
     public Defeat GameDefeat;
@@ -24,7 +24,7 @@ public class BattleCity : Game
     public HashSet<PlayerModel> PlayersTanks;
     public Dictionary<TypeOfObject, Texture2D> SceneDictionary;
     public Dictionary<int, Texture2D> FrameDictionary;
-    public SceneView[,] SceneObjects;
+    public SceneController[,] SceneObjects;
     public SpriteBatch SpriteBatch;
     public StateOfGame State = StateOfGame.MainMenu;
     public readonly ConstructorModel Constructor;
@@ -123,7 +123,7 @@ public class BattleCity : Game
     private void InitializeGameObjects()
     {
         PlayersTanks = new HashSet<PlayerModel>();
-        EnemyTanks = new HashSet<Enemy>();
+        EnemyTanks = new HashSet<EnemyView>();
     }
 
     public void LoadConstructor(int enemyCount)
@@ -183,7 +183,7 @@ public class BattleCity : Game
 
         if (EnemyTanks.Count < enemyInWave && _elapsedTime < TimeSpan.Zero && EnemyInLevel > 0)
         {
-            var enemyTank = new Enemy(0.08f, CoordinateForEnemy[random.Next(CoordinateForEnemy.Count)],
+            var enemyTank = new EnemyView(0.08f, CoordinateForEnemy[random.Next(CoordinateForEnemy.Count)],
                 EnemyImage, CellSize, _collisionDetected.HasCollision, BulletObjects, true, 1);
 
             EnemyTanks.Add(enemyTank);

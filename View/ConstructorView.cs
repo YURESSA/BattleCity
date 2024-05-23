@@ -52,7 +52,8 @@ public class ConstructorView
         spriteBatch.Draw(_battleCity.EnemyImage, new Vector2(960, 704), Color.White);
         spriteBatch.Draw(_battleCity.PlayerImage, new Vector2(960, 832), Color.White);
 
-        foreach (var scene in _battleCity.Constructor.ConstructorScene) scene.Draw(spriteBatch);
+        foreach (var scene in _battleCity.Constructor.ConstructorScene) 
+            scene.SceneView.Draw(_battleCity.SpriteBatch, scene.SceneModel);
     }
 
     private void DrawObject(SpriteBatch spriteBatch, TypeOfObject type, Vector2 position)

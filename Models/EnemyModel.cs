@@ -14,7 +14,7 @@ public class EnemyModel : Tank
     {
     }
 
-    public void Update(GameTime gameTime, SceneView[,] map, List<Vector2> coordinates, Vector2 coordinateOfStaff)
+    public void Update(GameTime gameTime, SceneController[,] map, List<Vector2> coordinates, Vector2 coordinateOfStaff)
     {
         ElapsedTime -= gameTime.ElapsedGameTime;
         var paths = GetPathsToCoordinates(map, coordinates, coordinateOfStaff);
@@ -30,7 +30,7 @@ public class EnemyModel : Tank
         UpdatePosition(gameTime);
     }
 
-    private List<List<Point>> GetPathsToCoordinates(SceneView[,] map, List<Vector2> coordinates, Vector2 coordinateOfStaff)
+    private List<List<Point>> GetPathsToCoordinates(SceneController[,] map, List<Vector2> coordinates, Vector2 coordinateOfStaff)
     {
         var paths = new List<List<Point>>();
         var labyrinth = CreateMap(map);
@@ -154,7 +154,7 @@ public class EnemyModel : Tank
             Shoot();
     }
 
-    private static State[,] CreateMap(SceneView[,] labyrinth)
+    private static State[,] CreateMap(SceneController[,] labyrinth)
     {
         var map = new State[labyrinth.GetLength(0), labyrinth.GetLength(1)];
 
@@ -167,7 +167,7 @@ public class EnemyModel : Tank
         return map;
     }
 
-    private static State[,] CreateStaffMap(SceneView[,] labyrinth, Vector2 staffCoordinate)
+    private static State[,] CreateStaffMap(SceneController[,] labyrinth, Vector2 staffCoordinate)
     {
         var map = CreateMap(labyrinth);
 
