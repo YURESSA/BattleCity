@@ -15,7 +15,7 @@ public class UpdateGame
         _battleCity = battleCity;
         _constructorController = new ConstructorController(this, battleCity);
     }
-
+    
     public void Updating(GameTime gameTime)
     {
         var keyboardState = Keyboard.GetState();
@@ -73,7 +73,7 @@ public class UpdateGame
         {
             Restart();
             _battleCity.State = StateOfGame.MainMenu;
-            _battleCity.construtor.LoadStartMap();
+            _battleCity.Constructor.LoadStartMap();
         }
     }
 
@@ -83,7 +83,7 @@ public class UpdateGame
         {
             Restart();
             _battleCity.State = StateOfGame.MainMenu;
-            _battleCity.construtor.LoadStartMap();
+            _battleCity.Constructor.LoadStartMap();
         }
     }
 
@@ -108,6 +108,7 @@ public class UpdateGame
         _battleCity.EnemyTanks.Clear();
         _battleCity.PlayersTanks.Clear();
         _battleCity.BulletObjects.Clear();
+        _battleCity.BangModels.Clear();
         _battleCity.NumberOfLevel = 1;
     }
 
@@ -116,6 +117,7 @@ public class UpdateGame
         _battleCity.BulletObjects.RemoveWhere(element => element.ShotModel.IsAlive == false);
         _battleCity.PlayersTanks.RemoveWhere(element => element.IsAlive == false);
         _battleCity.EnemyTanks.RemoveWhere(element => element.EnemyModel.IsAlive == false);
+        _battleCity.BangModels.RemoveWhere(element => element.IsAlive == false);
         if (_battleCity.PlayersTanks.Count == 0 && _battleCity.State != StateOfGame.Constructor)
             _battleCity.State = StateOfGame.DefeatLevel;
         if (_battleCity.EnemyTanks.Count == 0 && _battleCity.EnemyInLevel == 0)
@@ -124,6 +126,11 @@ public class UpdateGame
 
     private void UpdateObjects(GameTime gameTime)
     {
+        foreach (var bang in _battleCity.BangModels)
+        {
+            var controller = new BangController(bang);
+            controller.Update(gameTime);
+        }
         foreach (var playerController in _battleCity.PlayerControllers) playerController.Update(gameTime);
 
         var listCoordinate = new List<Vector2>();

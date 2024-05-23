@@ -4,6 +4,9 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/bang1.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/bang2.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/bang3.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_armor.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_brick.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_bushes.png</File>
@@ -24,6 +27,9 @@
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/wall.png</File>
   </SourceFiles>
   <DestFiles>
+    <File>bang1</File>
+    <File>bang2</File>
+    <File>bang3</File>
     <File>concrete</File>
     <File>bricks</File>
     <File>leaves</File>

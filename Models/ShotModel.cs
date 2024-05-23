@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,7 +10,8 @@ public class ShotModel : MovedObject
     public float Angle;
     public Func<MovedObject, bool> HasCollision;
     public Tank Parent;
-
+    
+    
     public ShotModel(Vector2 position, float speed, int size, float angle,
         Func<MovedObject, bool> hasCollision, Tank parent, Texture2D SpriteOfBullet, bool isAlive) : base(
         position, speed, parent, SpriteOfBullet.Width, SpriteOfBullet.Height, isAlive)
@@ -49,7 +51,10 @@ public class ShotModel : MovedObject
         if (direction.Length() > 0f)
         {
             Position += direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (HasCollision(this)) ShotHasCollisions = true;
+            if (HasCollision(this))
+            {
+                ShotHasCollisions = true;
+            }
         }
     }
 

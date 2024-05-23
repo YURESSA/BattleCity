@@ -2,9 +2,9 @@ using Microsoft.Xna.Framework;
 
 namespace BattleCity;
 
-public class SceneObjectsModel : RectObjects
+public class SceneModel : RectObjects
 {
-    public SceneObjectsModel(Vector2 position, TypeOfObject type, int spriteWidth, int spriteHeight, int size,
+    public SceneModel(Vector2 position, TypeOfObject type, int spriteWidth, int spriteHeight, int size,
         bool isAlive) :
         base(position, spriteWidth, spriteHeight, isAlive)
     {

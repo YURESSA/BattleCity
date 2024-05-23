@@ -6,7 +6,7 @@ namespace BattleCity;
 public class Defeat
 {
     private readonly Texture2D _texture;
-    public readonly SceneObjectsModel SceneModel;
+    public readonly SceneModel SceneModel;
 
     public Defeat(Texture2D sprite)
     {

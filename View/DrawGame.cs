@@ -62,7 +62,11 @@ public class DrawGame
         _battleCity.GraphicsDevice.Clear(Color.Black);
         DrawRightBorder(_battleCity.SpriteBatch);
         foreach (var tank in _battleCity.PlayersTanks) PlayerView.Draw(_battleCity.SpriteBatch, tank);
-
+        foreach (var bang in _battleCity.BangModels)
+        {
+            var view = new BangView(bang);
+            view.Draw(_battleCity.SpriteBatch);
+        }
         DrawSceneObjects(TypeOfObject.Water);
         foreach (var tank in _battleCity.EnemyTanks)
             tank.Draw(_battleCity.SpriteBatch);

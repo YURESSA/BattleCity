@@ -12,28 +12,30 @@ public class BattleCity : Game
     public readonly HashSet<Shot> BulletObjects = new();
     private readonly GraphicsDeviceManager _graphics;
     private TimeSpan _elapsedTime;
-    public Texture2D _enemyImage;
+    public Texture2D EnemyImage;
     public int EnemyInLevel;
     public HashSet<Enemy> EnemyTanks;
+    public HashSet<BangModel> BangModels = new();
     public Dictionary<int, string> FileNameDictionary;
     public Defeat GameDefeat;
     public MenuModel MainMenu;
     public Menu Menu;
-    public Texture2D _playerImage;
+    public Texture2D PlayerImage;
     public HashSet<PlayerModel> PlayersTanks;
-    public Dictionary<TypeOfObject, Texture2D> _sceneDictionary;
-    public Scene[,] SceneObjects;
+    public Dictionary<TypeOfObject, Texture2D> SceneDictionary;
+    public Dictionary<int, Texture2D> FrameDictionary;
+    public SceneView[,] SceneObjects;
     public SpriteBatch SpriteBatch;
     public StateOfGame State = StateOfGame.MainMenu;
-    public ConstructorModel construtor;
+    public readonly ConstructorModel Constructor;
     public int NumberOfLevel;
     public List<PlayerController> PlayerControllers;
     private List<PlayerView> _playerViews;
     private readonly CollisionDetected _collisionDetected;
     private readonly UpdateGame _updateGame;
     private readonly DrawGame _drawGame;
-    public List<Vector2> _coordinateForEnemy;
-    public List<Vector2> _coordinateForPlayer;
+    public List<Vector2> CoordinateForEnemy;
+    public List<Vector2> CoordinateForPlayer;
     public MenuController MainMenuController;
     public Vector2 CoordinateOfStaff;
 
@@ -46,7 +48,7 @@ public class BattleCity : Game
         _collisionDetected = new CollisionDetected(this);
         _updateGame = new UpdateGame(this);
         _drawGame = new DrawGame(this);
-        construtor = new ConstructorModel(this);
+        Constructor = new ConstructorModel(this);
     }
 
     protected override void Initialize()
@@ -63,6 +65,7 @@ public class BattleCity : Game
 
         LoadGameTextures();
         LoadSceneTextures();
+        LoadFrameTextures();
         InitializeGameObjects();
 
         FileNameDictionary = new Dictionary<int, string>
@@ -72,7 +75,7 @@ public class BattleCity : Game
             { 3, "levels/level3.txt" },
             { 0, "levels/custom.txt" }
         };
-        construtor.LoadStartMap();
+        Constructor.LoadStartMap();
     }
 
     private void LoadGameTextures()
@@ -86,14 +89,14 @@ public class BattleCity : Game
         DrawGame.textBlock = Content.Load<SpriteFont>("mytext1");
         DrawGame.FirstPlayerHp = Content.Load<Texture2D>("hp1Tank");
         DrawGame.SecondPlayerHp = Content.Load<Texture2D>("hp2Tank");
-        _playerImage = Content.Load<Texture2D>("player");
-        _enemyImage = Content.Load<Texture2D>("tank1");
+        PlayerImage = Content.Load<Texture2D>("player");
+        EnemyImage = Content.Load<Texture2D>("tank1");
         Menu = new Menu(Content.Load<Texture2D>("MainMenu"), Content.Load<Texture2D>("cursor"));
     }
 
     private void LoadSceneTextures()
     {
-        _sceneDictionary = new Dictionary<TypeOfObject, Texture2D>
+        SceneDictionary = new Dictionary<TypeOfObject, Texture2D>
         {
             { TypeOfObject.None, Content.Load<Texture2D>("none") },
             { TypeOfObject.Bricks, Content.Load<Texture2D>("bricks") },
@@ -103,6 +106,18 @@ public class BattleCity : Game
             { TypeOfObject.Staff, Content.Load<Texture2D>("staff") },
             { TypeOfObject.Wall, Content.Load<Texture2D>("wall") }
         };
+    }
+    
+    private void LoadFrameTextures()
+    {
+        
+        FrameDictionary = new Dictionary<int, Texture2D>
+        {
+            { 0, Content.Load<Texture2D>("bang1") },
+            { 1, Content.Load<Texture2D>("bang2") },
+            { 2, Content.Load<Texture2D>("bang3") }
+        };
+        BangView.TextureOfFrame = FrameDictionary;
     }
 
     private void InitializeGameObjects()
@@ -117,7 +132,7 @@ public class BattleCity : Game
         PlayerControllers = new List<PlayerController>();
         EnemyInLevel = enemyCount;
 
-        SetupPlayer(Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space, _coordinateForPlayer[0]);
+        SetupPlayer(Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space, CoordinateForPlayer[0]);
 
         State = StateOfGame.Game;
     }
@@ -128,21 +143,18 @@ public class BattleCity : Game
         PlayerControllers = new List<PlayerController>();
         EnemyInLevel = enemyCount;
 
-        SceneObjects = ReaderOfMap.MapReader(_sceneDictionary, CellSize, fileName);
-        _coordinateForPlayer = ReaderOfMap.GetPlayerCoordinate();
-        _coordinateForEnemy = ReaderOfMap.GetEnemyCoordinate();
+        SceneObjects = ReaderOfMap.MapReader(SceneDictionary, CellSize, fileName);
+        CoordinateForPlayer = ReaderOfMap.GetPlayerCoordinate();
+        CoordinateForEnemy = ReaderOfMap.GetEnemyCoordinate();
         CoordinateOfStaff = ReaderOfMap.GetCoordinateOfStaff();
 
         if (MainMenu.GameModeState is GameMode.OnePlayer or GameMode.TwoPlayer)
-            SetupPlayer(Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space, _coordinateForPlayer[0]);
+            SetupPlayer(Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space, CoordinateForPlayer[0]);
 
         if (MainMenu.GameModeState == GameMode.TwoPlayer)
-            SetupPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.L, _coordinateForPlayer[1]);
+            SetupPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.L, CoordinateForPlayer[1]);
 
-        if (MainMenu.GameModeState == GameMode.Constructor)
-            State = StateOfGame.Constructor;
-        else
-            State = StateOfGame.Game;
+        State = MainMenu.GameModeState == GameMode.Constructor ? StateOfGame.Constructor : StateOfGame.Game;
     }
 
     private void SetupPlayer(Keys up, Keys down, Keys left, Keys right, Keys shoot, Vector2 playerPosition)
@@ -156,11 +168,11 @@ public class BattleCity : Game
             Shoot = shoot
         };
 
-        var playerTank = new PlayerModel(0.1f, playerPosition, _playerImage, _collisionDetected.HasCollision,
+        var playerTank = new PlayerModel(0.1f, playerPosition, PlayerImage, _collisionDetected.HasCollision,
             BulletObjects, true, 2);
 
         PlayerControllers.Add(new PlayerController(playerTank, controlButton));
-        _playerViews.Add(new PlayerView(_playerImage));
+        _playerViews.Add(new PlayerView(PlayerImage));
         PlayersTanks.Add(playerTank);
     }
 
@@ -171,8 +183,8 @@ public class BattleCity : Game
 
         if (EnemyTanks.Count < enemyInWave && _elapsedTime < TimeSpan.Zero && EnemyInLevel > 0)
         {
-            var enemyTank = new Enemy(0.08f, _coordinateForEnemy[random.Next(_coordinateForEnemy.Count)],
-                _enemyImage, CellSize, _collisionDetected.HasCollision, BulletObjects, true, 1);
+            var enemyTank = new Enemy(0.08f, CoordinateForEnemy[random.Next(CoordinateForEnemy.Count)],
+                EnemyImage, CellSize, _collisionDetected.HasCollision, BulletObjects, true, 1);
 
             EnemyTanks.Add(enemyTank);
 

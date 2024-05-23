@@ -16,10 +16,10 @@ public class ConstructorController
 
     private void Update()
     {
-        _battleCity.SceneObjects = _battleCity.construtor.ConstructorScene;
-        _battleCity._coordinateForPlayer = _battleCity.construtor.CoordinateForPlayer;
-        _battleCity._coordinateForEnemy = _battleCity.construtor.CoordinateForEnemy;
-        _battleCity.construtor.Copy = _battleCity.construtor.DeepCopyArray(_battleCity.construtor.ConstructorScene);
+        _battleCity.SceneObjects = _battleCity.Constructor.ConstructorScene;
+        _battleCity.CoordinateForPlayer = _battleCity.Constructor.CoordinateForPlayer;
+        _battleCity.CoordinateForEnemy = _battleCity.Constructor.CoordinateForEnemy;
+        _battleCity.Constructor.Copy = _battleCity.Constructor.DeepCopyArray(_battleCity.Constructor.ConstructorScene);
     }
 
     public void UpdateConstructor(KeyboardState keyboardState)
@@ -36,7 +36,7 @@ public class ConstructorController
         if (currentMouseState.RightButton == ButtonState.Pressed)
         {
             var position = GetMousePositionInBlocks(currentMouseState.Position);
-            _updateGame._battleCity.construtor.UpdateChosenBlock(position);
+            _updateGame._battleCity.Constructor.UpdateChosenBlock(position);
         }
     }
 
@@ -46,7 +46,7 @@ public class ConstructorController
         if (currentMouseState.LeftButton == ButtonState.Pressed)
         {
             var position = GetMousePositionInBlocks(currentMouseState.Position);
-            _updateGame._battleCity.construtor.UpdateMap(position);
+            _updateGame._battleCity.Constructor.UpdateMap(position);
         }
     }
 

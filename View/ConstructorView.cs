@@ -49,24 +49,24 @@ public class ConstructorView
         var rectangle = new Rectangle(position, size);
         spriteBatch.Draw(_rectangleBlock, rectangle, Color.Black);
 
-        spriteBatch.Draw(_battleCity._enemyImage, new Vector2(960, 704), Color.White);
-        spriteBatch.Draw(_battleCity._playerImage, new Vector2(960, 832), Color.White);
+        spriteBatch.Draw(_battleCity.EnemyImage, new Vector2(960, 704), Color.White);
+        spriteBatch.Draw(_battleCity.PlayerImage, new Vector2(960, 832), Color.White);
 
-        foreach (var scene in _battleCity.construtor.ConstructorScene) scene.Draw(spriteBatch);
+        foreach (var scene in _battleCity.Constructor.ConstructorScene) scene.Draw(spriteBatch);
     }
 
     private void DrawObject(SpriteBatch spriteBatch, TypeOfObject type, Vector2 position)
     {
-        var texture = _battleCity._sceneDictionary[type];
+        var texture = _battleCity.SceneDictionary[type];
         spriteBatch.Draw(texture, position, Color.White);
     }
 
     private void DrawEnemyAndPlayerPositions(SpriteBatch spriteBatch)
     {
-        foreach (var pos in _battleCity.construtor.CoordinateForEnemy)
-            spriteBatch.Draw(_battleCity._enemyImage, pos, Color.White);
+        foreach (var pos in _battleCity.Constructor.CoordinateForEnemy)
+            spriteBatch.Draw(_battleCity.EnemyImage, pos, Color.White);
 
-        foreach (var pos in _battleCity.construtor.CoordinateForPlayer)
-            spriteBatch.Draw(_battleCity._playerImage, pos, Color.White);
+        foreach (var pos in _battleCity.Constructor.CoordinateForPlayer)
+            spriteBatch.Draw(_battleCity.PlayerImage, pos, Color.White);
     }
 }

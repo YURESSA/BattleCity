@@ -3,15 +3,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BattleCity;
 
-public class Scene
+public class SceneView
 {
     private readonly Texture2D _noneTexture;
-    public readonly SceneObjectsModel SceneModel;
+    public readonly SceneModel SceneModel;
     private Texture2D _texture;
 
-    public Scene(Vector2 position, TypeOfObject type, Texture2D sprite, Texture2D noneTexture, int size, bool isAlive)
+    public SceneView(Vector2 position, TypeOfObject type, Texture2D sprite, Texture2D noneTexture, int size, bool isAlive)
     {
-        SceneModel = new SceneObjectsModel(position, type, sprite.Width, sprite.Height, size, isAlive);
+        SceneModel = new SceneModel(position, type, sprite.Width, sprite.Height, size, isAlive);
         _texture = sprite;
         _noneTexture = noneTexture;
     }
@@ -29,7 +29,7 @@ public class Scene
 
     public object Clone()
     {
-        return new Scene(SceneModel.Position, SceneModel.Type, _texture, _noneTexture,
+        return new SceneView(SceneModel.Position, SceneModel.Type, _texture, _noneTexture,
             SceneModel.Height, SceneModel.IsAlive);
     }
 }

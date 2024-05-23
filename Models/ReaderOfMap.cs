@@ -39,7 +39,7 @@ internal static class ReaderOfMap
         return _coordinateForPlayers;
     }
 
-    public static Scene[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, string fileName)
+    public static SceneView[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, string fileName)
     {
         _coordinateForEnemy = new List<Vector2>();
         _coordinateForPlayers = new List<Vector2>();
@@ -50,7 +50,7 @@ internal static class ReaderOfMap
         var lines = file.Split("\r\n");
         var height = lines.Length;
         var width = lines[0].Length;
-        var map = new Scene[height, width];
+        var map = new SceneView[height, width];
         for (var i = 0; i < height; i++)
         {
             var mapLine = lines[i];
@@ -61,7 +61,7 @@ internal static class ReaderOfMap
     }
 
     private static void ProcessMapLine(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, int width,
-        string mapLine, int i, Scene[,] map)
+        string mapLine, int i, SceneView[,] map)
     {
         for (var j = 0; j < width; j++)
             if (mapLine[j] != 'E' && mapLine[j] != 'P')
@@ -72,7 +72,7 @@ internal static class ReaderOfMap
                 var y = i * sprite[type].Height;
                 if (type == TypeOfObject.Staff)
                     coordinateOfStaff = new Vector2(x, y);
-                var scene = new Scene(new Vector2(x, y), type, sprite[type],
+                var scene = new SceneView(new Vector2(x, y), type, sprite[type],
                     sprite[TypeOfObject.None], cellSize, true);
                 map[i, j] = scene;
             }
@@ -80,7 +80,7 @@ internal static class ReaderOfMap
             {
                 var x = j * sprite[TypeOfObject.None].Width;
                 var y = i * sprite[TypeOfObject.None].Height;
-                var scene = new Scene(new Vector2(x, y), TypeOfObject.None, sprite[TypeOfObject.None],
+                var scene = new SceneView(new Vector2(x, y), TypeOfObject.None, sprite[TypeOfObject.None],
                     sprite[TypeOfObject.None], cellSize, true);
                 map[i, j] = scene;
                 var offset = 4;

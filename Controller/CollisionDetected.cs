@@ -11,7 +11,13 @@ public class CollisionDetected
     {
         _battleCity = battleCity;
     }
-
+    
+    public void AddBang(Vector2 position, bool isAlive)
+    {
+        var bangModel = new BangModel(position, isAlive);
+        _battleCity.BangModels.Add(bangModel);
+    }
+    
     public bool HasCollision(MovedObject obj)
     {
         if (CheckSceneObjectCollisions(obj)) return true;
@@ -78,17 +84,19 @@ public class CollisionDetected
         return false;
     }
 
-    private void HandleSceneCollision(SceneObjectsModel sceneModel, MovedObject obj)
+    private void HandleSceneCollision(SceneModel sceneModel, MovedObject obj)
     {
         if ((sceneModel.Type == TypeOfObject.Bricks || sceneModel.Type == TypeOfObject.Staff) && obj is ShotModel)
         {
             if (sceneModel.Type == TypeOfObject.Staff) _battleCity.State = StateOfGame.DefeatLevel;
 
             sceneModel.IsAlive = false;
+            AddBang(obj.Position, true);
             obj.Kill();
         }
         else if (sceneModel.Type != TypeOfObject.Bricks && sceneModel.Type != TypeOfObject.Water && obj is ShotModel)
         {
+            AddBang(obj.Position, true);
             obj.Kill();
         }
     }
@@ -105,24 +113,26 @@ public class CollisionDetected
         return false;
     }
 
-    private static bool CheckBulletCollisionWithEnemy(MovedObject obj, Shot bullet)
+    private bool CheckBulletCollisionWithEnemy(MovedObject obj, Shot bullet)
     {
         if (obj is EnemyModel && bullet.ShotModel.Parent is PlayerModel && obj.Intersect(bullet.ShotModel))
         {
             bullet.ShotModel.Kill();
             obj.Kill();
+            AddBang(obj.Position + obj.Origin, true);
             return true;
         }
 
         return false;
     }
 
-    private static bool CheckBulletCollisionWithPlayer(MovedObject obj, Shot bullet)
+    private bool CheckBulletCollisionWithPlayer(MovedObject obj, Shot bullet)
     {
         if (obj is PlayerModel && bullet.ShotModel.Parent is EnemyModel && obj.Intersect(bullet.ShotModel))
         {
             bullet.ShotModel.Kill();
             obj.Kill();
+            AddBang(obj.Position + obj.Origin, true);
             return true;
         }
 
