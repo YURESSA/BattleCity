@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -33,27 +34,25 @@ public class ConstructorController
     private void UpdateConstructorBlocks()
     {
         var currentMouseState = Mouse.GetState();
-        if (currentMouseState.RightButton == ButtonState.Pressed)
-        {
-            var position = GetMousePositionInBlocks(currentMouseState.Position);
-            _updateGame._battleCity.Constructor.UpdateChosenBlock(position);
-        }
+        if (currentMouseState.RightButton != ButtonState.Pressed) return;
+        var position = GetMousePositionInBlocks(currentMouseState.Position);
+        _updateGame.BattleCity.Constructor.UpdateChosenBlock(position);
     }
 
     private void UpdateConstructorMap()
     {
         var currentMouseState = Mouse.GetState();
-        if (currentMouseState.LeftButton == ButtonState.Pressed)
-        {
-            var position = GetMousePositionInBlocks(currentMouseState.Position);
-            _updateGame._battleCity.Constructor.UpdateMap(position);
-        }
+        if (currentMouseState.LeftButton != ButtonState.Pressed) return;
+        var position = GetMousePositionInBlocks(currentMouseState.Position);
+        _updateGame.BattleCity.Constructor.UpdateMap(position);
     }
 
     private void CheckConstructorKeyInputs(KeyboardState keyboardState)
     {
-        if (keyboardState.IsKeyDown(Keys.K)) _updateGame._battleCity.LoadConstructor(1);
-        if (keyboardState.IsKeyDown(Keys.R)) _updateGame._battleCity.State = StateOfGame.MainMenu;
+        if (keyboardState.IsKeyDown(Keys.K))
+            _updateGame.BattleCity.LevelController.LoadConstructor(1);
+        
+        if (keyboardState.IsKeyDown(Keys.R)) _updateGame.BattleCity.State = StateOfGame.MainMenu;
     }
 
     private static Vector2 GetMousePositionInBlocks(Point mousePosition)

@@ -8,9 +8,9 @@ namespace BattleCity;
 
 public class DrawGame
 {
-    private BattleCity _battleCity;
+    private readonly BattleCity _battleCity;
     private Texture2D _rectangleBlock;
-    public static SpriteFont textBlock;
+    public static SpriteFont TextBlock;
     public static Texture2D Vision { get; set; }
     public static Texture2D LevelIcon { get; set; }
     public static Texture2D FirstPlayerHp { get; set; }
@@ -62,11 +62,11 @@ public class DrawGame
         _battleCity.GraphicsDevice.Clear(Color.Black);
         DrawRightBorder(_battleCity.SpriteBatch);
         foreach (var tank in _battleCity.PlayersTanks) PlayerView.Draw(_battleCity.SpriteBatch, tank);
-        foreach (var bang in _battleCity.BangModels)
+        foreach (var view in _battleCity.BangModels.Select(bang => new BangView(bang)))
         {
-            var view = new BangView(bang);
             view.Draw(_battleCity.SpriteBatch);
         }
+
         DrawSceneObjects(TypeOfObject.Water);
         foreach (var tank in _battleCity.EnemyTanks)
             tank.Draw(_battleCity.SpriteBatch);
@@ -113,9 +113,9 @@ public class DrawGame
         spriteBatch.Draw(hpTexture, texturePosition, Color.White);
 
         var hp = 0;
-        if (playerIndex < playersTanks.Count) hp = playersTanks[playerIndex]._hp;
+        if (playerIndex < playersTanks.Count) hp = playersTanks[playerIndex].Hp;
 
-        spriteBatch.DrawString(textBlock, $"{hp}", textPosition, Color.Black);
+        spriteBatch.DrawString(TextBlock, $"{hp}", textPosition, Color.Black);
     }
 
 
@@ -124,7 +124,7 @@ public class DrawGame
         spriteBatch.Draw(LevelIcon,
             new Vector2(960, 750), Color.White);
         var position = new Vector2(987, 777);
-        spriteBatch.DrawString(textBlock, $"{_battleCity.NumberOfLevel}", position, Color.Black);
+        spriteBatch.DrawString(TextBlock, $"{_battleCity.NumberOfLevel}", position, Color.Black);
     }
 
 

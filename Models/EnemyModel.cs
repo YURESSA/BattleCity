@@ -26,16 +26,18 @@ public class EnemyModel : Tank
             TryShoot(new Vector2(shortestPath[^1].X, shortestPath[^1].Y), GetCoordinate());
         }
 
-
         UpdatePosition(gameTime);
     }
 
-    private List<List<Point>> GetPathsToCoordinates(SceneController[,] map, List<Vector2> coordinates, Vector2 coordinateOfStaff)
+    private List<List<Point>> GetPathsToCoordinates(SceneController[,] map, List<Vector2> coordinates,
+        Vector2 coordinateOfStaff)
     {
         var paths = new List<List<Point>>();
         var labyrinth = CreateMap(map);
 
-        foreach (var coordinate in coordinates) paths.Add(FindPath(labyrinth, GetCoordinate(), coordinate));
+        foreach (var coordinate in coordinates)
+            paths.Add(FindPath(labyrinth, GetCoordinate(), coordinate));
+
         var staffCoordinate = new Vector2(coordinateOfStaff.X / 64, coordinateOfStaff.Y / 64);
         labyrinth = CreateStaffMap(map, staffCoordinate);
 
@@ -107,11 +109,9 @@ public class EnemyModel : Tank
             {
                 if (closedSet.Contains(neighbor)) continue;
 
-                if (!cameFrom.ContainsKey(neighbor))
-                {
-                    openSet.Enqueue(neighbor);
-                    cameFrom[neighbor] = current;
-                }
+                if (cameFrom.ContainsKey(neighbor)) continue;
+                openSet.Enqueue(neighbor);
+                cameFrom[neighbor] = current;
             }
         }
 

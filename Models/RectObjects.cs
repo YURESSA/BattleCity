@@ -7,7 +7,7 @@ public class RectObjects
     public bool IsAlive;
     public Vector2 Origin;
 
-    public RectObjects(Vector2 position, int spriteWidth, int spriteHeight, bool isAlive)
+    protected RectObjects(Vector2 position, int spriteWidth, int spriteHeight, bool isAlive)
     {
         Position = position;
         Width = spriteWidth;

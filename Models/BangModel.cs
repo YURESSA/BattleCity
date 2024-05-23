@@ -5,7 +5,7 @@ namespace BattleCity;
 
 public class BangModel : RectObjects
 {
-    public Vector2 Origin { get; }
+    public new Vector2 Origin { get; }
     public TimeSpan TimerForBigBang { get; }
     public TimeSpan ElapsedTime { get; set; }
     public TimeSpan ElapsedTimeSecond { get; set; }

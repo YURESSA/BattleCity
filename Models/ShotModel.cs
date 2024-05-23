@@ -7,25 +7,23 @@ namespace BattleCity;
 
 public class ShotModel : MovedObject
 {
-    public float Angle;
-    public Func<MovedObject, bool> HasCollision;
-    public Tank Parent;
-    
-    
-    public ShotModel(Vector2 position, float speed, int size, float angle,
-        Func<MovedObject, bool> hasCollision, Tank parent, Texture2D SpriteOfBullet, bool isAlive) : base(
-        position, speed, parent, SpriteOfBullet.Width, SpriteOfBullet.Height, isAlive)
+    public readonly float Angle;
+    private readonly Func<MovedObject, bool> _hasCollision;
+    public new readonly Tank Parent;
+    public bool ShotHasCollisions { get; set; }
+
+    public ShotModel(Vector2 position, float speed, float angle,
+        Func<MovedObject, bool> hasCollision, Tank parent, Texture2D spriteOfBullet, bool isAlive) : base(
+        position, speed, parent, spriteOfBullet.Width, spriteOfBullet.Height, isAlive)
     {
         Position = position - Origin;
         Angle = angle;
         ShotHasCollisions = false;
-        HasCollision = hasCollision;
+        _hasCollision = hasCollision;
         Parent = parent;
     }
 
-    public static Texture2D SpriteOfBullet { get; set; }
-    public bool ShotHasCollisions { get; set; }
-
+  
 
     public void Update(GameTime gameTime)
     {
@@ -48,14 +46,10 @@ public class ShotModel : MovedObject
         }
 
 
-        if (direction.Length() > 0f)
-        {
-            Position += direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (HasCollision(this))
-            {
-                ShotHasCollisions = true;
-            }
-        }
+        if (!(direction.Length() > 0f)) return;
+        Position += direction * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+        if (_hasCollision(this))
+            ShotHasCollisions = true;
     }
 
     public override void Kill()

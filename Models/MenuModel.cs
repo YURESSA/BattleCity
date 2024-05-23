@@ -10,10 +10,10 @@ public class MenuModel
     private readonly Vector2 _startPosition;
     public Vector2 Position;
     public GameMode GameModeState;
-    public int _displacement;
+    private int _displacement;
     private readonly BattleCity _battleCity;
 
-    public Dictionary<int, GameMode> GameModeStates = new()
+    private readonly Dictionary<int, GameMode> _gameModeStates = new()
     {
         { 0, GameMode.OnePlayer },
         { 1, GameMode.TwoPlayer },
@@ -30,7 +30,7 @@ public class MenuModel
 
     public void Update(GameTime gameTime)
     {
-        GameModeState = GameModeStates[_displacement];
+        GameModeState = _gameModeStates[_displacement];
     }
 
     public void CursorMoveUp()

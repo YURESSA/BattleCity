@@ -24,4 +24,10 @@ public class BangController
 
         if (_bangModel.ElapsedTimeSecond >= _bangModel.TimerForBigBang) _bangModel.IsAlive = false;
     }
+
+    public static BangModel GetBang(Vector2 position, bool isAlive)
+    {
+        var bangModel = new BangModel(position, isAlive);
+        return bangModel;
+    }
 }

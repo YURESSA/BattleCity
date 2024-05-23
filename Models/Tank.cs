@@ -10,7 +10,7 @@ public class Tank : MovedObject
     private readonly HashSet<Shot> _bulletObjects;
     private readonly Vector2 _startPosition;
     protected readonly Func<MovedObject, bool> HasCollision;
-    public int _hp;
+    public int Hp;
     public float Angle = MathHelper.TwoPi;
     public Vector2 Direction;
     protected TimeSpan ElapsedTime = TimeSpan.Zero;
@@ -19,7 +19,7 @@ public class Tank : MovedObject
         HashSet<Shot> bulletObjects, bool isAlive, int hp) :
         base(position + new Vector2(2, 2), speed, null, sprite.Width, sprite.Height, isAlive)
     {
-        _hp = hp;
+        Hp = hp;
         _startPosition = position;
         _bulletObjects = bulletObjects;
         HasCollision = hasCollision;
@@ -51,16 +51,16 @@ public class Tank : MovedObject
 
     protected void Shoot()
     {
-        var shot = new Shot(Position + Origin, 0.5f, 14, Angle, HasCollision, this, true);
+        var shot = new Shot(Position + Origin, 0.5f, Angle, HasCollision, this, true);
         _bulletObjects.Add(shot);
         ElapsedTime = TimeSpan.FromMilliseconds(1000);
     }
 
     public override void Kill()
     {
-        if (_hp > 1)
+        if (Hp > 1)
         {
-            _hp -= 1;
+            Hp -= 1;
             Position = _startPosition;
         }
         else
@@ -71,7 +71,7 @@ public class Tank : MovedObject
 
     public virtual Vector2 GetCoordinate()
     {
-        var cellSize = 64;
+        const int cellSize = 64;
         var halfCellSize = Width / 2;
 
         var centerX = Position.X + halfCellSize;

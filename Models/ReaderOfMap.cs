@@ -22,7 +22,7 @@ internal static class ReaderOfMap
 
     private static List<Vector2> _coordinateForEnemy;
     private static List<Vector2> _coordinateForPlayers;
-    private static Vector2 coordinateOfStaff;
+    private static Vector2 _coordinateOfStaff;
 
     public static List<Vector2> GetEnemyCoordinate()
     {
@@ -31,7 +31,7 @@ internal static class ReaderOfMap
 
     public static Vector2 GetCoordinateOfStaff()
     {
-        return coordinateOfStaff;
+        return _coordinateOfStaff;
     }
 
     public static List<Vector2> GetPlayerCoordinate()
@@ -39,7 +39,8 @@ internal static class ReaderOfMap
         return _coordinateForPlayers;
     }
 
-    public static SceneController[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, string fileName)
+    public static SceneController[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize,
+        string fileName)
     {
         _coordinateForEnemy = new List<Vector2>();
         _coordinateForPlayers = new List<Vector2>();
@@ -54,22 +55,14 @@ internal static class ReaderOfMap
         for (var i = 0; i < height; i++)
         {
             var mapLine = lines[i];
-            ProcessMapLine(sprite, cellSize, width, mapLine, i, map);
+            ProcessMapLine(sprite, width, mapLine, i, map);
         }
 
         return map;
     }
-    
-    public static SceneController GetScene(Vector2 position, TypeOfObject type, Texture2D texture,
-        Texture2D noneTexture, bool isAlive, Dictionary<TypeOfObject, Texture2D> textures)
-    {
-        var sceneModel = new SceneModel(position, type, texture.Width, texture.Height, isAlive);
-        var sceneView = new SceneView(textures, noneTexture);
-        var sceneController = new SceneController(sceneModel) { SceneView = sceneView };
-        return sceneController;
-    }
 
-    private static void ProcessMapLine(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize, int width,
+
+    private static void ProcessMapLine(Dictionary<TypeOfObject, Texture2D> sprite, int width,
         string mapLine, int i, SceneController[,] map)
     {
         for (var j = 0; j < width; j++)
@@ -80,8 +73,8 @@ internal static class ReaderOfMap
                 var x = j * sprite[type].Width;
                 var y = i * sprite[type].Height;
                 if (type == TypeOfObject.Staff)
-                    coordinateOfStaff = new Vector2(x, y);
-                var scene = GetScene(new Vector2(x, y), type, sprite[type],
+                    _coordinateOfStaff = new Vector2(x, y);
+                var scene = SceneController.GetScene(new Vector2(x, y), type, sprite[type],
                     sprite[TypeOfObject.None], true, sprite);
                 map[i, j] = scene;
             }
@@ -89,7 +82,7 @@ internal static class ReaderOfMap
             {
                 var x = j * sprite[TypeOfObject.None].Width;
                 var y = i * sprite[TypeOfObject.None].Height;
-                var scene = GetScene(new Vector2(x, y), TypeOfObject.None, sprite[TypeOfObject.None],
+                var scene = SceneController.GetScene(new Vector2(x, y), TypeOfObject.None, sprite[TypeOfObject.None],
                     sprite[TypeOfObject.None], true, sprite);
                 map[i, j] = scene;
                 var offset = 4;

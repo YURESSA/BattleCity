@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,30 +5,19 @@ namespace BattleCity;
 
 public class EnemyView
 {
-    public readonly EnemyModel EnemyModel;
     private readonly Texture2D _texture;
 
-    public EnemyView(float speed, Vector2 position, Texture2D tankImage, int cellSize, Func<MovedObject, bool> hasCollision,
-        HashSet<Shot> bulletObjects, bool isAlive, int hp)
+    public EnemyView(Texture2D texture)
     {
-        EnemyModel = new EnemyModel(speed, position, tankImage, hasCollision, bulletObjects, isAlive, hp);
-        _texture = tankImage;
+        _texture = texture;
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch, EnemyModel enemyModel)
     {
-        var sourceRect = new Rectangle(0, 0, EnemyModel.Width, EnemyModel.Height);
-
-        var drawPosition = EnemyModel.Position + EnemyModel.Origin;
+        var sourceRect = new Rectangle(0, 0, enemyModel.Width, enemyModel.Height);
+        var drawPosition = enemyModel.Position + enemyModel.Origin;
 
         spriteBatch.Draw(_texture, drawPosition, sourceRect, Color.White,
-            EnemyModel.Angle, EnemyModel.Origin, 1f, SpriteEffects.None, 0f);
-    }
-
-
-    public void Update(GameTime gameTime, SceneController[,] map, List<Vector2> userCoordinates,
-        Vector2 CoordinateOfStaff)
-    {
-        EnemyModel.Update(gameTime, map, userCoordinates, CoordinateOfStaff);
+            enemyModel.Angle, enemyModel.Origin, 1f, SpriteEffects.None, 0f);
     }
 }
