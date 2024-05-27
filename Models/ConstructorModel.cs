@@ -64,8 +64,7 @@ public class ConstructorModel
 
     public void UpdateChosenBlock(Vector2 position)
     {
-
-        if (position.X == 15 && position.Y % 2 != 0 && 1<= position.Y && position.Y <= 13)
+        if (position.X == 15 && position.Y % 2 != 0 && 1 <= position.Y && position.Y <= 13)
         {
             CurrentId = (int)position.Y;
             ChosenBlock = position.Y switch

@@ -29,7 +29,7 @@ public class MenuController
             _menuModel.CursorMoveDown();
         if (keyboardState.IsKeyDown(Keys.W) && _previousKeyboardState.IsKeyUp(Keys.W))
             _menuModel.CursorMoveUp();
-        if (keyboardState.IsKeyDown(Keys.Enter))
+        if (keyboardState.IsKeyDown(Keys.Enter) && _previousKeyboardState.IsKeyUp(Keys.Enter))
             _menuModel.StartGame();
         _previousKeyboardState = keyboardState;
     }

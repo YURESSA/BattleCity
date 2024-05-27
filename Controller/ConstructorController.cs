@@ -51,7 +51,7 @@ public class ConstructorController
     {
         if (keyboardState.IsKeyDown(Keys.K))
             _updateGame.BattleCity.LevelController.LoadConstructor(1);
-        
+
         if (keyboardState.IsKeyDown(Keys.R)) _updateGame.BattleCity.State = StateOfGame.MainMenu;
     }
 

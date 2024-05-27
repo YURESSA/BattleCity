@@ -91,15 +91,23 @@ public class CollisionDetected
     {
         if ((sceneModel.Type == TypeOfObject.Bricks || sceneModel.Type == TypeOfObject.Staff) && obj is ShotModel)
         {
-            if (sceneModel.Type == TypeOfObject.Staff) _battleCity.State = StateOfGame.DefeatLevel;
+            if (sceneModel.Type == TypeOfObject.Staff)
+            {
+                _battleCity.State = StateOfGame.DefeatLevel;
+                MusicController.PauseLevelMusic();
+                MusicController.PauseStartMusic();
+                MusicController.PlayEndMusic();
+            }
 
             sceneModel.IsAlive = false;
             AddBang(obj.Position, true);
+            MusicController.PlayDestroy();
             obj.Kill();
         }
         else if (sceneModel.Type != TypeOfObject.Bricks && sceneModel.Type != TypeOfObject.Water && obj is ShotModel)
         {
             AddBang(obj.Position, true);
+            MusicController.PlayDestroy();
             obj.Kill();
         }
     }
@@ -123,6 +131,7 @@ public class CollisionDetected
         bullet.ShotModel.Kill();
         obj.Kill();
         AddBang(obj.Position + obj.Origin, true);
+        MusicController.PlayDestroy();
         return true;
     }
 
@@ -133,6 +142,7 @@ public class CollisionDetected
         bullet.ShotModel.Kill();
         obj.Kill();
         AddBang(obj.Position + obj.Origin, true);
+        MusicController.PlayDestroy();
         return true;
     }
 
@@ -142,6 +152,7 @@ public class CollisionDetected
         bullet.ShotModel.Kill();
         obj.Kill();
         AddBang(obj.Position + obj.Origin, true);
+        MusicController.PlayDestroy();
         return true;
     }
 }

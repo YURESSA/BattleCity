@@ -14,6 +14,7 @@ public class Tank : MovedObject
     public float Angle = MathHelper.TwoPi;
     public Vector2 Direction;
     protected TimeSpan ElapsedTime = TimeSpan.Zero;
+    public BattleCity BattleCity;
 
     protected Tank(float speed, Vector2 position, Texture2D sprite, Func<MovedObject, bool> hasCollision,
         HashSet<Shot> bulletObjects, bool isAlive, int hp) :
@@ -53,6 +54,7 @@ public class Tank : MovedObject
     {
         var shot = new Shot(Position + Origin, 0.5f, Angle, HasCollision, this, true);
         _bulletObjects.Add(shot);
+        MusicController.PlayShot();
         ElapsedTime = TimeSpan.FromMilliseconds(1000);
     }
 

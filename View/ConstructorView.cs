@@ -8,7 +8,7 @@ public class ConstructorView
     private readonly BattleCity _battleCity;
     private Texture2D _rectangleBlock;
     public static SpriteFont TextBlock;
-    
+
     public ConstructorView(BattleCity battleCity)
     {
         _battleCity = battleCity;
@@ -35,10 +35,8 @@ public class ConstructorView
     {
         if (_battleCity.Constructor.CoordinateForPlayer.Count <= 0
             || _battleCity.Constructor.CoordinateForEnemy.Count <= 0)
-        {
-            spriteBatch.DrawString(TextBlock, "you don't have spawn point", new Vector2(64, 890), 
+            spriteBatch.DrawString(TextBlock, "Не назначены точки появлений", new Vector2(64, 890),
                 Color.Black);
-        }
     }
 
     private void DrawCurrentPosition(SpriteBatch spriteBatch)
@@ -47,9 +45,9 @@ public class ConstructorView
         var size = new Point(72, 72);
         var rectangle = new Rectangle(position, size);
         spriteBatch.Draw(_rectangleBlock, rectangle, Color.Lime);
-        
+
         size = new Point(64, 64);
-        position = new Point(960, _battleCity.Constructor.CurrentId * 64 );
+        position = new Point(960, _battleCity.Constructor.CurrentId * 64);
         rectangle = new Rectangle(position, size);
         spriteBatch.Draw(_rectangleBlock, rectangle, new Color(128, 128, 128));
     }

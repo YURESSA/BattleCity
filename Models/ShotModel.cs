@@ -23,7 +23,6 @@ public class ShotModel : MovedObject
         Parent = parent;
     }
 
-  
 
     public void Update(GameTime gameTime)
     {

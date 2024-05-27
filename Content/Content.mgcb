@@ -133,6 +133,18 @@
 /processorParam:TextureFormat=Color
 /build:cursor.png;cursor
 
+#begin destroy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:destroy.wav;destroy
+
+#begin engine.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:engine.wav;engine
+
 #begin File.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -176,6 +188,12 @@
 /processorParam:TextureFormat=Color
 /build:hp_2_tank.png;hp2Tank
 
+#begin level_finish.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:level_finish.mp3;level_finish
+
 #begin level_flag.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -187,6 +205,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:level_flag.png;flag
+
+#begin level_start.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:level_start.wav;level_start
 
 #begin mainMenu.png
 /importer:TextureImporter
@@ -200,6 +224,12 @@
 /processorParam:TextureFormat=Color
 /build:mainMenu.png;MainMenu
 
+#begin move.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:move.wav;move
+
 #begin shot.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -211,6 +241,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:shot.png;bullet
+
+#begin shotMusic.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:shotMusic.wav;shot
 
 #begin tank.png
 /importer:TextureImporter

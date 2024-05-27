@@ -42,7 +42,16 @@ public class DrawGame
             case StateOfGame.Constructor:
                 DrawConstructor(_battleCity.SpriteBatch);
                 break;
+            case StateOfGame.Settings:
+                DrawSettings();
+                break;
         }
+    }
+
+    private void DrawSettings()
+    {
+        _battleCity.GraphicsDevice.Clear(Color.Black);
+        _battleCity.SettingsController.Draw();
     }
 
     private void DrawConstructor(SpriteBatch spriteBatch)
@@ -63,9 +72,7 @@ public class DrawGame
         DrawRightBorder(_battleCity.SpriteBatch);
         foreach (var tank in _battleCity.PlayersTanks) PlayerView.Draw(_battleCity.SpriteBatch, tank);
         foreach (var view in _battleCity.BangModels.Select(bang => new BangView(bang)))
-        {
             view.Draw(_battleCity.SpriteBatch);
-        }
 
         DrawSceneObjects(TypeOfObject.Water);
         foreach (var tank in _battleCity.EnemyTanks)

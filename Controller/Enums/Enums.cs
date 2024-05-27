@@ -8,14 +8,16 @@ public enum StateOfGame
     DefeatLevel,
     LoadLevel,
     Constructor,
-    Pause
+    Pause,
+    Settings
 }
 
 public enum GameMode
 {
     OnePlayer,
     TwoPlayer,
-    Constructor
+    Constructor,
+    Settings
 }
 
 public enum State

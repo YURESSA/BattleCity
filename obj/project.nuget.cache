@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7CyPpw8FedjZwpwUASA11LxFCA92gTrhKyrEzXWRkXx+0f/uLbO2a6Tuo6eiT/By1Eqz3HVXCeu++RCL9tEITA==",
+  "dgSpecHash": "/Lxo5at8DFsTwIrXOJ9sqmkXu/lNkUZ4Iqd9IxOoesaBbxdV1CjtrAHLUgMSlYTzShieDMwmCypl7P939SRphg==",
   "success": true,
   "projectFilePath": "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\BattleCity.csproj",
   "expectedPackageFiles": [
@@ -25,6 +25,7 @@
     "C:\\Users\\goshr\\.nuget\\packages\\monogame.content.builder.task\\3.8.1.303\\monogame.content.builder.task.3.8.1.303.nupkg.sha512",
     "C:\\Users\\goshr\\.nuget\\packages\\monogame.framework.windowsdx\\3.8.1.303\\monogame.framework.windowsdx.3.8.1.303.nupkg.sha512",
     "C:\\Users\\goshr\\.nuget\\packages\\netstandard.library\\1.6.0\\netstandard.library.1.6.0.nupkg.sha512",
+    "C:\\Users\\goshr\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\goshr\\.nuget\\packages\\runtime.native.system\\4.0.0\\runtime.native.system.4.0.0.nupkg.sha512",
     "C:\\Users\\goshr\\.nuget\\packages\\runtime.native.system.io.compression\\4.1.0\\runtime.native.system.io.compression.4.1.0.nupkg.sha512",
     "C:\\Users\\goshr\\.nuget\\packages\\runtime.native.system.net.http\\4.0.1\\runtime.native.system.net.http.4.0.1.nupkg.sha512",

@@ -11,7 +11,7 @@ public class BattleCity : Game
     public const int CellSize = 64;
     public readonly HashSet<Shot> BulletObjects = new();
     private readonly GraphicsDeviceManager _graphics;
-    public TimeSpan _elapsedTime;
+    public TimeSpan ElapsedTime;
     public Texture2D EnemyImage;
     public int EnemyInLevel;
     public HashSet<EnemyController> EnemyTanks;
@@ -30,22 +30,23 @@ public class BattleCity : Game
     public readonly ConstructorModel Constructor;
     public int NumberOfLevel;
     public List<PlayerController> PlayerControllers;
-    public List<PlayerView> _playerViews;
-    public readonly CollisionDetected _collisionDetected;
+    public List<PlayerView> PlayerViews;
+    public readonly CollisionDetected CollisionDetected;
     private readonly UpdateGame _updateGame;
     private readonly DrawGame _drawGame;
     public List<Vector2> CoordinateForEnemy;
     public List<Vector2> CoordinateForPlayer;
     public MenuController MainMenuController;
+    private MusicController _musicController;
     public Vector2 CoordinateOfStaff;
+    public SettingsController SettingsController;
 
     public BattleCity()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
-
         IsMouseVisible = true;
-        _collisionDetected = new CollisionDetected(this);
+        CollisionDetected = new CollisionDetected(this);
         _updateGame = new UpdateGame(this);
         _drawGame = new DrawGame(this);
         Constructor = new ConstructorModel(this);
@@ -69,14 +70,15 @@ public class BattleCity : Game
         LoadGameTextures();
         LoadSceneTextures();
         LoadFrameTextures();
+        LoadMusic();
         InitializeGameObjects();
 
         FileNameDictionary = new Dictionary<int, string>
         {
-            { 1, "levels/level1.txt" },
-            { 2, "levels/level2.txt" },
-            { 3, "levels/level3.txt" },
-            { 0, "levels/custom.txt" }
+            { 1, "Levels/level1.txt" },
+            { 2, "Levels/level2.txt" },
+            { 3, "Levels/level3.txt" },
+            { 0, "Levels/custom.txt" }
         };
         Constructor.LoadStartMap();
     }
@@ -90,6 +92,7 @@ public class BattleCity : Game
         DrawGame.Vision = Content.Load<Texture2D>("tank");
         DrawGame.LevelIcon = Content.Load<Texture2D>("flag");
         var textBlock = Content.Load<SpriteFont>("text");
+        SettingsController = new SettingsController(textBlock, this);
         DrawGame.TextBlock = textBlock;
         ConstructorView.TextBlock = textBlock;
         DrawGame.FirstPlayerHp = Content.Load<Texture2D>("hp1Tank");
@@ -97,6 +100,12 @@ public class BattleCity : Game
         PlayerImage = Content.Load<Texture2D>("player");
         EnemyImage = Content.Load<Texture2D>("tank1");
         Menu = new Menu(Content.Load<Texture2D>("MainMenu"), Content.Load<Texture2D>("cursor"));
+    }
+
+    private void LoadMusic()
+    {
+        _musicController = new MusicController(this);
+        _musicController.LoadContent();
     }
 
     private void LoadSceneTextures()

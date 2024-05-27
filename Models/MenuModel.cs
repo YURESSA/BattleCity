@@ -17,7 +17,8 @@ public class MenuModel
     {
         { 0, GameMode.OnePlayer },
         { 1, GameMode.TwoPlayer },
-        { 2, GameMode.Constructor }
+        { 2, GameMode.Constructor },
+        { 3, GameMode.Settings }
     };
 
 
@@ -35,13 +36,13 @@ public class MenuModel
 
     public void CursorMoveUp()
     {
-        _displacement = (_displacement + 2) % 3;
+        _displacement = (_displacement + 3) % 4;
         Position = _startPosition + new Vector2(0, 90 * _displacement);
     }
 
     public void CursorMoveDown()
     {
-        _displacement = (_displacement + 1) % 3;
+        _displacement = (_displacement + 1) % 4;
         Position = _startPosition + new Vector2(0, 90 * _displacement);
     }
 

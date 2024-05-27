@@ -24,7 +24,6 @@ public class PlayerController
     {
         var keyboardState = Keyboard.GetState();
         _playerModel.Direction = Vector2.Zero;
-
         if (keyboardState.IsKeyDown(_controlButton.Left))
             _playerModel.MoveLeft();
         if (keyboardState.IsKeyDown(_controlButton.Right))

@@ -10,6 +10,9 @@ public class UpdateGame
 {
     public readonly BattleCity BattleCity;
     private readonly ConstructorController _constructorController;
+    private KeyboardState _previousKeyboardState;
+    public static int EnemyInLevel;
+    public static int EnemyInWave;
 
     public UpdateGame(BattleCity battleCity)
     {
@@ -43,27 +46,43 @@ public class UpdateGame
             case StateOfGame.Constructor:
                 _constructorController.UpdateConstructor(keyboardState);
                 break;
+            case StateOfGame.Settings:
+                UpdateSettings();
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
+        _previousKeyboardState = keyboardState;
+    }
+
+    private void UpdateSettings()
+    {
+        BattleCity.SettingsController.Update();
     }
 
 
     private void UpdateMainMenu(GameTime gameTime, KeyboardState keyboardState)
     {
         BattleCity.MainMenuController.Update(gameTime);
-
+        SettingsController.ReloadSettings();
         if (keyboardState.IsKeyDown(Keys.Escape)) BattleCity.Exit();
     }
 
     private void UpdatePauseState(KeyboardState keyboardState)
     {
-        if (keyboardState.IsKeyDown(Keys.Enter)) BattleCity.State = StateOfGame.Game;
+        if (keyboardState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
+        {
+            BattleCity.State = StateOfGame.Game;
+            MusicController.StartLevelMusic();
+        
+            
+        }
     }
 
     private void LoadLevelState()
     {
-        BattleCity.LevelController.LoadLevel(BattleCity.FileNameDictionary[BattleCity.NumberOfLevel], 5);
+        BattleCity.LevelController.LoadLevel(BattleCity.FileNameDictionary[BattleCity.NumberOfLevel], EnemyInLevel);
     }
 
     private void UpdateGameState(GameTime gameTime, KeyboardState keyboardState)
@@ -71,7 +90,16 @@ public class UpdateGame
         UpdateObjects(gameTime);
         RemoveNotAliveObjects();
 
-        if (keyboardState.IsKeyDown(Keys.P)) BattleCity.State = StateOfGame.Pause;
+
+        if (keyboardState.IsKeyDown(Keys.P) && _previousKeyboardState.IsKeyUp(Keys.P))
+        {
+            BattleCity.State = StateOfGame.Pause;
+            MusicController.PauseLevelMusic();
+            MusicController.PauseStartMusic();
+            
+        }
+
+
         if (keyboardState.IsKeyDown(Keys.R))
         {
             Restart();
@@ -82,14 +110,18 @@ public class UpdateGame
 
     private void UpdateDefeatLevelState(KeyboardState keyboardState)
     {
-        if (!keyboardState.IsKeyDown(Keys.P)) return;
-        Restart();
-        BattleCity.State = StateOfGame.MainMenu;
-        BattleCity.Constructor.LoadStartMap();
+        if (keyboardState.IsKeyDown(Keys.Enter) && _previousKeyboardState.IsKeyUp(Keys.Enter))
+        {
+            Restart();
+            BattleCity.State = StateOfGame.MainMenu;
+            MusicController.PauseEndMusic();
+            BattleCity.Constructor.LoadStartMap();
+        }
     }
 
     private void UpdateWinLevelState()
     {
+        MusicController.PauseLevelMusic();
         BattleCity.EnemyTanks.Clear();
         BattleCity.PlayersTanks.Clear();
         BattleCity.BulletObjects.Clear();
@@ -101,11 +133,15 @@ public class UpdateGame
         else
         {
             BattleCity.State = StateOfGame.MainMenu;
+            MusicController.PauseLevelMusic();
         }
     }
 
     private void Restart()
     {
+        MusicController.PauseLevelMusic();
+        MusicController.PauseStartMusic();
+        MusicController.PauseEndMusic();
         BattleCity.EnemyTanks.Clear();
         BattleCity.PlayersTanks.Clear();
         BattleCity.BulletObjects.Clear();
@@ -119,8 +155,15 @@ public class UpdateGame
         BattleCity.PlayersTanks.RemoveWhere(element => element.IsAlive == false);
         BattleCity.EnemyTanks.RemoveWhere(element => element.EnemyModel.IsAlive == false);
         BattleCity.BangModels.RemoveWhere(element => element.IsAlive == false);
-        if (BattleCity.PlayersTanks.Count == 0 && BattleCity.State != StateOfGame.Constructor)
+        if (BattleCity.PlayersTanks.Count == 0 && (BattleCity.State != StateOfGame.Constructor ||
+                                                   BattleCity.State != StateOfGame.Settings))
+        {
+            MusicController.PauseLevelMusic();
+            MusicController.PauseStartMusic();
+            MusicController.PlayEndMusic();
             BattleCity.State = StateOfGame.DefeatLevel;
+        }
+
         if (BattleCity.EnemyTanks.Count == 0 && BattleCity.EnemyInLevel == 0)
             BattleCity.State = StateOfGame.WinLevel;
     }
@@ -134,7 +177,7 @@ public class UpdateGame
 
         var listCoordinate = BattleCity.PlayersTanks.Select(tanks => tanks.GetCoordinate()).ToList();
 
-        BattleCity.LevelController.ReLoadTanks(3, gameTime);
+        BattleCity.LevelController.ReLoadTanks(EnemyInWave, gameTime);
         foreach (var enemyTank in BattleCity.EnemyTanks)
             enemyTank.Update(gameTime, BattleCity.SceneObjects, listCoordinate, BattleCity.CoordinateOfStaff);
 

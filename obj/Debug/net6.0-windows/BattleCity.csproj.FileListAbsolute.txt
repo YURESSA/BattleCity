@@ -58,3 +58,16 @@ C:\Users\goshr\OneDrive\Документы\Универ\Программиров
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\bang2.xnb
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\bang3.xnb
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\text.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\destroy.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\engine.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\level_finish.wma
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\level_finish.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\level_start.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\move.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\shot.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\destroy.wma
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\level_start.wma
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\move.wma
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\shot.wma
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\engine.wma
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
