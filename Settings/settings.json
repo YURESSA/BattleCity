@@ -1,6 +1,6 @@
 {
-  "TankLevel": 15,
+  "TankLevel": 16,
   "WaveLevel": 3,
   "SoundVolume": 10,
-  "MusicVolume": 15
+  "MusicVolume": 10
 }

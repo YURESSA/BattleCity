@@ -1,0 +1,41 @@
+{
+  "player": {
+    "speed": 0.1,
+    "hp": 2,
+    "image": "playerLevel1",
+    "collision": true,
+    "bulletSpeed": 0.6
+  },
+  "enemyLevels": [
+    {
+      "level": 1,
+      "speed": 0.08,
+      "hp": 1,
+      "image": "enemyLevel1",
+      "collision": true,
+      "bulletSpeed": 0.4,
+      "spawnDelay": 3000,
+      "waveDelay": 10000
+    },
+    {
+      "level": 2,
+      "speed": 0.1,
+      "hp": 1,
+      "image": "enemyLevel2",
+      "collision": true,
+      "bulletSpeed": 0.6,
+      "spawnDelay": 3500,
+      "waveDelay": 9000
+    },
+    {
+      "level": 3,
+      "speed": 0.12,
+      "hp": 1,
+      "image": "enemyLevel3",
+      "collision": true,
+      "bulletSpeed": 0.7,
+      "spawnDelay": 3800,
+      "waveDelay": 11000
+    }
+  ]
+}

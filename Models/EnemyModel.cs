@@ -9,8 +9,8 @@ namespace BattleCity;
 public class EnemyModel : Tank
 {
     public EnemyModel(float speed, Vector2 position, Texture2D sprite,
-        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp)
-        : base(speed, position, sprite, hasCollision, bulletObjects, isAlive, hp)
+        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp, float bulletSpeed)
+        : base(speed, position, sprite, hasCollision, bulletObjects, isAlive, hp, bulletSpeed)
     {
     }
 
@@ -151,7 +151,7 @@ public class EnemyModel : Tank
         }
     }
 
-    private bool IsPointValid(Point point, State[,] map)
+    private static bool IsPointValid(Point point, State[,] map)
     {
         return point.X >= 0 && point.X < map.GetLength(0) &&
                point.Y >= 0 && point.Y < map.GetLength(1) &&

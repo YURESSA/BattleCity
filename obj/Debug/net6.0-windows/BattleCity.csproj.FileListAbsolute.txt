@@ -71,3 +71,5 @@ C:\Users\goshr\OneDrive\Документы\Универ\Программиров
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\shot.wma
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\engine.wma
 C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\tank2.xnb
+C:\Users\goshr\OneDrive\Документы\Универ\Программирование\Game\BattleCity\BattleCity\bin\Debug\net6.0-windows\Content\tank3.xnb

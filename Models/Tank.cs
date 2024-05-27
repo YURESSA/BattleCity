@@ -15,12 +15,14 @@ public class Tank : MovedObject
     public Vector2 Direction;
     protected TimeSpan ElapsedTime = TimeSpan.Zero;
     public BattleCity BattleCity;
+    private float bulletSpeed;
 
     protected Tank(float speed, Vector2 position, Texture2D sprite, Func<MovedObject, bool> hasCollision,
-        HashSet<Shot> bulletObjects, bool isAlive, int hp) :
+        HashSet<Shot> bulletObjects, bool isAlive, int hp, float bulletSpeed) :
         base(position + new Vector2(2, 2), speed, null, sprite.Width, sprite.Height, isAlive)
     {
         Hp = hp;
+        this.bulletSpeed = bulletSpeed;
         _startPosition = position;
         _bulletObjects = bulletObjects;
         HasCollision = hasCollision;
@@ -52,7 +54,7 @@ public class Tank : MovedObject
 
     protected void Shoot()
     {
-        var shot = new Shot(Position + Origin, 0.5f, Angle, HasCollision, this, true);
+        var shot = new Shot(Position + Origin, bulletSpeed, Angle, HasCollision, this, true);
         _bulletObjects.Add(shot);
         MusicController.PlayShot();
         ElapsedTime = TimeSpan.FromMilliseconds(1000);

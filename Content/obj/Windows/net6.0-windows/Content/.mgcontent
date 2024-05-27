@@ -29,6 +29,8 @@
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/shotMusic.wav</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank1.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank2.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank3.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/Ttank1.png</File>
     <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/wall.png</File>
   </SourceFiles>
@@ -58,6 +60,8 @@
     <File>shot</File>
     <File>tank</File>
     <File>tank1</File>
+    <File>tank2</File>
+    <File>tank3</File>
     <File>player</File>
     <File>wall</File>
   </DestFiles>

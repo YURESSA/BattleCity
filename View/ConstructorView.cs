@@ -79,8 +79,8 @@ public class ConstructorView
         var rectangle = new Rectangle(position, size);
         spriteBatch.Draw(_rectangleBlock, rectangle, Color.Black);
 
-        spriteBatch.Draw(_battleCity.EnemyImage, new Vector2(966, 710), Color.White);
-        spriteBatch.Draw(_battleCity.PlayerImage, new Vector2(966, 838), Color.White);
+        spriteBatch.Draw(_battleCity.TanksImage["playerLevel1"], new Vector2(966, 710), Color.White);
+        spriteBatch.Draw(_battleCity.TanksImage["enemyLevel1"], new Vector2(966, 838), Color.White);
     }
 
     private void DrawObject(SpriteBatch spriteBatch, TypeOfObject type, Vector2 position)
@@ -92,9 +92,9 @@ public class ConstructorView
     private void DrawEnemyAndPlayerPositions(SpriteBatch spriteBatch)
     {
         foreach (var pos in _battleCity.Constructor.CoordinateForEnemy)
-            spriteBatch.Draw(_battleCity.EnemyImage, pos, Color.White);
+            spriteBatch.Draw(_battleCity.TanksImage["enemyLevel1"], pos, Color.White);
 
         foreach (var pos in _battleCity.Constructor.CoordinateForPlayer)
-            spriteBatch.Draw(_battleCity.PlayerImage, pos, Color.White);
+            spriteBatch.Draw(_battleCity.TanksImage["playerLevel1"], pos, Color.White);
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 
 namespace BattleCity;
@@ -12,7 +14,6 @@ public class BattleCity : Game
     public readonly HashSet<Shot> BulletObjects = new();
     private readonly GraphicsDeviceManager _graphics;
     public TimeSpan ElapsedTime;
-    public Texture2D EnemyImage;
     public int EnemyInLevel;
     public HashSet<EnemyController> EnemyTanks;
     public readonly HashSet<BangModel> BangModels = new();
@@ -20,9 +21,9 @@ public class BattleCity : Game
     public Defeat GameDefeat;
     public MenuModel MainMenu;
     public Menu Menu;
-    public Texture2D PlayerImage;
     public HashSet<PlayerModel> PlayersTanks;
     public Dictionary<TypeOfObject, Texture2D> SceneDictionary;
+    public Dictionary<string, Texture2D> TanksImage;
     private Dictionary<int, Texture2D> _frameDictionary;
     public SceneController[,] SceneObjects;
     public SpriteBatch SpriteBatch;
@@ -54,7 +55,16 @@ public class BattleCity : Game
     }
 
     public LevelController LevelController { get; }
+    public GameData GameData { get; private set; }
 
+    private void LoadGameData()
+    {
+        var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        var filePath = string.Concat(appDirectory.AsSpan(0,
+            appDirectory.IndexOf("\\bin", StringComparison.Ordinal)), $"\\Settings/tanks.json");
+        var json = File.ReadAllText(filePath);
+        GameData = JsonConvert.DeserializeObject<GameData>(json);
+    }
     protected override void Initialize()
     {
         _graphics.PreferredBackBufferHeight = 960;
@@ -66,7 +76,7 @@ public class BattleCity : Game
     protected override void LoadContent()
     {
         SpriteBatch = new SpriteBatch(GraphicsDevice);
-
+        LoadGameData();
         LoadGameTextures();
         LoadSceneTextures();
         LoadFrameTextures();
@@ -97,8 +107,14 @@ public class BattleCity : Game
         ConstructorView.TextBlock = textBlock;
         DrawGame.FirstPlayerHp = Content.Load<Texture2D>("hp1Tank");
         DrawGame.SecondPlayerHp = Content.Load<Texture2D>("hp2Tank");
-        PlayerImage = Content.Load<Texture2D>("player");
-        EnemyImage = Content.Load<Texture2D>("tank1");
+        TanksImage = new Dictionary<string, Texture2D>()
+        {
+            { "playerLevel1", Content.Load<Texture2D>("player")},
+            { "enemyLevel1" , Content.Load<Texture2D>("tank1")},
+            { "enemyLevel2" , Content.Load<Texture2D>("tank2")},
+            { "enemyLevel3" , Content.Load<Texture2D>("tank3")}
+        };
+ 
         Menu = new Menu(Content.Load<Texture2D>("MainMenu"), Content.Load<Texture2D>("cursor"));
     }
 

@@ -73,39 +73,52 @@ public class LevelController
             Shoot = shoot
         };
 
-        var playerTank = new PlayerModel(0.1f, playerPosition, _battleCity.PlayerImage,
-            _battleCity.CollisionDetected.HasCollision, _battleCity.BulletObjects, true, 2);
+        var playerData = _battleCity.GameData.Player;
+        var playerTank = new PlayerModel(playerData.Speed, playerPosition, _battleCity.TanksImage[playerData.Image],
+            _battleCity.CollisionDetected.HasCollision, _battleCity.BulletObjects, true, playerData.Hp, 
+            playerData.BulletSpeed);
 
         _battleCity.PlayerControllers.Add(new PlayerController(playerTank, controlButton));
-        _battleCity.PlayerViews.Add(new PlayerView(_battleCity.PlayerImage));
+        _battleCity.PlayerViews.Add(new PlayerView(_battleCity.TanksImage[playerData.Image]));
         _battleCity.PlayersTanks.Add(playerTank);
     }
 
     public void ReLoadTanks(int enemyInWave, GameTime gameTime)
     {
+        var enemyLevel = _battleCity.NumberOfLevel;
         _battleCity.ElapsedTime -= gameTime.ElapsedGameTime;
 
         if (_battleCity.EnemyTanks.Count >= enemyInWave || _battleCity.ElapsedTime >= TimeSpan.Zero ||
             _battleCity.EnemyInLevel <= 0) return;
+
         var playerCoordinates = _battleCity.PlayersTanks.Select(player => new Vector2()
             { X = player.GetCoordinate().X * 64, Y = player.GetCoordinate().Y * 64 });
-        var nearestCoordinate = FindNearestCoordinate(playerCoordinates, _battleCity.CoordinateForEnemy);
 
-        var enemyTank = EnemyController.GetEnemy(0.08f,
-            nearestCoordinate,
-            _battleCity.EnemyImage, _battleCity.CollisionDetected.HasCollision, _battleCity.BulletObjects, true,
-            1);
+        var random = new Random();
+        var spawnCoordinate = random.NextDouble() < 0.6 ? 
+            FindNearestCoordinate(playerCoordinates, _battleCity.CoordinateForEnemy) :
+            _battleCity.CoordinateForEnemy[random.Next(_battleCity.CoordinateForEnemy.Count)];
 
-        _battleCity.EnemyTanks.Add(enemyTank);
+        var enemyData = _battleCity.GameData.EnemyLevels.FirstOrDefault(e => e.Level == enemyLevel);
 
+        if (enemyData != null)
+        {
+            var enemyTank = EnemyController.GetEnemy(enemyData.Speed, spawnCoordinate,
+                _battleCity.TanksImage[enemyData.Image], _battleCity.CollisionDetected.HasCollision,
+                _battleCity.BulletObjects, true, enemyData.Hp, enemyData.BulletSpeed);
+
+            _battleCity.EnemyTanks.Add(enemyTank);
+        }
+
+    
         if (_battleCity.EnemyTanks.Count == enemyInWave)
-            _battleCity.ElapsedTime = TimeSpan.FromMilliseconds(10000);
+            _battleCity.ElapsedTime = TimeSpan.FromMilliseconds(enemyData!.WaveDelay);
 
-        _battleCity.ElapsedTime = TimeSpan.FromMilliseconds(3000);
+        _battleCity.ElapsedTime = TimeSpan.FromMilliseconds(enemyData!.SpawnDelay);
         _battleCity.EnemyInLevel -= 1;
     }
 
-    private Vector2 FindNearestCoordinate(IEnumerable<Vector2> playerCoordinates, List<Vector2> enemyCoordinates)
+    private static Vector2 FindNearestCoordinate(IEnumerable<Vector2> playerCoordinates, List<Vector2> enemyCoordinates)
     {
         var nearestCoordinate = Vector2.Zero;
         var shortestDistance = float.MaxValue;
@@ -119,5 +132,7 @@ public class LevelController
         }
 
         return nearestCoordinate;
-    }
+}
+
+
 }
