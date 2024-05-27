@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -83,23 +84,40 @@ public class LevelController
     public void ReLoadTanks(int enemyInWave, GameTime gameTime)
     {
         _battleCity.ElapsedTime -= gameTime.ElapsedGameTime;
-        var random = new Random();
 
-        if (_battleCity.EnemyTanks.Count < enemyInWave && _battleCity.ElapsedTime < TimeSpan.Zero &&
-            _battleCity.EnemyInLevel > 0)
+        if (_battleCity.EnemyTanks.Count >= enemyInWave || _battleCity.ElapsedTime >= TimeSpan.Zero ||
+            _battleCity.EnemyInLevel <= 0) return;
+        var playerCoordinates = _battleCity.PlayersTanks.Select(player => new Vector2()
+            { X = player.GetCoordinate().X * 64, Y = player.GetCoordinate().Y * 64 });
+        var nearestCoordinate = FindNearestCoordinate(playerCoordinates, _battleCity.CoordinateForEnemy);
+
+        var enemyTank = EnemyController.GetEnemy(0.08f,
+            nearestCoordinate,
+            _battleCity.EnemyImage, _battleCity.CollisionDetected.HasCollision, _battleCity.BulletObjects, true,
+            1);
+
+        _battleCity.EnemyTanks.Add(enemyTank);
+
+        if (_battleCity.EnemyTanks.Count == enemyInWave)
+            _battleCity.ElapsedTime = TimeSpan.FromMilliseconds(10000);
+
+        _battleCity.ElapsedTime = TimeSpan.FromMilliseconds(3000);
+        _battleCity.EnemyInLevel -= 1;
+    }
+
+    private Vector2 FindNearestCoordinate(IEnumerable<Vector2> playerCoordinates, List<Vector2> enemyCoordinates)
+    {
+        var nearestCoordinate = Vector2.Zero;
+        var shortestDistance = float.MaxValue;
+
+        var coordinates = playerCoordinates.ToList();
+        foreach (var enemyCoordinate in enemyCoordinates)
+        foreach (var distance in coordinates.Select(playerCoordinate => Vector2.Distance(enemyCoordinate, playerCoordinate)).Where(distance => distance < shortestDistance))
         {
-            var enemyTank = EnemyController.GetEnemy(0.08f,
-                _battleCity.CoordinateForEnemy[random.Next(_battleCity.CoordinateForEnemy.Count)],
-                _battleCity.EnemyImage, _battleCity.CollisionDetected.HasCollision, _battleCity.BulletObjects, true,
-                1);
-
-            _battleCity.EnemyTanks.Add(enemyTank);
-
-            if (_battleCity.EnemyTanks.Count == enemyInWave)
-                _battleCity.ElapsedTime = TimeSpan.FromMilliseconds(10000);
-
-            _battleCity.ElapsedTime = TimeSpan.FromMilliseconds(3000);
-            _battleCity.EnemyInLevel -= 1;
+            shortestDistance = distance;
+            nearestCoordinate = enemyCoordinate;
         }
+
+        return nearestCoordinate;
     }
 }

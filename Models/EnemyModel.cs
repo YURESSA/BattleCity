@@ -29,7 +29,7 @@ public class EnemyModel : Tank
         UpdatePosition(gameTime);
     }
 
-    private List<List<Point>> GetPathsToCoordinates(SceneController[,] map, List<Vector2> coordinates,
+    private IEnumerable<List<Point>> GetPathsToCoordinates(SceneController[,] map, List<Vector2> coordinates,
         Vector2 coordinateOfStaff)
     {
         var paths = new List<List<Point>>();
@@ -92,30 +92,40 @@ public class EnemyModel : Tank
         if (!IsPointValid(start, map) || !IsPointValid(target, map))
             return new List<Point>();
 
-        var openSet = new Queue<Point>();
-        var closedSet = new HashSet<Point>();
+        var openSet = new PriorityQueue<Point, float>();
         var cameFrom = new Dictionary<Point, Point>();
-        openSet.Enqueue(start);
+        var gScore = new Dictionary<Point, float> { [start] = 0 };
+        var fScore = new Dictionary<Point, float> { [start] = Heuristic(start, target) };
 
-        while (openSet.Any())
+        openSet.Enqueue(start, fScore[start]);
+
+        while (openSet.Count > 0)
         {
             var current = openSet.Dequeue();
 
-            if (current == target) return ReconstructPath(cameFrom, current);
-
-            closedSet.Add(current);
+            if (current == target)
+                return ReconstructPath(cameFrom, current);
 
             foreach (var neighbor in GetNeighbors(current, map))
             {
-                if (closedSet.Contains(neighbor)) continue;
+                var tentativeGScore = gScore[current] + 1;
 
-                if (cameFrom.ContainsKey(neighbor)) continue;
-                openSet.Enqueue(neighbor);
+                if (gScore.ContainsKey(neighbor) && !(tentativeGScore < gScore[neighbor])) continue;
                 cameFrom[neighbor] = current;
+                gScore[neighbor] = tentativeGScore;
+                fScore[neighbor] = gScore[neighbor] + Heuristic(neighbor, target);
+
+                if (openSet.UnorderedItems.All(item => item.Element != neighbor))
+                    openSet.Enqueue(neighbor, fScore[neighbor]);
             }
         }
 
         return new List<Point>();
+    }
+
+    private static float Heuristic(Point a, Point b)
+    {
+        return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
     }
 
     private static List<Point> ReconstructPath(Dictionary<Point, Point> cameFrom, Point current)
@@ -147,6 +157,7 @@ public class EnemyModel : Tank
                point.Y >= 0 && point.Y < map.GetLength(1) &&
                map[point.X, point.Y] == State.Empty;
     }
+
 
     private void HandleShooting()
     {

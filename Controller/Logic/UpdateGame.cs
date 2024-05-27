@@ -75,8 +75,6 @@ public class UpdateGame
         {
             BattleCity.State = StateOfGame.Game;
             MusicController.StartLevelMusic();
-        
-            
         }
     }
 
@@ -96,7 +94,6 @@ public class UpdateGame
             BattleCity.State = StateOfGame.Pause;
             MusicController.PauseLevelMusic();
             MusicController.PauseStartMusic();
-            
         }
 
 
