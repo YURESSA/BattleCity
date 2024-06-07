@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,8 +8,8 @@ public class ShotModel : MovedObject
 {
     public readonly float Angle;
     private readonly Func<MovedObject, bool> _hasCollision;
-    public new readonly Tank Parent;
-    public bool ShotHasCollisions { get; set; }
+    public readonly Tank Parent;
+    public bool ShotHasCollisions;
 
     public ShotModel(Vector2 position, float speed, float angle,
         Func<MovedObject, bool> hasCollision, Tank parent, Texture2D spriteOfBullet, bool isAlive) : base(

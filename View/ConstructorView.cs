@@ -79,8 +79,8 @@ public class ConstructorView
         var rectangle = new Rectangle(position, size);
         spriteBatch.Draw(_rectangleBlock, rectangle, Color.Black);
 
-        spriteBatch.Draw(_battleCity.TanksImage["playerLevel1"], new Vector2(966, 710), Color.White);
-        spriteBatch.Draw(_battleCity.TanksImage["enemyLevel1"], new Vector2(966, 838), Color.White);
+        spriteBatch.Draw(_battleCity.TanksImage["enemyLevel1"], new Vector2(966, 710), Color.White);
+        spriteBatch.Draw(_battleCity.TanksImage["playerLevel1"], new Vector2(966, 838), Color.White);
     }
 
     private void DrawObject(SpriteBatch spriteBatch, TypeOfObject type, Vector2 position)

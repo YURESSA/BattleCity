@@ -28,14 +28,14 @@ public class LevelController
         MusicController.StartLevelMusic();
     }
 
-    public void LoadLevel(string fileName, int enemyCount)
+    public void LoadLevel(string fileName, int enemyCount, int numberOfLevel)
     {
         if (_battleCity.MainMenu.GameModeState == GameMode.Settings) _battleCity.State = StateOfGame.Settings;
         _battleCity.PlayerViews = new List<PlayerView>();
         _battleCity.PlayerControllers = new List<PlayerController>();
         _battleCity.EnemyInLevel = enemyCount;
 
-        _battleCity.SceneObjects = ReaderOfMap.MapReader(_battleCity.SceneDictionary, BattleCity.CellSize, fileName);
+        _battleCity.SceneObjects = ReaderOfMap.MapReader(_battleCity.SceneDictionary, fileName, numberOfLevel);
         _battleCity.CoordinateForPlayer = ReaderOfMap.GetPlayerCoordinate();
         _battleCity.CoordinateForEnemy = ReaderOfMap.GetEnemyCoordinate();
         _battleCity.CoordinateOfStaff = ReaderOfMap.GetCoordinateOfStaff();
@@ -75,7 +75,7 @@ public class LevelController
 
         var playerData = _battleCity.GameData.Player;
         var playerTank = new PlayerModel(playerData.Speed, playerPosition, _battleCity.TanksImage[playerData.Image],
-            _battleCity.CollisionDetected.HasCollision, _battleCity.BulletObjects, true, playerData.Hp, 
+            _battleCity.CollisionDetected.HasCollision, _battleCity.BulletObjects, true, playerData.Hp,
             playerData.BulletSpeed);
 
         _battleCity.PlayerControllers.Add(new PlayerController(playerTank, controlButton));
@@ -95,9 +95,9 @@ public class LevelController
             { X = player.GetCoordinate().X * 64, Y = player.GetCoordinate().Y * 64 });
 
         var random = new Random();
-        var spawnCoordinate = random.NextDouble() < 0.6 ? 
-            FindNearestCoordinate(playerCoordinates, _battleCity.CoordinateForEnemy) :
-            _battleCity.CoordinateForEnemy[random.Next(_battleCity.CoordinateForEnemy.Count)];
+        var spawnCoordinate = random.NextDouble() < 0.4
+            ? FindNearestCoordinate(playerCoordinates, _battleCity.CoordinateForEnemy)
+            : _battleCity.CoordinateForEnemy[random.Next(_battleCity.CoordinateForEnemy.Count)];
 
         var enemyData = _battleCity.GameData.EnemyLevels.FirstOrDefault(e => e.Level == enemyLevel);
 
@@ -105,12 +105,12 @@ public class LevelController
         {
             var enemyTank = EnemyController.GetEnemy(enemyData.Speed, spawnCoordinate,
                 _battleCity.TanksImage[enemyData.Image], _battleCity.CollisionDetected.HasCollision,
-                _battleCity.BulletObjects, true, enemyData.Hp, enemyData.BulletSpeed);
+                _battleCity.BulletObjects, true, enemyData.Hp, enemyData.BulletSpeed, _battleCity);
 
             _battleCity.EnemyTanks.Add(enemyTank);
         }
 
-    
+
         if (_battleCity.EnemyTanks.Count == enemyInWave)
             _battleCity.ElapsedTime = TimeSpan.FromMilliseconds(enemyData!.WaveDelay);
 
@@ -125,14 +125,14 @@ public class LevelController
 
         var coordinates = playerCoordinates.ToList();
         foreach (var enemyCoordinate in enemyCoordinates)
-        foreach (var distance in coordinates.Select(playerCoordinate => Vector2.Distance(enemyCoordinate, playerCoordinate)).Where(distance => distance < shortestDistance))
+        foreach (var distance in coordinates
+                     .Select(playerCoordinate => Vector2.Distance(enemyCoordinate, playerCoordinate))
+                     .Where(distance => distance < shortestDistance))
         {
             shortestDistance = distance;
             nearestCoordinate = enemyCoordinate;
         }
 
         return nearestCoordinate;
-}
-
-
+    }
 }

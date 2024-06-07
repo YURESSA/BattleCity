@@ -29,9 +29,10 @@ public class EnemyController
 
     public static EnemyController GetEnemy(float speed, Vector2 position, Texture2D texture,
         Func<MovedObject, bool> hasCollision,
-        HashSet<Shot> bulletObjects, bool isAlive, int hp, float bulletSpeed)
+        HashSet<Shot> bulletObjects, bool isAlive, int hp, float bulletSpeed, BattleCity battleCity)
     {
-        var enemyModel = new EnemyModel(speed, position, texture, hasCollision, bulletObjects, isAlive, hp, bulletSpeed);
+        var enemyModel = new EnemyModel(speed, position, texture, hasCollision, bulletObjects, isAlive, hp, bulletSpeed,
+            battleCity);
         var enemyView = new EnemyView(texture);
         var enemyController = new EnemyController(enemyModel, enemyView);
         return enemyController;

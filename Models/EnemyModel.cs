@@ -8,13 +8,18 @@ namespace BattleCity;
 
 public class EnemyModel : Tank
 {
+    private readonly BattleCity _battleCity;
+
     public EnemyModel(float speed, Vector2 position, Texture2D sprite,
-        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp, float bulletSpeed)
+        Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp, float bulletSpeed,
+        BattleCity battleCity)
         : base(speed, position, sprite, hasCollision, bulletObjects, isAlive, hp, bulletSpeed)
     {
+        _battleCity = battleCity;
     }
 
-    public void Update(GameTime gameTime, SceneController[,] map, List<Vector2> coordinates, Vector2 coordinateOfStaff)
+    public void Update(GameTime gameTime, SceneController[,] map, IEnumerable<Vector2> coordinates,
+        Vector2 coordinateOfStaff)
     {
         ElapsedTime -= gameTime.ElapsedGameTime;
         var paths = GetPathsToCoordinates(map, coordinates, coordinateOfStaff);
@@ -29,19 +34,20 @@ public class EnemyModel : Tank
         UpdatePosition(gameTime);
     }
 
-    private IEnumerable<List<Point>> GetPathsToCoordinates(SceneController[,] map, List<Vector2> coordinates,
+    private IEnumerable<List<Point>> GetPathsToCoordinates(SceneController[,] map, IEnumerable<Vector2> coordinates,
         Vector2 coordinateOfStaff)
     {
-        var paths = new List<List<Point>>();
         var labyrinth = CreateMap(map);
 
-        foreach (var coordinate in coordinates)
-            paths.Add(FindPath(labyrinth, GetCoordinate(), coordinate));
+        var paths = coordinates.Select(coordinate => FindPath(labyrinth, GetCoordinate(),
+            coordinate, _battleCity.CoordinateForEnemy)).ToList();
 
-        var staffCoordinate = new Vector2(coordinateOfStaff.X / 64, coordinateOfStaff.Y / 64);
+        var staffCoordinate = new Vector2(coordinateOfStaff.X / BattleCity.BlockSize,
+            coordinateOfStaff.Y / BattleCity.BlockSize);
         labyrinth = CreateStaffMap(map, staffCoordinate);
 
-        var pathToStaff = FindPath(labyrinth, GetCoordinate(), staffCoordinate);
+        var pathToStaff = FindPath(labyrinth, GetCoordinate(), staffCoordinate,
+            _battleCity.CoordinateForEnemy);
         if (pathToStaff.Count > 0)
             paths.Add(pathToStaff);
 
@@ -84,12 +90,14 @@ public class EnemyModel : Tank
         }
     }
 
-    private List<Point> FindPath(State[,] map, Vector2 startPosition, Vector2 targetPosition)
+
+    private static List<Point> FindPath(State[,] map, Vector2 startPosition, Vector2 targetPosition,
+        List<Vector2> otherTankPositions)
     {
         var start = new Point((int)startPosition.X, (int)startPosition.Y);
         var target = new Point((int)targetPosition.X, (int)targetPosition.Y);
 
-        if (!IsPointValid(start, map) || !IsPointValid(target, map))
+        if (!IsPointValid(start, map, otherTankPositions, startPosition))
             return new List<Point>();
 
         var openSet = new PriorityQueue<Point, float>();
@@ -106,7 +114,7 @@ public class EnemyModel : Tank
             if (current == target)
                 return ReconstructPath(cameFrom, current);
 
-            foreach (var neighbor in GetNeighbors(current, map))
+            foreach (var neighbor in GetNeighbors(current, map, otherTankPositions, startPosition))
             {
                 var tentativeGScore = gScore[current] + 1;
 
@@ -140,22 +148,28 @@ public class EnemyModel : Tank
         return path;
     }
 
-    private IEnumerable<Point> GetNeighbors(Point point, State[,] map)
+    private static IEnumerable<Point> GetNeighbors(Point point, State[,] map, List<Vector2> otherTankPositions,
+        Vector2 startPosition)
     {
         var directions = new[] { new Point(0, -1), new Point(0, 1), new Point(-1, 0), new Point(1, 0) };
         foreach (var dir in directions)
         {
             var next = new Point(point.X + dir.X, point.Y + dir.Y);
-            if (IsPointValid(next, map))
+            if (IsPointValid(next, map, otherTankPositions, startPosition))
                 yield return next;
         }
     }
 
-    private static bool IsPointValid(Point point, State[,] map)
+    private static bool IsPointValid(Point point, State[,] map, List<Vector2> otherTankPositions, Vector2 startPosition)
     {
-        return point.X >= 0 && point.X < map.GetLength(0) &&
-               point.Y >= 0 && point.Y < map.GetLength(1) &&
-               map[point.X, point.Y] == State.Empty;
+        if (point.X < 0 || point.X >= map.GetLength(0) ||
+            point.Y < 0 || point.Y >= map.GetLength(1) ||
+            map[point.X, point.Y] != State.Empty)
+            return false;
+
+        return otherTankPositions.Where(tankPos => point.X ==
+            (int)tankPos.X / BattleCity.BlockSize && point.Y == (int)tankPos.Y / BattleCity.BlockSize).All(_ => point.X ==
+            (int)startPosition.X && point.Y == (int)startPosition.Y);
     }
 
 

@@ -80,7 +80,7 @@ public class UpdateGame
 
     private void LoadLevelState()
     {
-        BattleCity.LevelController.LoadLevel(BattleCity.FileNameDictionary[BattleCity.NumberOfLevel], EnemyInLevel);
+        BattleCity.LevelController.LoadLevel(BattleCity.LevelsPath, EnemyInLevel, BattleCity.NumberOfLevel);
     }
 
     private void UpdateGameState(GameTime gameTime, KeyboardState keyboardState)

@@ -27,4 +27,3 @@ public class GameData
     public TankData Player { get; set; }
     public List<EnemyData> EnemyLevels { get; set; }
 }
-

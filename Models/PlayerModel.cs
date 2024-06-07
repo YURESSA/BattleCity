@@ -7,8 +7,7 @@ namespace BattleCity;
 
 public class PlayerModel : Tank
 {
-    private const int CellSize = 64;
-
+    
     public PlayerModel(float speed, Vector2 position, Texture2D sprite,
         Func<MovedObject, bool> hasCollision, HashSet<Shot> bulletObjects, bool isAlive, int hp, float bulletSpeed) :
         base(speed, position, sprite, hasCollision, bulletObjects, isAlive, hp, bulletSpeed)
@@ -27,8 +26,8 @@ public class PlayerModel : Tank
     public override Vector2 GetCoordinate()
     {
         var center = Position + Origin;
-        var x = (int)(center.X / CellSize);
-        var y = (int)(center.Y / CellSize);
+        var x = (int)(center.X / BattleCity.BlockSize);
+        var y = (int)(center.Y / BattleCity.BlockSize);
 
         return new Vector2(x, y);
     }

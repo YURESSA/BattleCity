@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.IO;
+using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -24,6 +24,8 @@ internal static class ReaderOfMap
     private static List<Vector2> _coordinateForPlayers;
     private static Vector2 _coordinateOfStaff;
 
+    private static List<List<string>> _levels;
+
     public static List<Vector2> GetEnemyCoordinate()
     {
         return _coordinateForEnemy;
@@ -39,19 +41,25 @@ internal static class ReaderOfMap
         return _coordinateForPlayers;
     }
 
-    public static SceneController[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, int cellSize,
-        string fileName)
+    public static SceneController[,] MapReader(Dictionary<TypeOfObject, Texture2D> sprite, string fileName, int level)
     {
         _coordinateForEnemy = new List<Vector2>();
         _coordinateForPlayers = new List<Vector2>();
-        var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        var path = string.Concat(appDirectory.AsSpan(0,
-                appDirectory.IndexOf("\\bin", StringComparison.Ordinal)), $"\\{fileName}");
-        var file = new StreamReader(path).ReadToEnd();
-        var lines = file.Split("\r\n");
+
+        if (_levels == null)
+        {
+            var mapData = ReadMapData(fileName);
+            if (mapData?.Levels == null || mapData.Levels.Count == 0)
+                throw new Exception("Failed to read or deserialize the map data.");
+            _levels = mapData.Levels;
+        }
+
+
+        var lines = _levels[level - 1].ToArray();
         var height = lines.Length;
         var width = lines[0].Length;
         var map = new SceneController[height, width];
+
         for (var i = 0; i < height; i++)
         {
             var mapLine = lines[i];
@@ -61,9 +69,8 @@ internal static class ReaderOfMap
         return map;
     }
 
-
-    private static void ProcessMapLine(Dictionary<TypeOfObject, Texture2D> sprite, int width,
-        string mapLine, int i, SceneController[,] map)
+    private static void ProcessMapLine(Dictionary<TypeOfObject, Texture2D> sprite, int width, string mapLine, int i,
+        SceneController[,] map)
     {
         for (var j = 0; j < width; j++)
             if (mapLine[j] != 'E' && mapLine[j] != 'P')
@@ -96,5 +103,31 @@ internal static class ReaderOfMap
                         break;
                 }
             }
+    }
+
+    private static MapData ReadMapData(string fileName)
+    {
+        try
+        {
+            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var path = Path.Combine(appDirectory.Substring(0, appDirectory.IndexOf("\\bin", StringComparison.Ordinal)),
+                fileName);
+            var json = File.ReadAllText(path);
+            var mapData = JsonSerializer.Deserialize<MapData>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return mapData;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while reading the map data: {ex.Message}");
+            return null;
+        }
+    }
+
+    private class MapData
+    {
+        public List<List<string>> Levels { get; set; }
     }
 }

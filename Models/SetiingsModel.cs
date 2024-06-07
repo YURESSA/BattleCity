@@ -2,10 +2,10 @@ namespace BattleCity;
 
 public class MenuOption
 {
-    public string Name { get; }
+    private string Name { get; }
     public int Value { get; set; }
-    public int MinValue { get; }
-    public int MaxValue { get; }
+    private int MinValue { get; }
+    private int MaxValue { get; }
 
     public MenuOption(string name, int minValue, int maxValue)
     {

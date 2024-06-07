@@ -10,14 +10,12 @@ namespace BattleCity;
 
 public class BattleCity : Game
 {
-    public const int CellSize = 64;
     public readonly HashSet<Shot> BulletObjects = new();
     private readonly GraphicsDeviceManager _graphics;
     public TimeSpan ElapsedTime;
     public int EnemyInLevel;
     public HashSet<EnemyController> EnemyTanks;
     public readonly HashSet<BangModel> BangModels = new();
-    public Dictionary<int, string> FileNameDictionary;
     public Defeat GameDefeat;
     public MenuModel MainMenu;
     public Menu Menu;
@@ -30,6 +28,7 @@ public class BattleCity : Game
     public StateOfGame State = StateOfGame.MainMenu;
     public readonly ConstructorModel Constructor;
     public int NumberOfLevel;
+    public static int  BlockSize = 64;
     public List<PlayerController> PlayerControllers;
     public List<PlayerView> PlayerViews;
     public readonly CollisionDetected CollisionDetected;
@@ -41,7 +40,10 @@ public class BattleCity : Game
     private MusicController _musicController;
     public Vector2 CoordinateOfStaff;
     public SettingsController SettingsController;
-
+    public LevelController LevelController { get; }
+    public GameData GameData { get; private set; }
+    public const string LevelsPath = "Levels/levels.json";
+    
     public BattleCity()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -53,10 +55,7 @@ public class BattleCity : Game
         Constructor = new ConstructorModel(this);
         LevelController = new LevelController(this);
     }
-
-    public LevelController LevelController { get; }
-    public GameData GameData { get; private set; }
-
+    
     private void LoadGameData()
     {
         var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -65,6 +64,7 @@ public class BattleCity : Game
         var json = File.ReadAllText(filePath);
         GameData = JsonConvert.DeserializeObject<GameData>(json);
     }
+
     protected override void Initialize()
     {
         _graphics.PreferredBackBufferHeight = 960;
@@ -83,13 +83,6 @@ public class BattleCity : Game
         LoadMusic();
         InitializeGameObjects();
 
-        FileNameDictionary = new Dictionary<int, string>
-        {
-            { 1, "Levels/level1.txt" },
-            { 2, "Levels/level2.txt" },
-            { 3, "Levels/level3.txt" },
-            { 0, "Levels/custom.txt" }
-        };
         Constructor.LoadStartMap();
     }
 
@@ -109,12 +102,12 @@ public class BattleCity : Game
         DrawGame.SecondPlayerHp = Content.Load<Texture2D>("hp2Tank");
         TanksImage = new Dictionary<string, Texture2D>()
         {
-            { "playerLevel1", Content.Load<Texture2D>("player")},
-            { "enemyLevel1" , Content.Load<Texture2D>("tank1")},
-            { "enemyLevel2" , Content.Load<Texture2D>("tank2")},
-            { "enemyLevel3" , Content.Load<Texture2D>("tank3")}
+            { "playerLevel1", Content.Load<Texture2D>("player") },
+            { "enemyLevel1", Content.Load<Texture2D>("tank1") },
+            { "enemyLevel2", Content.Load<Texture2D>("tank2") },
+            { "enemyLevel3", Content.Load<Texture2D>("tank3") }
         };
- 
+
         Menu = new Menu(Content.Load<Texture2D>("MainMenu"), Content.Load<Texture2D>("cursor"));
     }
 

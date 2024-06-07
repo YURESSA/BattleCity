@@ -14,8 +14,10 @@ public class Tank : MovedObject
     public float Angle = MathHelper.TwoPi;
     public Vector2 Direction;
     protected TimeSpan ElapsedTime = TimeSpan.Zero;
-    public BattleCity BattleCity;
     private float bulletSpeed;
+
+    private readonly TimeSpan _shieldDuration = TimeSpan.FromSeconds(2);
+    private TimeSpan _creationTime;
 
     protected Tank(float speed, Vector2 position, Texture2D sprite, Func<MovedObject, bool> hasCollision,
         HashSet<Shot> bulletObjects, bool isAlive, int hp, float bulletSpeed) :
@@ -26,6 +28,7 @@ public class Tank : MovedObject
         _startPosition = position;
         _bulletObjects = bulletObjects;
         HasCollision = hasCollision;
+        _creationTime = TimeSpan.FromMilliseconds(Environment.TickCount);
     }
 
     public void MoveLeft()
@@ -62,10 +65,13 @@ public class Tank : MovedObject
 
     public override void Kill()
     {
+        if (IsShieldActive()) return;
+
         if (Hp > 1)
         {
             Hp -= 1;
             Position = _startPosition;
+            _creationTime = TimeSpan.FromMilliseconds(Environment.TickCount); // Update shield timer
         }
         else
         {
@@ -75,14 +81,22 @@ public class Tank : MovedObject
 
     public virtual Vector2 GetCoordinate()
     {
-        const int cellSize = 64;
         var halfCellSize = Width / 2;
 
         var centerX = Position.X + halfCellSize;
         var centerY = Position.Y + halfCellSize;
 
-        if (Math.Abs(centerX % 32) < 6 && Math.Abs(centerY % 32) < 6 && Position.X % cellSize < 8 &&
-            Position.Y % cellSize < 8) return new Vector2((int)centerX / cellSize, (int)centerY / cellSize);
+        if (Math.Abs(centerX % 32) < 6 && Math.Abs(centerY % 32) < 6 && Position.X % BattleCity.BlockSize < 8 &&
+            Position.Y % BattleCity.BlockSize < 8) 
+            return new Vector2((int)centerX / BattleCity.BlockSize, (int)centerY / BattleCity.BlockSize);
         return Vector2.Zero;
+    }
+
+    private bool IsShieldActive()
+    {
+        if (this is EnemyModel)
+            return false;
+        var currentTime = TimeSpan.FromMilliseconds(Environment.TickCount);
+        return currentTime - _creationTime < _shieldDuration;
     }
 }

@@ -8,6 +8,7 @@ public class ConstructorController
 {
     private readonly UpdateGame _updateGame;
     private readonly BattleCity _battleCity;
+    public static int EnemyCount;
 
     public ConstructorController(UpdateGame updateGame, BattleCity battleCity)
     {
@@ -50,13 +51,13 @@ public class ConstructorController
     private void CheckConstructorKeyInputs(KeyboardState keyboardState)
     {
         if (keyboardState.IsKeyDown(Keys.K))
-            _updateGame.BattleCity.LevelController.LoadConstructor(1);
+            _updateGame.BattleCity.LevelController.LoadConstructor(EnemyCount);
 
         if (keyboardState.IsKeyDown(Keys.R)) _updateGame.BattleCity.State = StateOfGame.MainMenu;
     }
 
     private static Vector2 GetMousePositionInBlocks(Point mousePosition)
     {
-        return new Vector2(mousePosition.X / 64, mousePosition.Y / 64);
+        return new Vector2(mousePosition.X / BattleCity.BlockSize, mousePosition.Y / BattleCity.BlockSize);
     }
 }

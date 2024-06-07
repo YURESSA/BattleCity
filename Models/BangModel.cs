@@ -14,9 +14,9 @@ public class BangModel : RectObjects
     public int CurrentFrame { get; set; }
 
     public BangModel(Vector2 position, bool isAlive) :
-        base(position, 64, 64, isAlive)
+        base(position, BattleCity.BlockSize, BattleCity.BlockSize, isAlive)
     {
-        Origin = new Vector2(32, 32);
+        Origin = new Vector2(BattleCity.BlockSize / 2, BattleCity.BlockSize / 2);
         TimerForBigBang = TimeSpan.FromMilliseconds(FrameCount * TimeToFrame.TotalMilliseconds);
     }
 }

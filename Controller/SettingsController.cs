@@ -30,7 +30,7 @@ public class SettingsController
 
         _selectedOptionIndex = 0;
         _menuView = new MenuView(_battleCity.SpriteBatch, font);
-        _previousKeyboardState = Keyboard.GetState();
+        _previousKeyboardState = new KeyboardState(Keys.Enter);
         _previousMouseState = Mouse.GetState();
         var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
         _settingsFilePath = string.Concat(appDirectory.AsSpan(0,
@@ -101,6 +101,7 @@ public class SettingsController
         UpdateGame.EnemyInWave = _menuOptions[1].Value;
         MusicController.VolumeOfSounds = _menuOptions[2].Value / 100f;
         MusicController.VolumeOfBackground = _menuOptions[3].Value / 100f;
+        ConstructorController.EnemyCount = _menuOptions[0].Value;
     }
 
     private void LoadSettings()
@@ -124,7 +125,6 @@ public class SettingsController
         {
             SaveSettings();
         }
-        
     }
 }
 

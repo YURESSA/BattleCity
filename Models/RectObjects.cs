@@ -17,8 +17,8 @@ public class RectObjects
     }
 
     public Vector2 Position { get; set; }
-    public int Width { get; set; }
-    public int Height { get; set; }
+    public int Width { get; }
+    public int Height { get; }
 
     public bool Intersect(MovedObject that)
     {
