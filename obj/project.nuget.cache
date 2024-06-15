@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/Lxo5at8DFsTwIrXOJ9sqmkXu/lNkUZ4Iqd9IxOoesaBbxdV1CjtrAHLUgMSlYTzShieDMwmCypl7P939SRphg==",
+  "dgSpecHash": "OY59KZ0gIJYGaIql1K6M4eVFe+BR6UnEvDlHwUIe8bQE+6RbqFf4m5jh9afAN4ejR4Kbhf7XsBSbguiqlWRFpw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\BattleCity.csproj",
+  "projectFilePath": "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\2 семестр\\Семинарские задачи\\BattleCity\\BattleCity.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\goshr\\.nuget\\packages\\libuv\\1.9.1\\libuv.1.9.1.nupkg.sha512",
     "C:\\Users\\goshr\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\1.1.0\\microsoft.codeanalysis.analyzers.1.1.0.nupkg.sha512",

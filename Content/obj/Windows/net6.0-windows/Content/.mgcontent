@@ -4,35 +4,35 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/bang1.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/bang2.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/bang3.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_armor.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_brick.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_bushes.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_emblem.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_none.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/block_water.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/cursor.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/destroy.wav</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/engine.wav</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/File.spritefont</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/game_over.jpg</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/hp_1_tank.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/hp_2_tank.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/level_finish.mp3</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/level_flag.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/level_start.wav</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/mainMenu.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/move.wav</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/shot.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/shotMusic.wav</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank1.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank2.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/tank3.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/Ttank1.png</File>
-    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/Game/BattleCity/BattleCity/Content/wall.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/bang1.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/bang2.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/bang3.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/block_armor.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/block_brick.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/block_bushes.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/block_emblem.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/block_none.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/block_water.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/cursor.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/destroy.wav</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/engine.wav</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/File.spritefont</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/game_over.jpg</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/hp_1_tank.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/hp_2_tank.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/level_finish.mp3</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/level_flag.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/level_start.wav</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/mainMenu.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/move.wav</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/shot.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/shotMusic.wav</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/tank.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/tank1.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/tank2.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/tank3.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/Ttank1.png</File>
+    <File>C:/Users/goshr/OneDrive/Документы/Универ/Программирование/2 семестр/Семинарские задачи/BattleCity/Content/wall.png</File>
   </SourceFiles>
   <DestFiles>
     <File>bang1</File>

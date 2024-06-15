@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\BattleCity.csproj": {}
+    "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\2 семестр\\Семинарские задачи\\BattleCity\\BattleCity.csproj": {}
   },
   "projects": {
-    "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\BattleCity.csproj": {
+    "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\2 семестр\\Семинарские задачи\\BattleCity\\BattleCity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\BattleCity.csproj",
+        "projectUniqueName": "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\2 семестр\\Семинарские задачи\\BattleCity\\BattleCity.csproj",
         "projectName": "BattleCity",
-        "projectPath": "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\BattleCity.csproj",
+        "projectPath": "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\2 семестр\\Семинарские задачи\\BattleCity\\BattleCity.csproj",
         "packagesPath": "C:\\Users\\goshr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\Game\\BattleCity\\BattleCity\\obj\\",
+        "outputPath": "C:\\Users\\goshr\\OneDrive\\Документы\\Универ\\Программирование\\2 семестр\\Семинарские задачи\\BattleCity\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\goshr\\AppData\\Roaming\\NuGet\\NuGet.Config",
